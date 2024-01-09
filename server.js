@@ -35,7 +35,6 @@ app.use(express.static(__dirname + '/public')); // for image folder
 
 // routes
 app.get('/', (req, res) => {
-    // res.send('hello world');
     res.sendFile(__dirname + '/index.html');
 });
 
@@ -43,7 +42,12 @@ app.get('/', (req, res) => {
 const io = require('socket.io')(http);
 io.on('connection', (socket) => {
     console.log('connected..');
+
     socket.on('message', (msg) => {
         socket.broadcast.emit('message', msg);
     });
+
+    socket.io('disconnect',()=>{
+        console.log("disconnected...");
+    })
 });

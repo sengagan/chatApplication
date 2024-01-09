@@ -55,6 +55,7 @@ let messageArea = document.querySelector('.message_area');
 let name;
 do {
     name = prompt(`Please enter your name:`);
+    console.log("name=",name);
 } while (!name);
 textarea.addEventListener('keyup', (e) => {
     if (e.key === 'Enter') {
@@ -85,12 +86,13 @@ function appendMessage(msg, type) {
         <h4>${msg.user}</h4>
         <p>${msg.message}</p>
     `;
+    console.log("markup=",markup);
     mainDiv.innerHTML = markup;
     messageArea.appendChild(mainDiv);
 }
 
 socket.on('message', (msg) => {
-    // console.log(msg,"incoming");
+    console.log(msg,"incoming");
     appendMessage(msg, 'incoming');
     scrollToBottom();
 });
