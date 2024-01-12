@@ -114,10 +114,10 @@ function appendMessage(msg, type) {
     }
 }
 
-socket.on('message', (msg) => {
+socket.on('message', (msg,room) => {
     // Display incoming messages in the message area
     appendMessage(msg, 'incoming');
-    console.log("receive/msg====",msg);
+    console.log("receive/msg====",msg,room);
     scrollToBottom();
 });
 
