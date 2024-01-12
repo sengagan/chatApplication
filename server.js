@@ -79,7 +79,7 @@ io.on('connection', (socket) => {
 
     socket.on('joinRoom', (room) => {
         socket.join(room);
-        // console.log(`User ${socket.id} joined room ${room}`);
+        console.log(`User ${socket.id} joined room ${room}`);
     });
 
     socket.on('disconnect', () => {
@@ -87,8 +87,9 @@ io.on('connection', (socket) => {
     });
 
     socket.on('privateMessage', (data) => {
-         io.to(data.room).emit('message', data.msg);
+       let response =  io.to(data.room).emit('message', data.msg);
         // socket.broadcast.emit("message",data.msg);
+        console.log("response ====",response);
     });
 });
 

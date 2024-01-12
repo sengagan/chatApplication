@@ -107,6 +107,7 @@ function appendMessage(msg, type) {
             <h4>${msg.user}</h4>
             <p>${msg.message}</p>
         `;
+        console.log("markup====",markup);
         mainDiv.innerHTML = markup;
         messageArea.appendChild(mainDiv);
     }
@@ -115,6 +116,7 @@ function appendMessage(msg, type) {
 socket.on('message', (msg) => {
     // Display incoming messages in the message area
     appendMessage(msg, 'incoming');
+    console.log("msg====",msg);
     scrollToBottom();
 });
 
