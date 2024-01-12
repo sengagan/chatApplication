@@ -87,9 +87,10 @@ io.on('connection', (socket) => {
     });
 
     socket.on('privateMessage', (data) => {
+        console.log("data===",data);
        let response =  io.to(data.room).emit('message', data.msg);
         // socket.broadcast.emit("message",data.msg);
-        console.log("response ====",response);
+        console.log("response ====",response,data.msg);
     });
 });
 

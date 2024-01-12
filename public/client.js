@@ -71,6 +71,7 @@ do {
 
 let room = prompt(`Enter room number:`);
 socket.emit('joinRoom', room);
+console.log("room===",room);
 
 textarea.addEventListener('keyup', (e) => {
     if (e.key === 'Enter') {
@@ -116,7 +117,7 @@ function appendMessage(msg, type) {
 socket.on('message', (msg) => {
     // Display incoming messages in the message area
     appendMessage(msg, 'incoming');
-    console.log("msg====",msg);
+    console.log("receive/msg====",msg);
     scrollToBottom();
 });
 
