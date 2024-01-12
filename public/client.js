@@ -71,6 +71,7 @@ do {
 
 let room = prompt(`Enter room number:`);
 socket.emit('joinRoom', room);
+
 console.log("room===",room);
 
 textarea.addEventListener('keyup', (e) => {

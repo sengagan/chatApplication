@@ -91,7 +91,9 @@ io.on('connection', (socket) => {
         console.log("dataRoom===",data.room);
        let response =  io.to(data.room).emit('message', data.msg,data.room);
         // socket.broadcast.emit("message",data.msg);
-        console.log("response ====",response,data.msg);
-    });
+        console.log("response ====",response,data.msg,data.room);
+    
+    
 });
 
+})
