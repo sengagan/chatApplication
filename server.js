@@ -58,6 +58,47 @@
 
 // one to one chat
 
+// const express = require("express");
+// const app = express();
+// const http = require('http').createServer(app);
+// const io = require('socket.io')(http);
+
+// app.use(express.static(__dirname + '/public'));
+
+// app.get('/', (req, res) => {
+//     res.sendFile(__dirname + '/index.html');
+// });
+
+// const PORT = 3000;
+// http.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });
+
+// io.on('connection', (socket) => {
+//     console.log('User connected:', socket.id);
+
+//     socket.on('joinRoom', (room) => {
+//         socket.join(room);
+//         console.log(`User ${socket.id} joined room ${room}`);
+//     });
+
+//     socket.on('disconnect', () => {
+//         console.log('User disconnected:', socket.id);
+//     });
+
+//     socket.on('privateMessage', (data) => {
+//         console.log("data===",data);
+//         console.log("dataRoom===",data.room);
+//        let response =  io.to(data.room).emit('message', data.msg,data.room);
+//         // socket.broadcast.emit("message",data.msg);
+//         console.log("response ====",response,data.msg,data.room);
+    
+    
+// });
+
+// })
+
+
 const express = require("express");
 const app = express();
 const http = require('http').createServer(app);
@@ -74,8 +115,12 @@ http.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-io.on('connection', (socket) => {
+io.on('connection', async function (socket) {
     console.log('User connected:', socket.id);
+
+    socket.on('sendTyping', (data) => {
+        io.to(data.room).emit('typing', { name: data.name, room: data.room });
+    });
 
     socket.on('joinRoom', (room) => {
         socket.join(room);
@@ -87,13 +132,23 @@ io.on('connection', (socket) => {
     });
 
     socket.on('privateMessage', (data) => {
-        console.log("data===",data);
-        console.log("dataRoom===",data.room);
-       let response =  io.to(data.room).emit('message', data.msg,data.room);
-        // socket.broadcast.emit("message",data.msg);
-        console.log("response ====",response,data.msg,data.room);
-    
-    
-});
+        const msg = { ...data.msg, status: 'delivered' };
+        io.to(data.room).emit('message', msg, data.room);
+    });
 
-})
+    socket.on('messageDelivered', (data) => {
+        io.to(data.room).emit('messageDelivered', { messageId: data.messageId });
+    });
+
+    socket.on('messageSeen', (data) => {
+        io.to(data.room).emit('messageSeen', { messageId: data.messageId });
+    });
+
+    // Listener for the notifyRecipient event
+    socket.on('notifyRecipient', (data) => {
+        io.to(data.recipientRoom).emit('notifyRecipient', {
+            sender: data.sender,
+            message: data.message
+        });
+    });
+});
