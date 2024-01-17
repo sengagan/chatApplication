@@ -188,6 +188,7 @@ io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
     socket.on('sendTyping', (data) => {
+        console.log("typing data :",data);
         io.to(data.room).emit('typing', { name: data.name, room: data.room });
     });
 
@@ -204,7 +205,7 @@ io.on('connection', (socket) => {
                 message: data.msg,
                 user:data.user
             });
-            // console.log("user====>", user);
+            console.log("user====>", user);
            
         } catch (error) {
             console.error("Error while processing newchat:", error);

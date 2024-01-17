@@ -321,6 +321,7 @@ const receiver_id = prompt('Enter your receiver_id') || 'receiver_default';
 socket.emit('joinRoom', room);
 
 // Emit event to load old chat messages
+console.log("sender_id/receiver_id",sender_id,receiver_id);
 socket.emit('existschat', { sender_id, receiver_id });
 
 // Event listener for sending messages when Enter key is pressed
