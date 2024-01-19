@@ -59,12 +59,12 @@ const messagesModel = require('../model/messagesModel');
 
 const save = async (data) => {
     try {
-        console.log("data--/service", data);
+        // console.log("data--/service", data);
 
         if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
             data.imgUrl.path = '';
         }
-        console.log("data.imgUrl.path", data);
+        // console.log("data.imgUrl.path", data);
 
         let details = {
             chatId: data.chatId || '0', // Provide a default value if data.chatId is undefined
@@ -94,7 +94,7 @@ const save = async (data) => {
             ip_addr: data.ip_addr || ''
         };
 
-        console.log("details====>>>>", details);
+        // console.log("details====>>>>", details);
 
         let response = await messagesModel.save(details);
         console.log("resp-----", response);

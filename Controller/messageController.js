@@ -12,7 +12,7 @@ const save = async (data) => {
                 return reject({ status: 400, error: validate.message });
             }
             let response = await messageServices.save(data);
-            console.log('response ', response);
+            console.log('response --', response);
             resolve(response);
         } catch (error) {
             reject({ status: 500, error: 'Internal Server Error' });

@@ -8,7 +8,7 @@ const save = async (data) => {
         msgType: joi.string(),
         fromUserId: joi.string(),
         toUserId: joi.string(),
-        message: joi.string().allow(''),
+        message: joi.any().allow(''),
         imgUrl: joi.any().allow('') ,
         videoImgUrl: joi.string(),
         videoUrl: joi.string(),
