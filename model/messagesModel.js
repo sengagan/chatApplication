@@ -1,4 +1,6 @@
+'use strict'
 const { connection } = require('../database/mysqlConnection');
+
 
 const save = async (details) => {
     console.log("details--", details);
