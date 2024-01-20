@@ -4,6 +4,7 @@ const messageValidation = require('../Validation/messageValidation');
 const messageServices = require('../Services/messageService');
 
 const save = async (data) => {
+    console.log("save",data);
     return new Promise(async (resolve, reject) => {
         try {
             let validate = await messageValidation.save(data);
