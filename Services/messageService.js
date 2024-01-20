@@ -99,7 +99,7 @@ const save = async (data,file) => {
         const multer = require("multer");
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {
-                cb(null, path.join(__dirname, './images'));
+                cb(null, path.join(__dirname, '../images'));
             },
             filename: (req, file, cb) => {
                 cb(null, Date.now() + '-' + (file.image.originalname));
@@ -110,7 +110,7 @@ const save = async (data,file) => {
 
         let load = await upload;
         console.log("load",load);
-        
+
         let response = await messagesModel.save(details);
         console.log("resp-----", response);
         return response;
