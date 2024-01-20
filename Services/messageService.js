@@ -111,10 +111,10 @@ const save = async (data,file) => {
 
 
         let load = await upload;
-        console.log("load---service---->",load);
+        console.log("load---service---->");
 
         let response = await messagesModel.save(details);
-        console.log("resp-service---->", response);
+        console.log("resp-service---->");
         return response;
     } catch (error) {
         console.error('Error while processing save:', error.message);
