@@ -3,8 +3,9 @@
 const messageValidation = require('../Validation/messageValidation');
 const messageServices = require('../Services/messageService');
 
-const save = async (data) => {
-    console.log("save/controller",data);
+const save = async (data,file) => {
+    console.log("save/controller",data,file);
+
     return new Promise(async (resolve, reject) => {
         try {
             let validate = await messageValidation.save(data);
@@ -12,7 +13,9 @@ const save = async (data) => {
             if (validate.status === 'ERROR') {
                 return reject({ status: 400, error: validate.message });
             }
-            let response = await messageServices.save(data);
+            
+        
+            let response = await messageServices.save(data,file);
             console.log('response --', response);
             resolve(response);
         } catch (error) {

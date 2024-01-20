@@ -501,6 +501,7 @@ const room = prompt('Enter room number:') || 'default';
 const sender_id = prompt('Enter your sender_id') || 'sender_default';
 const receiver_id = prompt('Enter your receiver_id') || 'receiver_default';
 
+
 // Emit event to join the room
 socket.emit('joinRoom', room);
 

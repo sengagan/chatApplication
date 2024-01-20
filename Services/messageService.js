@@ -57,9 +57,9 @@
 
 const messagesModel = require('../model/messagesModel');
 
-const save = async (data) => {
+const save = async (data,file) => {
     try {
-        console.log("data--/service", data);
+        console.log("data--/service", data,file);
 
         if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
             data.imgUrl.path = '';
@@ -94,21 +94,23 @@ const save = async (data) => {
             ip_addr: data.ip_addr || ''
         };
 
-        // console.log("details====>>>>", details);
+        console.log("details====>>>>", details);
 
-        // const multer = require("multer");
-        // const storage = multer.diskStorage({
-        //     destination: (req, file, cb) => {
-        //         cb(null, path.join(__dirname, './images'));
-        //     },
-        //     filename: (req, file, cb) => {
-        //         cb(null, Date.now() + '-' + (file.originalname));
-        //     },
-        // });
-        // const upload = multer({ storage: storage }).single('imgUrl');
+        const multer = require("multer");
+        const storage = multer.diskStorage({
+            destination: (req, file, cb) => {
+                cb(null, path.join(__dirname, './images'));
+            },
+            filename: (req, file, cb) => {
+                cb(null, Date.now() + '-' + (file.image.originalname));
+            },
+        });
+        const upload = multer({ storage: storage }).single('imgUrl');
 
 
-
+        let load = await upload;
+        console.log("load",load);
+        
         let response = await messagesModel.save(details);
         console.log("resp-----", response);
         return response;

@@ -614,8 +614,10 @@ io.on('connection', (socket) => {
                 toUserId: data.receiver_id,
                 message: data.msg,
             };
-            console.log("details",details);
-           let response_server =  await messageController.save(details);
+            let file = data.image;
+            console.log("details",details,file);
+           let response_server =  await messageController.save(details,file);
+
             console.log('response/server---successfull',response_server);
         } catch (error) {
             console.error('Error while processing newchat:', error);
