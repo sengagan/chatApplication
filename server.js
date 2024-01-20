@@ -627,23 +627,14 @@ io.on('connection', (socket) => {
 
     /******************** */
     /********** load data ********** */
-    socket.on('existschat', async function (data) {
-        console.log('data-----', data);
-        try {
-        //     // Assuming 'chatModel' is the correct model
-        //     let chat = await chatModel.find({
-        //         $or: [
-        //             { sender_id: data.sender_id, receiver_id: data.receiver_id },
-        //             { sender_id: data.receiver_id, receiver_id: data.sender_id },
-        //         ],
-        //     });
-
-        //     console.log('chat ==', chat);
-            socket.emit('load-chat', { chat: "chat" });
-        } catch (error) {
-            console.error(error);
-        }
-    });
+    // socket.on('existschat', async function (data) {     // right  code 
+    //     console.log('data-----', data);
+    //     try {
+    //         socket.emit('load-chat', { chat: "chat" });
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // });
 
     /******************** */
 
