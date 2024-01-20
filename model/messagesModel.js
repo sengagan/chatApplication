@@ -13,7 +13,7 @@ const save = async (details) => {
                 console.error("Error executing query:", error);
                 reject("Error executing query");
             } else {
-                // console.log("result", result);
+                console.log("result---", result);
                 resolve(true);
             }
         });
