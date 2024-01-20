@@ -59,7 +59,7 @@ const messagesModel = require('../model/messagesModel');
 
 const save = async (data,file) => {
     try {
-        console.log("data--/service", data,file);
+        console.log("data--/service", data,file,data.imgUrl);
 
         if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
             data.imgUrl.path = '';

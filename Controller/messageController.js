@@ -17,7 +17,7 @@ const save = async (data,file) => {
         
             let response = await messageServices.save(data,file);
             console.log('response --', response);
-            resolve(response);
+            resolve(response);  
         } catch (error) {
             reject({ status: 500, error: 'Internal Server Error' });
         }

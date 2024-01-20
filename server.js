@@ -605,7 +605,7 @@ io.on('connection', (socket) => {
 /******************************************************************* */
     /************** save chat ****** */
     socket.on('newchat',async (data,image) => {
-        console.log('data====----->>>>>', data);
+        console.log('data====----->>>>>', data,image);
         try {
             console.log('data===>', data.sender_id, data.receiver_id, data.msg);
             let details = {
@@ -615,7 +615,7 @@ io.on('connection', (socket) => {
                 message: data.msg,
             };
             let file = image;
-            console.log("details",details,file);
+            console.log("details",file);
            let response_server =  await messageController.save(details,file);
 
             console.log('response/server---successfull',response_server);
