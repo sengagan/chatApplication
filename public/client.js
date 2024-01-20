@@ -531,7 +531,6 @@ socket.on('message', (msg, room) => {
     appendMessage(msg, 'incoming');
     scrollToBottom();
     socket.emit('messageSeen', { room, messageId: msg.messageId });
-
     if (document.hidden) {
         unreadMessageCount += 1;
         updateNotificationBell();

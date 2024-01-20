@@ -605,7 +605,7 @@ io.on('connection', (socket) => {
 /******************************************************************* */
     /************** save chat ****** */
     socket.on('newchat',async (data) => {
-        console.log('data====----->>>>>', data.room);
+        console.log('data====----->>>>>', data);
         try {
             console.log('data===>', data.sender_id, data.receiver_id, data.msg);
             let details = {
@@ -657,8 +657,9 @@ io.on('connection', (socket) => {
     });
 
     socket.on('privateMessage', (data) => {
+        console.log("data-----",data);
         const msg = { ...data.msg, status: 'delivered' };
-        io.to(data.room).emit('message', msg, data.room);
+        io.to(data.room).emit('message', msg, data.room,data.image,data);
     });
 
     socket.on('messageDelivered', (data) => {
