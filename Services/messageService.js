@@ -94,7 +94,12 @@ const save = async (data,file) => {
             ip_addr: data.ip_addr || ''
         };
 
-        console.log("details====>>>>", details);
+        console.log("details====>>>>1", details.message.image);
+        console.log("details====>>>>2", details.message.image.imgUrl);
+        console.log("details====>>>>3", details.message.image.imgUrl.path);
+
+
+
 
         const multer = require("multer");
         const storage = multer.diskStorage({
