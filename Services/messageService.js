@@ -59,7 +59,7 @@ const messagesModel = require('../model/messagesModel');
 
 const save = async (data,file) => {
     try {
-        console.log("data--/service", data,file,data.imgUrl);
+        console.log("data--/service", data,file.image);
 
         if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
             data.imgUrl.path = '';
@@ -94,9 +94,8 @@ const save = async (data,file) => {
             ip_addr: data.ip_addr || ''
         };
 
-        console.log("details====>>>>1", details.message.image);
-    
-        console.log("details====>>>>3", details.message.image.imgUrl.path);
+        console.log("details====>>>>1", details.message.image,);
+        console.log("details====>>>>3", details.message.image.path);
 
 
 
