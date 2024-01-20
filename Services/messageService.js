@@ -61,9 +61,9 @@ const save = async (data) => {
     try {
         // console.log("data--/service", data);
 
-        if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
-            data.imgUrl.path = '';
-        }
+        // if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
+        //     data.imgUrl.path = '';
+        // }
         // console.log("data.imgUrl.path", data);
 
         let details = {

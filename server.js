@@ -427,7 +427,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-const PORT = process.env.PORT || 3001 || 10000;
+const PORT = process.env.PORT || 10000;
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
@@ -451,7 +451,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }).single('imgUrl');
 
 
-messageRouter.post('/message', upload ,async (req, res) => {
+messageRouter.post('/message',async (req, res) => {
     try {
         const data = req.body;
         const file = req.file;
@@ -465,7 +465,7 @@ messageRouter.post('/message', upload ,async (req, res) => {
         if(data.msg == ''){
             data.msg = ''
         }
-        console.log("data---",data);
+        // console.log("data---",data);
         
         let details = {
             chatId: data.room,
@@ -476,9 +476,10 @@ messageRouter.post('/message', upload ,async (req, res) => {
         };
 
         // Assuming 'messageController.save' is an asynchronous function
-        await messageController.save(details);
+       let response =  await messageController.save(details);
+        console.log("response/server",response);
+           res.status(200).send('Message saved successfully');
 
-        res.status(200).send('Message saved successfully');
     } catch (error) {
         console.error('Error while processing newchat:', error);
         res.status(500).send('Internal Server Error');
