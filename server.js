@@ -604,8 +604,8 @@ io.on('connection', (socket) => {
 
 /******************************************************************* */
     /************** save chat ****** */
-    socket.on('newchat',async (data,image) => {
-        console.log('data====----->>>>>file-', data,image);
+    socket.on('newchat',async (data) => {
+        console.log('data====----->>>>>file-', data,"image---",data.msg.image);
         try {
             console.log('data===>', data.sender_id, data.receiver_id, data.msg);
             let details = {
