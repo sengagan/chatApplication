@@ -605,16 +605,16 @@ io.on('connection', (socket) => {
 /******************************************************************* */
     /************** save chat ****** */
     socket.on('newchat',async (data) => {
-        console.log('data====----->>>>>file-', data,"image---",data.msg.image);
+        // console.log('data====----->>>>>file-', data,"image---",data.msg.image);
         try {
-            console.log('data===>', data.sender_id, data.receiver_id, data.msg);
+            // console.log('data===>', data.sender_id, data.receiver_id, data.msg);
             let details = {
                 chatId:data.room,
                 fromUserId: data.sender_id,
                 toUserId: data.receiver_id,
                 message: data.msg,
             };
-            let file = image;
+            let file =data.msg.image;
             console.log("details-file --",file);
            let response_server =  await messageController.save(details,file);
 
@@ -627,14 +627,14 @@ io.on('connection', (socket) => {
 
     /******************** */
     /********** load data ********** */
-    // socket.on('existschat', async function (data) {     // right  code 
-    //     console.log('data-----', data);
-    //     try {
-    //         socket.emit('load-chat', { chat: "chat" });
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // });
+    socket.on('existschat', async function (data) {     // right  code 
+        console.log('data-----', data);
+        try {
+            socket.emit('load-chat', { chat: "chat" });
+        } catch (error) {
+            console.error(error);
+        }
+    });
 
     /******************** */
 
@@ -648,7 +648,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('privateMessage', (data) => {
-        console.log("data-----",data);
+        console.log("data---->",data);
         const msg = { ...data.msg, status: 'delivered' };
         io.to(data.room).emit('message', msg, data.room,data.image,data);
     });
