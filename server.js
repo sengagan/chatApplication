@@ -589,7 +589,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
