@@ -7,7 +7,7 @@
 //         if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path == '') {
 //             data.imgUrl.path = '';
 //         }
-        
+
 //         console.log("data.imgUrl.path",data);
 
 //         let details = {
@@ -85,16 +85,29 @@ const save = async (data) => {
             lng: data.lng || null,
             createAt: data.createAt || Date.now(),
             removeAt: data.removeAt || 0,
-            removeFromUserId: data.removeFromUserId || '0', 
-            removeToUserId: data.removeToUserId || '0', 
+            removeFromUserId: data.removeFromUserId || '0',
+            removeToUserId: data.removeToUserId || '0',
             seenAt: data.seenAt || 0,
-            seenFromUserId: data.seenFromUserId || '0', 
-            seenToUserId: data.seenToUserId || '0', 
+            seenFromUserId: data.seenFromUserId || '0',
+            seenToUserId: data.seenToUserId || '0',
             u_agent: data.u_agent || '',
             ip_addr: data.ip_addr || ''
         };
 
         // console.log("details====>>>>", details);
+
+        // const multer = require("multer");
+        // const storage = multer.diskStorage({
+        //     destination: (req, file, cb) => {
+        //         cb(null, path.join(__dirname, './images'));
+        //     },
+        //     filename: (req, file, cb) => {
+        //         cb(null, Date.now() + '-' + (file.originalname));
+        //     },
+        // });
+        // const upload = multer({ storage: storage }).single('imgUrl');
+
+
 
         let response = await messagesModel.save(details);
         console.log("resp-----", response);

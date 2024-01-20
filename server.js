@@ -601,35 +601,21 @@ io.on('connection', (socket) => {
         io.to(data.room).emit('typing', { name: data.name, room: data.room, data: data });
     });
 
+/******************************************************************* */
     /************** save chat ****** */
-    socket.on('newchat', async (data) => {
+    socket.on('newchat',async (data) => {
         console.log('data====----->>>>>', data.room);
         try {
             console.log('data===>', data.sender_id, data.receiver_id, data.msg);
-
-            // Assuming 'chatModel.save' is the correct function
-            // let user = await messageModel.create({
-            //     sender_id: data.sender_id,
-            //     receiver_id: data.receiver_id,
-            //     message: data.msg,
-            //     user: data.user
-            // });
-            // console.log("user====>", user);
-
             let details = {
                 chatId:data.room,
                 fromUserId: data.sender_id,
                 toUserId: data.receiver_id,
                 message: data.msg,
             };
-
-
-            var router = express.Router();
-            await messageController.save(details);
-            // console.log("details--",details);
-            // let response = await messageController.save(details);
-            
-            console.log('response/server---successfull');
+            console.log("details",details);
+           let response_server =  await messageController.save(details);
+            console.log('response/server---successfull',response_server);
         } catch (error) {
             console.error('Error while processing newchat:', error);
         }
