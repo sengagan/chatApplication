@@ -59,10 +59,11 @@ const messagesModel = require('../model/messagesModel');
 
 const save = async (data,file) => {
     try {
-        console.log("data--/service",file,"path--",file.path);
+        // console.log("data--/service",file);
 
         // if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
             data.imgUrl.path = file;
+            // console.log("dataimgurlpath-------->",data.imgUrl.path);
         // }
         // console.log("data.imgUrl.path", data);
 
@@ -94,9 +95,6 @@ const save = async (data,file) => {
             ip_addr: data.ip_addr || ''
         };
 
-        console.log("details====>>>>1", details.message.image,);
-        console.log("details====>>>>3", details.message.image.path);
-
 
 
 
@@ -106,17 +104,17 @@ const save = async (data,file) => {
                 cb(null, path.join(__dirname, '../images'));
             },
             filename: (req, file, cb) => {
-                cb(null, Date.now() + '-' + (file.image.originalname));
+                cb(null, Date.now() + '-' + (file.originalname));
             },
         });
         const upload = multer({ storage: storage }).single('imgUrl');
 
 
         let load = await upload;
-        console.log("load",load);
+        console.log("load---service---->",load);
 
         let response = await messagesModel.save(details);
-        console.log("resp-----", response);
+        console.log("resp-service---->", response);
         return response;
     } catch (error) {
         console.error('Error while processing save:', error.message);
