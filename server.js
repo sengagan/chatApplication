@@ -616,7 +616,7 @@ io.on('connection', (socket) => {
                 toUserId: data.receiver_id,
                 message: data.msg,
             };
-            let file =data.msg.image;
+            let file =data.msg.image || '';
             console.log("details-file --",file);
            let response_server =  await messageController.save(details,file);
 
