@@ -65,6 +65,24 @@ const save = async (data,file) => {
     try {
         console.log("data--/service");
 
+        // let file =file.msg.image || data.msg.stickerImgUrl || '';
+        let imgUrl 
+        let stickerImgUrl
+        console.log("imageurl,stikar before",imgUrl,stickerImgUrl);
+        if(!file.msg.image){
+            imgUrl = ""
+        }
+        else if(!file.msg.stickerImgUrl){
+            stickerImgUrl= ""
+        }
+        else{
+             console.log(" imgUrl & stikar not inn");
+        }
+
+        console.log("imageurl,stikar after",imgUrl,stickerImgUrl);
+
+
+
         // if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
             
             // console.log("dataimgurlpath-------->",data.imgUrl.path);
