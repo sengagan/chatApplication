@@ -62,7 +62,7 @@ const save = async (data,file) => {
         console.log("data--/service");
 
         // if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
-            data.imgUrl.path = file;
+            
             // console.log("dataimgurlpath-------->",data.imgUrl.path);
         // }
         // console.log("data.imgUrl.path", data);
@@ -73,7 +73,7 @@ const save = async (data,file) => {
             fromUserId: data.fromUserId || '0', // Provide a default value if data.fromUserId is undefined
             toUserId: data.toUserId || '0', // Provide a default value if data.toUserId is undefined
             message: data.message || '',
-            imgUrl: data.imgUrl ? data.imgUrl.path || '' : '', // Check if data.imgUrl is defined before accessing its properties
+            imgUrl: file, // Check if data.imgUrl is defined before accessing its properties
             videoImgUrl: data.videoImgUrl || '',
             videoUrl: data.videoUrl || '',
             audioUrl: data.audioUrl || '',
