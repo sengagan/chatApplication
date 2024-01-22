@@ -97,20 +97,20 @@ const save = async (data,file) => {
 
 
 
-        const multer = require("multer");
-        const storage = multer.diskStorage({
-            destination: (req, file, cb) => {
-                cb(null, path.join(__dirname, '../images'));
-            },
-            filename: (req, file, cb) => {
-                cb(null, Date.now() + '-' + (file.originalname));
-            },
-        });
-        const upload = multer({ storage: storage }).single('imgUrl');
+        // const multer = require("multer");
+        // const storage = multer.diskStorage({
+        //     destination: (req, file, cb) => {
+        //         cb(null, path.join(__dirname, '../images'));
+        //     },
+        //     filename: (req, file, cb) => {
+        //         cb(null, Date.now() + '-' + (file.originalname));
+        //     },
+        // });
+        // const upload = multer({ storage: storage }).single('imgUrl');
 
 
-        let load = await upload;
-        console.log("load---service---->");
+        // let load = await upload;
+        // console.log("load---service---->");
 
         let response = await messagesModel.save(details);
         console.log("resp-service---->");
