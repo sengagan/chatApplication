@@ -135,7 +135,6 @@ const save = async (data,file) => {
 };
 
 const getData= async(data)=>{
-
     console.log("getdata/service---");
     let response = await messagesModel.getData(data);
     console.log("response-----");

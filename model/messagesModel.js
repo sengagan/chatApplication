@@ -20,29 +20,24 @@ const save = async (details) => {
     });
 };
 
-
-const getData = async(data)=>{
-
-    console.log("data/model--");
-
-    let query = `SELECT * FROM messages WHERE (sender_id = :sender_id AND receiver_id = :receiver_id)
-    OR (sender_id = :receiver_id AND receiver_id = :sender_id);`
-
-    console.log("data/model-->>>>>");
-
-
-    return new Promise(await function (resolve, reject){
+const getData = async (data) => {
+    console.log("getdata/model--");
+    let query = `SELECT * FROM messages WHERE (sender_id = ${data.sender_id} AND receiver_id = ${data.receiver_id})
+    OR (sender_id = ${data.receiver_id} AND receiver_id = ${data.sender_id});`;
+    console.log("getdata/model-->>2>>>");
+    return new Promise((resolve, reject) => {
         connection.query(query, (error, result) => {
             if (error) {
                 console.error("Error executing query:", error);
                 reject("Error executing query");
             } else {
-                console.log("result-model-0-get--");
-                resolve(true);
+                console.log("result-model-0-get--", result);
+                resolve(result);
             }
         });
     });
-}
+};
+
 
 module.exports = { save , getData };
 
