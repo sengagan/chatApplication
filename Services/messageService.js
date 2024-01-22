@@ -97,28 +97,28 @@ const save = async (data,file) => {
 
 
 
-        const multer = require("multer");
-        const storage = multer.diskStorage({
-            destination: (req, file, cb) => {
-                cb(null, path.join(__dirname, '../images'));
-            },
-            filename: (req, file, cb) => {
-                cb(null, Date.now() + '-' + (file.originalname));
-            },
-        });
-        const upload = multer({ storage: storage }).single('image');
+        // const multer = require("multer");
+        // const storage = multer.diskStorage({
+        //     destination: (req, file, cb) => {
+        //         cb(null, path.join(__dirname, '../images'));
+        //     },
+        //     filename: (req, file, cb) => {
+        //         cb(null, Date.now() + '-' + (file));
+        //     },
+        // });
+        // const upload = multer({ storage: storage }).single('image');
 
 
         // let load = await upload;
-        await new Promise((resolve, reject) => {
-            upload(req, res, (err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve();
-                }
-            });
-        });
+        // await new Promise((resolve, reject) => {
+        //     upload(req, res, (err) => {
+        //         if (err) {
+        //             reject(err);
+        //         } else {
+        //             resolve();
+        //         }
+        //     });
+        // });
 
 
 
