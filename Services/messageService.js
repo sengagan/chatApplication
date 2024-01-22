@@ -97,7 +97,6 @@ const save = async (data,file) => {
 
 
 
-
         const multer = require("multer");
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {
@@ -122,4 +121,8 @@ const save = async (data,file) => {
     }
 };
 
-module.exports = { save };
+// const getData= async(data)=>{
+
+// }
+
+module.exports = { save  };

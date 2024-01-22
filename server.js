@@ -583,7 +583,9 @@ app.use(express.urlencoded({ extended: true }));
 const userRouter = require('./Routes/messageRouter');
 app.use('/API', userRouter);
 
-app.use(express.static(__dirname + '/public'));
+
+
+app.use(express.static(__dirname + './public'));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -628,8 +630,9 @@ io.on('connection', (socket) => {
     /******************** */
     /********** load data ********** */
     socket.on('existschat', async function (data) {     // right  code 
-        console.log('data-----', data);
+        console.log('data--/load---', data);
         try {
+        //    let get_data =  await messageController.getData(data);
             socket.emit('load-chat', { chat: "chat" });
         } catch (error) {
             console.error(error);
