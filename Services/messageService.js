@@ -113,7 +113,7 @@ const save = async (data,file) => {
         let load = await upload;
 
         await new Promise((resolve, reject) => {
-            upload(load, res, (err) => {
+            upload(load, (err) => {
                 if (err) {
                     reject(err);
                 } else {
