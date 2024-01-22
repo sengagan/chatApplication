@@ -57,6 +57,9 @@
 
 const { response } = require('express');
 const messagesModel = require('../model/messagesModel');
+const multer = require("multer");
+const path = require("path");
+const http = require("http");
 
 const save = async (data,file) => {
     try {
@@ -97,8 +100,10 @@ const save = async (data,file) => {
         };
 
 
+        console.log("messageservice --3- ");
 
-        const multer = require("multer");
+
+        
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {
                 cb(null, path.join(__dirname, '../images'));
@@ -110,7 +115,7 @@ const save = async (data,file) => {
         const upload = multer({ storage: storage }).single('image');
 
 
-        let load = await upload;
+        // let load = await upload;
 
         await new Promise((resolve, reject) => {
             upload(load, (err) => {
