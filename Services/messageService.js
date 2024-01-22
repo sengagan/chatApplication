@@ -59,7 +59,7 @@ const messagesModel = require('../model/messagesModel');
 
 const save = async (data,file) => {
     try {
-        // console.log("data--/service",file);
+        console.log("data--/service");
 
         // if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
             data.imgUrl.path = file;
@@ -110,7 +110,7 @@ const save = async (data,file) => {
 
 
         // let load = await upload;
-        // console.log("load---service---->");
+        console.log("load---service---->");
 
         let response = await messagesModel.save(details);
         console.log("resp-service---->");
