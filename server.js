@@ -632,7 +632,8 @@ io.on('connection', (socket) => {
     socket.on('existschat', async function (data) {     // right  code 
         console.log('data--/load---', data);
         try {
-        //    let get_data =  await messageController.getData(data);
+           let get_data =  await messageController.getData(data);
+           console.log("getdata/server----")
             socket.emit('load-chat', { chat: "chat" });
         } catch (error) {
             console.error(error);

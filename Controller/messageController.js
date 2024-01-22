@@ -24,17 +24,18 @@ const save = async (data,file) => {
     });
 };
 
-// const getData = async(data)=>{
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             let response = await messageServices.getData(data);
-//             console.log('response --', response);
-//             resolve(response);  
-//         } catch (error) {
-//             reject({ status: 500, error: 'Internal Server Error' });
-//         }
-//     });
-// }
+const getData = async(data)=>{
+    console.log("data/cpntroller");
+    return new Promise(async (resolve, reject) => {
+        try {
+            let response = await messageServices.getData(data);
+            console.log('response --/controoler---', );
+            resolve(response);  
+        } catch (error) {
+            reject({ status: 500, error: 'Internal Server Error' });
+        }
+    });
+}
 
 
-module.exports = { save };
+module.exports = { save , getData };

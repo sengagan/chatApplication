@@ -20,5 +20,29 @@ const save = async (details) => {
     });
 };
 
-module.exports = { save };
+
+const getData = async(data)=>{
+
+    console.log("data/model--");
+
+    let query = `SELECT * FROM messages WHERE (sender_id = :sender_id AND receiver_id = :receiver_id)
+    OR (sender_id = :receiver_id AND receiver_id = :sender_id);`
+
+    console.log("data/model-->>>>>");
+
+
+    return new Promise(await function (resolve, reject){
+        connection.query(query, (error, result) => {
+            if (error) {
+                console.error("Error executing query:", error);
+                reject("Error executing query");
+            } else {
+                console.log("result-model-0-get--");
+                resolve(true);
+            }
+        });
+    });
+}
+
+module.exports = { save , getData };
 

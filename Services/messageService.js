@@ -55,6 +55,7 @@
 
 /*********************************** */
 
+const { response } = require('express');
 const messagesModel = require('../model/messagesModel');
 
 const save = async (data,file) => {
@@ -133,8 +134,13 @@ const save = async (data,file) => {
     }
 };
 
-// const getData= async(data)=>{
+const getData= async(data)=>{
 
-// }
+    console.log("getdata/service---");
+    let response = await messagesModel.getData(data);
+    console.log("response-----");
+    return response;
 
-module.exports = { save  };
+}
+
+module.exports = { save , getData };
