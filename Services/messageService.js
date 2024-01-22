@@ -104,21 +104,25 @@ const save = async (data,file) => {
 
 
         
-        const storage = multer.diskStorage({
-            destination: (req, file, cb) => {
-                cb(null, path.join(__dirname, '../images'));
-            },
-            filename: (req, file, cb) => {
-                cb(null, Date.now() + '-' + (file));
-            },
-        });
-        const upload = multer({ storage: storage }).single('image');
+       
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, '../images'));
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname);
+    },
+});
 
+const  express =  require('express');
+const app = express();
 
-        // let load = await upload;
+const upload = multer({ storage: storage }).single('image');
 
+app.post('/', async (req, res) => {
+    try {
         await new Promise((resolve, reject) => {
-            upload(upload, (err) => {
+            upload(req, res, (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -126,6 +130,18 @@ const save = async (data,file) => {
                 }
             });
         });
+
+        // Convert the uploaded file to base64
+        const imagePath = path.join(__dirname, '../images', req.file.filename);
+        const imageBase64 = fs.readFileSync(imagePath, 'base64');
+
+        // Send the base64 data or do something else with it
+        res.send(imageBase64);
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        res.status(500).send('Error uploading file');
+    }
+});
 
 
 
