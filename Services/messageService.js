@@ -88,8 +88,8 @@ const save = async (data) => {
         let details = {
             chatId: data.room,
             msgType: data.msgType || 0,
-            fromUserId: data.msg.fromUserId,
-            toUserId: data.msg.toUserId,
+            fromUserId: data.sender_id,
+            toUserId: data.receiver_id,
             message: data.msg.message,
             imgUrl: imageUrl,
             videoImgUrl: videoImgUrl,
