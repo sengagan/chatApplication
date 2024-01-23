@@ -20,31 +20,57 @@
 // module.exports = { connection };
 
 
-
 const mysql = require('mysql2');
 const dotenv = require('dotenv').config();
 
-// Use createPool instead of createConnection for better scalability
-const connection = mysql.createPool({
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD, // Use uppercase for consistency
-    database: process.env.DATABASE,
+const { HOST, USER, PASSWORD, DATABASE } = process.env;
+
+const pool = mysql.createPool({
+    host: HOST,
+    user: USER,
+    password: PASSWORD,
+    database: DATABASE,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    connectTimeout: 30000, // 30 seconds (adjust as needed)
 });
 
-// Testing the database connection
-connection.getConnection((error, connection) => {
-    if (error) {
-        console.error('Database connection failed:', error.message);
-    } else {
+const retryConnection = () => {
+    console.log('Attempting to reconnect...');
+    setTimeout(() => {
+        pool.promise().getConnection()
+            .then((connection) => {
+                console.log('Database connected successfully');
+                connection.release();
+            })
+            .catch((error) => {
+                console.error('Database connection failed:', error.message);
+                retryConnection();
+            });
+    }, 5000); // Wait for 5 seconds before retrying
+};
+
+// Use Promise-based connections
+pool.promise().getConnection()
+    .then((connection) => {
         console.log('Database connected successfully');
         connection.release();
+    })
+    .catch((error) => {
+        console.error('Database connection failed:', error.message);
+        retryConnection();
+    });
+
+// Handle connection errors
+pool.on('error', (err) => {
+    console.error('Database connection error:', err.message);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+        // Handle lost connection gracefully
+        retryConnection();
+    } else {
+        throw err;
     }
 });
 
-// Handle errors on the connection
-connection.on('error', (err) => {
-    console.error('Database connection error:', err.message);
-});
-
-module.exports = { connection };
+module.exports = { pool };
