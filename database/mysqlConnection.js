@@ -30,9 +30,6 @@ const connection = mysql.createPool({
     user: process.env.USER,
     password: process.env.PASSWORD, // Use uppercase for consistency
     database: process.env.DATABASE,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
 });
 
 // Testing the database connection
