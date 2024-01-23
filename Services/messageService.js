@@ -140,6 +140,8 @@ const save = async (data) => {
 
                 const base64Data = (details.imgUrl.base64Data || details.videoImgUrl.base64Data || details.videoUrl.base64Data || details.audioUrl.base64Data || details.stickerImgUrl.base64Data || '' );
 
+                console.log("base64Data",base64Data);
+
                 const buffer = Buffer.from(base64Data, 'base64');
                 const fileName = 'uploaded_file.txt'; 
                 fs.writeFileSync(fileName, buffer);
