@@ -63,7 +63,7 @@ const http = require("http");
 
 const save = async (data, file) => {
     try {
-        console.log("data--/service");
+        console.log("data--/service",data,"file/service--",file);
 
         // let file =file.msg.image || data.msg.stickerImgUrl || '';
         let imageUrl = '';

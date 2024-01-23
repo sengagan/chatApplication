@@ -565,6 +565,8 @@
 
 
 
+
+
 'use strict';
 const dotenv = require('dotenv').config()
 const express = require('express');
@@ -575,14 +577,14 @@ const io = require('socket.io')(http);
 // const db = require('./database/connection');
 const messageController = require('./Controller/messageController');
 // Assuming that chatModel has a 'save' function
-const messageModel = require('./model/messagesModel'); 
+// const messageModel = require('./model/messagesModel'); 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Assuming that userRouter is defined elsewhere in your code
-const userRouter = require('./Routes/messageRouter');
-app.use('/API', userRouter);
+// const userRouter = require('./Routes/messageRouter');
+// app.use('/API', userRouter);
 
 
 
@@ -601,7 +603,7 @@ io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
     socket.on('sendTyping', (data) => {
-        console.log('typing data :', data);
+        // console.log('typing data :', data);
         io.to(data.room).emit('typing', { name: data.name, room: data.room, data: data });
     });
 
@@ -621,6 +623,7 @@ io.on('connection', (socket) => {
             let response_server = await messageController.save(details, file);
     
             console.log('response/server---successfull', response_server);
+            
         } catch (error) {
             console.error('Error while processing newchat:', error);
         }
