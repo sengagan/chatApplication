@@ -571,17 +571,17 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
-
+// const db = require('./database/connection');
 const messageController = require('./Controller/messageController');
-
-// const messageModel = require('./model/messagesModel'); 
+// Assuming that chatModel has a 'save' function
+const messageModel = require('./model/messagesModel'); 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Assuming that userRouter is defined elsewhere in your code
-// const userRouter = require('./Routes/messageRouter');
-// app.use('/API', userRouter);
+const userRouter = require('./Routes/messageRouter');
+app.use('/API', userRouter);
 
 
 
@@ -606,17 +606,17 @@ io.on('connection', (socket) => {
 
 /******************************************************************* */
     /************** save chat ****** */
-    socket.on('newchat',async (data,file) => {
-        console.log('data====----->>>>>file-', data,"image---",file);
+    socket.on('newchat',async (data) => {
+        // console.log('data====----->>>>>file-', data,"image---",data.msg.image);
         try {
-            console.log('data===>', data.sender_id, data.receiver_id, data.msg);
+            // console.log('data===>', data.sender_id, data.receiver_id, data.msg);
             let details = {
                 chatId:data.room,
                 fromUserId: data.sender_id,
                 toUserId: data.receiver_id,
-                message: data.msg.message,
+                message: data.msg,
             };
-            // let file =data.msg.image || data.msg.stickerImgUrl || '';
+            let file =data.msg.image || data.msg.stickerImgUrl || '';
             console.log("details-file --");
            let response_server =  await messageController.save(details,file);
 
