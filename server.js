@@ -616,16 +616,16 @@ http.listen(PORT, () => {
     /******************** */
 
     /********** load data ********** */
-    // socket.on('existschat', async function (data) {     // right  code 
-    //     console.log('receive existschat data from client', data);
-    //     try {
-    //        let get_data =  await messageController.getData(data);
-    //        console.log("getdata/server----")
-    //         socket.emit('load-chat', { chat: "chat" });
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // });
+    socket.on('existschat', async function (data) {     // right  code 
+        console.log('receive existschat data from client', data);
+        try {
+           let get_data =  await messageController.getData(data);
+           console.log("getdata/server----")
+            socket.emit('load-chat', { chat: "chat" });
+        } catch (error) {
+            console.error(error);
+        }
+    });
 
     /******************** */
 
