@@ -607,7 +607,6 @@ http.listen(PORT, () => {
             //     message: data.msg,
             // };
            let response_server =  await messageController.save(data);
-           io.to(data.room).emit('message', msg, data.room,data.image,data);   // extra code
             console.log('response_server:',response_server);
         } catch (error) {
             console.error('Error newchat:', error);
@@ -620,8 +619,8 @@ http.listen(PORT, () => {
         console.log('receive existschat data from client', data);
         try {
            let get_data =  await messageController.getData(data);
-           console.log("getdata/server----")
-            socket.emit('load-chat', { chat: "chat" });
+           console.log("getdata/server----",get_data)
+            socket.emit('load-chat', { chat: "chat",loadedData:get_data });
         } catch (error) {
             console.error(error);
         }

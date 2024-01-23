@@ -22,6 +22,7 @@ const save = async (details) => {
 
 const getData = async (data) => {
     console.log("getdata/model--");
+    
     let query = `SELECT * FROM messages WHERE (sender_id = ${data.sender_id} AND receiver_id = ${data.receiver_id})
     OR (sender_id = ${data.receiver_id} AND receiver_id = ${data.sender_id});`;
     console.log("getdata/model-->>2>>>");
