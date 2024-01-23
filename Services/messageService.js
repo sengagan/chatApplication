@@ -66,20 +66,29 @@ const save = async (data,file) => {
         console.log("data--/service");
 
         // let file =file.msg.image || data.msg.stickerImgUrl || '';
-        let imgUrl 
-        let stickerImgUrl
-        console.log("imageurl,stikar before",imgUrl,stickerImgUrl);
-        if(!file.msg.image){
-            imgUrl = ""
-        }
-        else if(!file.msg.stickerImgUrl){
-            stickerImgUrl= ""
-        }
-        else{
-             console.log(" imgUrl & stikar not inn");
+        let imageUrl = '';
+        let stickerUrl = '';
+        let videoImgUrl = '';
+        let audioUrl = '';
+
+        if (file && file.imageUrl && file.imageUrl.name) {
+            imageUrl = file.imageUrl.name;
         }
 
-        console.log("imageurl,stikar after",imgUrl,stickerImgUrl);
+        if (file && file.stickerUrl && file.stickerUrl.name) {
+            stickerUrl = file.stickerUrl.name;
+        }
+
+        if(file && file.videoImgUrl && file.videoImgUrl.name){
+            videoImgUrl = file.videoImgUrl.name
+        }
+
+        if(file && file.audioUrl && file.audioUrl.name){
+            audioUrl = file.audioUrl.name
+        }
+        
+
+        console.log("imageurl,stikar after");
 
 
 
@@ -95,12 +104,12 @@ const save = async (data,file) => {
             fromUserId: data.fromUserId || '0', // Provide a default value if data.fromUserId is undefined
             toUserId: data.toUserId || '0', // Provide a default value if data.toUserId is undefined
             message: data.message || '',
-            imgUrl: file, // Check if data.imgUrl is defined before accessing its properties
-            videoImgUrl: data.videoImgUrl || '',
+            imgUrl: imageUrl, // Check if data.imgUrl is defined before accessing its properties
+            videoImgUrl: videoImgUrl || '',
             videoUrl: data.videoUrl || '',
-            audioUrl: data.audioUrl || '',
-            stickerId: data.stickerId || 0,
-            stickerImgUrl: data.stickerImgUrl || '',
+            audioUrl: audioUrl || '',
+            stickerId: stickerUrl || 0,
+            stickerImgUrl: stickerUrl || '',
             area: data.area || 0,
             country: data.country || 0,
             city: data.city || 0,
