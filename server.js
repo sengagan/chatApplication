@@ -607,6 +607,7 @@ http.listen(PORT, () => {
             //     message: data.msg,
             // };
            let response_server =  await messageController.save(data);
+           io.to(data.room).emit('message', msg, data.room,data.image,data);   // extra code
             console.log('response_server:',response_server);
         } catch (error) {
             console.error('Error newchat:', error);
