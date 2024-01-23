@@ -28,7 +28,7 @@
 
 
 <!-- one to one chat -->
-
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,9 +55,9 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>
 </body>
-</html>
-<!-- 
-<!DOCTYPE html>
+</html> -->
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -85,15 +85,15 @@
         </div>
     </section>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/public/client.js"></script>
+    <script src="/client.js"></script>
 </body>
 </html> -->
 
 <!-- 27/1/24 -->
 
 
-
 <!-- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -126,4 +126,270 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>
 </body>
- </html>  -->
+</html>  -->
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Chat App</title>
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .chat_section {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .brand {
+            background-color: #128C7E;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .user_list {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .message_area {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+        }
+
+        .message h4 {
+            margin: 0;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .message p {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+        }
+
+        .message .status {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .message .status.seen {
+            color: #4CAF50;
+        }
+
+        textarea {
+            width: calc(100% - 20px);
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: none;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="chat_section">
+        <div class="brand">
+            <h1>WhatsApp</h1>
+        </div>
+
+        <div class="user_list" id="userList">
+            <!-- Display connected users -->
+        </div>
+
+        <div class="message_area">
+            <!-- Display chat messages -->
+        </div>
+
+        <div>
+            <textarea id="textarea" cols="30" rows="1" placeholder="Write a message...."></textarea>
+        </div>
+
+        <!-- Notification bell -->
+        <div id="notificationBell" style="cursor: pointer; text-align: center; padding: 10px; color: #128C7E;">
+            &#128276; Notifications
+        </div>
+    </section>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        'use strict';
+
+        const socket = io();
+        let textarea = document.querySelector('#textarea');
+        let messageArea = document.querySelector('.message_area');
+        let name;
+        let notificationBell = document.getElementById('notificationBell');
+        let unreadMessageCount = 0;
+
+        Notification.requestPermission();
+
+        do {
+            name = prompt(`Please enter your name:`);
+        } while (!name);
+
+        let room = prompt(`Enter room number:`);
+        socket.emit('joinRoom', room);
+
+        textarea.addEventListener('input', () => {
+            socket.emit('sendTyping', { name: name, room: room });
+        });
+
+        textarea.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage(e.target.value);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Reset the notification count and update the notification bell
+            unreadMessageCount = 0;
+            updateNotificationBell();
+        });
+
+        function sendMessage(message) {
+            let msg = {
+                user: name,
+                message: message.trim(),
+                status: 'unseen',
+            };
+
+            appendMessage(msg, 'outgoing');
+
+            textarea.value = '';
+            scrollToBottom();
+
+            socket.emit('privateMessage', { room: room, msg: msg });
+
+            // Emit a notification event to notify the recipient
+            socket.emit('notifyRecipient', { recipientRoom: room, sender: name, message: message });
+        }
+
+        function appendMessage(msg, type) {
+            let mainDiv = document.createElement('div');
+            let className = type;
+            mainDiv.classList.add(className, 'message');
+
+            if (type === 'outgoing' || (type === 'incoming' && msg.user !== name)) {
+                let markup = `
+                    <h4>${msg.user}</h4>
+                    <p>${msg.message}</p>
+                    <span class="status">${msg.status}</span>
+                `;
+                mainDiv.innerHTML = markup;
+                messageArea.appendChild(mainDiv);
+            }
+        }
+
+        socket.on('message', (msg, room) => {
+            msg.status = 'seen';
+            appendMessage(msg, 'incoming');
+            scrollToBottom();
+            socket.emit('messageSeen', { room: room, messageId: msg.messageId });
+
+            if (document.hidden) {
+                unreadMessageCount += 1;
+                updateNotificationBell();
+                showNotification(`${msg.user}: ${msg.message}`);
+            }
+        });
+
+        socket.on('messageSeen', (data) => {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach((message) => {
+                const messageId = message.querySelector('.status').textContent;
+                if (messageId === data.messageId) {
+                    message.querySelector('.status').textContent = 'seen';
+                    message.querySelector('.status').classList.add('seen');
+                }
+            });
+        });
+
+        socket.on('typing', (data) => {
+            let userList = document.getElementById('userList');
+            userList.innerHTML = `<h3>${data.name} is typing...</h3>`;
+        });
+
+        function scrollToBottom() {
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+
+        notificationBell.addEventListener('click', () => {
+            // Simulate a click on the document to bring it to focus
+            document.click();
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                notificationBell.style.color = '#128C7E';
+            }
+        });
+
+        function updateNotificationBell() {
+            if (unreadMessageCount > 0) {
+                notificationBell.innerHTML = `&#128276; Notifications (${unreadMessageCount})`;
+                notificationBell.style.color = 'red'; // You can customize the color
+            } else {
+                notificationBell.innerHTML = `&#128276; Notifications`;
+                notificationBell.style.color = '#128C7E';
+            }
+        }
+
+        function showNotification(message) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const notification = new Notification('New Message', {
+                    body: message,
+                    icon: 'path-to-your-icon.png'
+                });
+
+                setTimeout(() => {
+                    notification.close();
+                }, 5000);
+            } else if (Notification.permission !== 'denied') {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        showNotification(message);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
