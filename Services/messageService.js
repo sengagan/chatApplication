@@ -125,7 +125,7 @@ const save = async (data) => {
         });
 
         const upload = multer({ storage: storage }).single('file');
-
+        console.log("upload/services",upload);
         app.post('/', async (req, res) => {
             try {
                 await new Promise((resolve, reject) => {
@@ -139,6 +139,7 @@ const save = async (data) => {
                 });
 
                 const imagePath = path.join(__dirname, '../images', req.file.filename);
+                console.log("imagePath/service",imagePath);
                 const imageBase64 = fs.readFileSync(imagePath, 'base64');
                 console.log("image upload in service :",imageBase64);
                 res.send(imageBase64);
