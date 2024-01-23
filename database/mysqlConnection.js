@@ -27,6 +27,10 @@ const dotenv = require('dotenv').config();
 console.log("-=-=connection-=->>>",process.env.HOST,process.env.DATABASE,process.env.USER,process.env.PASSWORD)
 // Use createPool instead of createConnection for better scalability
 const connection = mysql.createPool({
+    // host: process.env.HOST,
+    // user: process.env.USER,
+    // password: process.env.PASSWORD, // Use uppercase for consistency
+    // database: process.env.DATABASE,
     host: process.env.HOST,
     user: process.env.USER,
     password: process.env.PASSWORD, // Use uppercase for consistency

@@ -571,6 +571,7 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+
 // const db = require('./database/connection');
 const messageController = require('./Controller/messageController');
 // Assuming that chatModel has a 'save' function
@@ -606,26 +607,25 @@ io.on('connection', (socket) => {
 
 /******************************************************************* */
     /************** save chat ****** */
-    socket.on('newchat',async (data) => {
-        // console.log('data====----->>>>>file-', data,"image---",data.msg.image);
+    socket.on('newchat', async (data) => {
+        console.log("data/server1==",data);
         try {
-            // console.log('data===>', data.sender_id, data.receiver_id, data.msg);
             let details = {
-                chatId:data.room,
+                chatId: data.room,
                 fromUserId: data.sender_id,
                 toUserId: data.receiver_id,
                 message: data.msg,
             };
-            // let file =data.msg.image || data.msg.stickerImgUrl || '';
-            console.log("details-file --");
-           let response_server =  await messageController.save(details,file);
-
-            console.log('response/server---successfull',response_server);
+            let file = data.msg.image || data.msg.stickerImgUrl || '';
+            console.log("details-file --", file);
+            let response_server = await messageController.save(details, file);
+    
+            console.log('response/server---successfull', response_server);
         } catch (error) {
             console.error('Error while processing newchat:', error);
         }
     });
-
+    
 
     /******************** */
     /********** load data ********** */
