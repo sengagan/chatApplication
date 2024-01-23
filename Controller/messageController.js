@@ -6,8 +6,6 @@ const messageServices = require('../Services/messageService');
 const save = async (data,file) => {
     console.log("save/controller-file-",file);
 
-
-
     return new Promise(async (resolve, reject) => {
         try {
             let validate = await messageValidation.save(data);
