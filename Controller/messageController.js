@@ -3,8 +3,8 @@
 const messageValidation = require('../Validation/messageValidation');
 const messageServices = require('../Services/messageService');
 
-const save = async (data,file) => {
-    console.log("data/controller---",data,"save/controller-file-",file);
+const save = async (data) => {
+    console.log("data receive from server:",data);
 
     return new Promise(async (resolve, reject) => {
         try {
@@ -13,9 +13,8 @@ const save = async (data,file) => {
             // if (validate.status === 'ERROR') {
             //     return reject({ status: 400, error: validate.message });
             // }
-
-            let response = await messageServices.save(data,file);
-            console.log('response --', response);
+            let response = await messageServices.save(data);
+            console.log('response controller:', response);
             resolve(response);  
         } catch (error) {
             reject({ status: 500, error: 'Internal Server Error' });

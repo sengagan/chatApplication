@@ -54,55 +54,44 @@
 
 
 /*********************************** */
-
-const { response } = require('express');
-const messagesModel = require('../model/messagesModel');
+const fs = require("fs"); 
+const express = require('express');
 const multer = require("multer");
 const path = require("path");
-const http = require("http");
+const messagesModel = require('../model/messagesModel');
 
-const save = async (data, file) => {
+const save = async (data) => {
     try {
-        console.log("data--/service",data,"file/service--",file);
+        console.log("data receive from controller", data);
 
-        // let file =file.msg.image || data.msg.stickerImgUrl || '';
         let imageUrl = '';
         let stickerUrl = '';
         let videoImgUrl = '';
         let audioUrl = '';
 
-        if (file && file.imageUrl && file.imageUrl.name) {
-            imageUrl = file.imageUrl.name;
+        if (data && data.imageUrl && data.imageUrl.name) {
+            imageUrl = data.imageUrl.name;
         }
 
-        if (file && file.stickerUrl && file.stickerUrl.name) {
-            stickerUrl = file.stickerUrl.name;
+        if (data && data.stickerUrl && data.stickerUrl.name) {
+            stickerUrl = data.stickerUrl.name;
         }
 
-        if (file && file.videoImgUrl && file.videoImgUrl.name) {
-            videoImgUrl = file.videoImgUrl.name
+        if (data && data.videoImgUrl && data.videoImgUrl.name) {
+            videoImgUrl = data.videoImgUrl.name;
         }
 
-        if (file && file.audioUrl && file.audioUrl.name) {
-            audioUrl = file.audioUrl.name
+        if (data && data.audioUrl && data.audioUrl.name) {
+            audioUrl = data.audioUrl.name;
         }
-
-
-        console.log("imageurl,stikar after");
-
-        // if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
-
-        // console.log("dataimgurlpath-------->",data.imgUrl.path);
-        // }
-        // console.log("data.imgUrl.path", data);
 
         let details = {
-            chatId: data.chatId || '0', // Provide a default value if data.chatId is undefined
+            chatId: data.chatId || '0',
             msgType: data.msgType || 0,
-            fromUserId: data.fromUserId || '0', // Provide a default value if data.fromUserId is undefined
-            toUserId: data.toUserId || '0', // Provide a default value if data.toUserId is undefined
+            fromUserId: data.fromUserId || '0',
+            toUserId: data.toUserId || '0',
             message: data.message || '',
-            imgUrl: imageUrl, // Check if data.imgUrl is defined before accessing its properties
+            imgUrl: imageUrl,
             videoImgUrl: videoImgUrl || '',
             videoUrl: data.videoUrl || '',
             audioUrl: audioUrl || '',
@@ -124,13 +113,8 @@ const save = async (data, file) => {
             ip_addr: data.ip_addr || ''
         };
 
-
-        console.log("messageservice --3- ");
-
-
-
-        const express = require('express');
         const app = express();
+
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {
                 cb(null, path.join(__dirname, '../images'));
@@ -139,8 +123,6 @@ const save = async (data, file) => {
                 cb(null, Date.now() + '-' + file.originalname);
             },
         });
-
-
 
         const upload = multer({ storage: storage }).single('file');
 
@@ -156,19 +138,15 @@ const save = async (data, file) => {
                     });
                 });
 
-                // Convert the uploaded file to base64
                 const imagePath = path.join(__dirname, '../images', req.file.filename);
                 const imageBase64 = fs.readFileSync(imagePath, 'base64');
 
-                // Send the base64 data or do something else with it
                 res.send(imageBase64);
             } catch (error) {
                 console.error('Error uploading file:', error);
                 res.status(500).send('Error uploading file');
             }
         });
-
-
 
         console.log("load---service---->");
 
@@ -186,7 +164,6 @@ const getData = async (data) => {
     let response = await messagesModel.getData(data);
     console.log("response-----");
     return response;
-
 }
 
 module.exports = { save, getData };

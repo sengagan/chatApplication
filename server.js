@@ -565,8 +565,6 @@
 
 
 
-
-
 'use strict';
 const dotenv = require('dotenv').config()
 const express = require('express');
@@ -574,19 +572,10 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
-// const db = require('./database/connection');
 const messageController = require('./Controller/messageController');
-// Assuming that chatModel has a 'save' function
-// const messageModel = require('./model/messagesModel'); 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Assuming that userRouter is defined elsewhere in your code
-// const userRouter = require('./Routes/messageRouter');
-// app.use('/API', userRouter);
-
-
 
 app.use(express.static(__dirname + './public'));
 
@@ -599,55 +588,49 @@ http.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-io.on('connection', (socket) => {
+   io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
     socket.on('sendTyping', (data) => {
-        // console.log('typing data :', data);
+        console.log('typing data :', data);
         io.to(data.room).emit('typing', { name: data.name, room: data.room, data: data });
     });
 
-/******************************************************************* */
     /************** save chat ****** */
-    socket.on('newchat', async (data) => {
-        console.log("data/server1==",data);
+    socket.on('newchat',async (data) => {
+        console.log("receive newchat data from client:",data);
         try {
-            let details = {
-                chatId: data.room,
-                fromUserId: data.sender_id,
-                toUserId: data.receiver_id,
-                message: data.msg,
-            };
-            let file = data.msg.image || data.msg.stickerImgUrl || '';
-            console.log("details-file --", file);
-            let response_server = await messageController.save(details, file);
-    
-            console.log('response/server---successfull', response_server);
-            
+            // let details = {
+            //     chatId:data.room,
+            //     fromUserId: data.sender_id,
+            //     toUserId: data.receiver_id,
+            //     message: data.msg,
+            // };
+           let response_server =  await messageController.save(data);
+            console.log('response_server:',response_server);
         } catch (error) {
-            console.error('Error while processing newchat:', error);
+            console.error('Error newchat:', error);
         }
     });
-    
-
     /******************** */
+
     /********** load data ********** */
-    socket.on('existschat', async function (data) {     // right  code 
-        console.log('data--/load---', data);
-        try {
-           let get_data =  await messageController.getData(data);
-           console.log("getdata/server----")
-            socket.emit('load-chat', { chat: "chat" });
-        } catch (error) {
-            console.error(error);
-        }
-    });
+    // socket.on('existschat', async function (data) {     // right  code 
+    //     console.log('receive existschat data from client', data);
+    //     try {
+    //        let get_data =  await messageController.getData(data);
+    //        console.log("getdata/server----")
+    //         socket.emit('load-chat', { chat: "chat" });
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // });
 
     /******************** */
 
     socket.on('joinRoom', (room) => {
         socket.join(room);
-        console.log(`User ${socket.id} joined room ${room}`);
+        // console.log(`User ${socket.id} joined room ${room}`);
     });
 
     socket.on('disconnect', () => {
@@ -655,7 +638,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('privateMessage', (data) => {
-        console.log("data---->",data);
+        console.log("privateMessage data receive from client:",data);
         const msg = { ...data.msg, status: 'delivered' };
         io.to(data.room).emit('message', msg, data.room,data.image,data);
     });
@@ -668,7 +651,6 @@ io.on('connection', (socket) => {
         io.to(data.room).emit('messageSeen', { messageId: data.messageId });
     });
 
-    // Listener for the notifyRecipient event
     socket.on('notifyRecipient', (data) => {
         io.to(data.recipientRoom).emit('notifyRecipient', {
             sender: data.sender,
