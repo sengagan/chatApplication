@@ -90,8 +90,6 @@ const save = async (data,file) => {
 
         console.log("imageurl,stikar after");
 
-
-
         // if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
             
             // console.log("dataimgurlpath-------->",data.imgUrl.path);
