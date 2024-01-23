@@ -24,6 +24,7 @@
 const mysql = require('mysql2');
 const dotenv = require('dotenv').config();
 
+console.log("-=-=connection-=->>>",process.env.HOST,process.env.DATABASE,process.env.USER,process.env.PASSWORD)
 // Use createPool instead of createConnection for better scalability
 const connection = mysql.createPool({
     host: process.env.HOST,
@@ -31,7 +32,7 @@ const connection = mysql.createPool({
     password: process.env.PASSWORD, // Use uppercase for consistency
     database: process.env.DATABASE,
     waitForConnections: true,
-    connectionLimit: 1000,
+    connectionLimit: 10,
     queueLimit: 0
 });
 
