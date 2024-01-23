@@ -61,7 +61,7 @@ const multer = require("multer");
 const path = require("path");
 const http = require("http");
 
-const save = async (data,file) => {
+const save = async (data, file) => {
     try {
         console.log("data--/service");
 
@@ -79,20 +79,20 @@ const save = async (data,file) => {
             stickerUrl = file.stickerUrl.name;
         }
 
-        if(file && file.videoImgUrl && file.videoImgUrl.name){
+        if (file && file.videoImgUrl && file.videoImgUrl.name) {
             videoImgUrl = file.videoImgUrl.name
         }
 
-        if(file && file.audioUrl && file.audioUrl.name){
+        if (file && file.audioUrl && file.audioUrl.name) {
             audioUrl = file.audioUrl.name
         }
-        
+
 
         console.log("imageurl,stikar after");
 
         // if (data.imgUrl && data.imgUrl.path !== undefined && data.imgUrl.path === '') {
-            
-            // console.log("dataimgurlpath-------->",data.imgUrl.path);
+
+        // console.log("dataimgurlpath-------->",data.imgUrl.path);
         // }
         // console.log("data.imgUrl.path", data);
 
@@ -128,45 +128,45 @@ const save = async (data,file) => {
         console.log("messageservice --3- ");
 
 
-        
-       
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '../images'));
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-    },
-});
 
-const  express =  require('express');
-const app = express();
-
-const upload = multer({ storage: storage }).single('image');
-
-app.post('/', async (req, res) => {
-    try {
-        await new Promise((resolve, reject) => {
-            upload(req, res, (err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve();
-                }
-            });
+        const express = require('express');
+        const app = express();
+        const storage = multer.diskStorage({
+            destination: (req, file, cb) => {
+                cb(null, path.join(__dirname, '../images'));
+            },
+            filename: (req, file, cb) => {
+                cb(null, Date.now() + '-' + file.originalname);
+            },
         });
 
-        // Convert the uploaded file to base64
-        const imagePath = path.join(__dirname, '../images', req.file.filename);
-        const imageBase64 = fs.readFileSync(imagePath, 'base64');
 
-        // Send the base64 data or do something else with it
-        res.send(imageBase64);
-    } catch (error) {
-        console.error('Error uploading file:', error);
-        res.status(500).send('Error uploading file');
-    }
-});
+
+        const upload = multer({ storage: storage }).single('file');
+
+        app.post('/', async (req, res) => {
+            try {
+                await new Promise((resolve, reject) => {
+                    upload(req, res, (err) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve();
+                        }
+                    });
+                });
+
+                // Convert the uploaded file to base64
+                const imagePath = path.join(__dirname, '../images', req.file.filename);
+                const imageBase64 = fs.readFileSync(imagePath, 'base64');
+
+                // Send the base64 data or do something else with it
+                res.send(imageBase64);
+            } catch (error) {
+                console.error('Error uploading file:', error);
+                res.status(500).send('Error uploading file');
+            }
+        });
 
 
 
@@ -181,7 +181,7 @@ app.post('/', async (req, res) => {
     }
 };
 
-const getData= async(data)=>{
+const getData = async (data) => {
     console.log("getdata/service---");
     let response = await messagesModel.getData(data);
     console.log("response-----");
@@ -189,4 +189,4 @@ const getData= async(data)=>{
 
 }
 
-module.exports = { save , getData };
+module.exports = { save, getData };

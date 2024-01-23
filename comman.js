@@ -5,10 +5,10 @@ const comman = async (schema, data) => {
         message: null
     }
     let validate = schema.validate(data);
-    if (validate && validate.error && validate.error.details) {
-        response.status = "ERROR";
-        response.message = validate.error.details[0].message
-    }
+    // if (validate && validate.error && validate.error.details) {
+    //     response.status = "ERROR";
+    //     response.message = validate.error.details[0].message
+    // }
     return response;
 }
 
