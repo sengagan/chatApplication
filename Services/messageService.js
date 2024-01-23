@@ -140,7 +140,7 @@ const save = async (data) => {
 
                 const imagePath = path.join(__dirname, '../images', req.file.filename);
                 const imageBase64 = fs.readFileSync(imagePath, 'base64');
-
+                console.log("image upload in service :",imageBase64);
                 res.send(imageBase64);
             } catch (error) {
                 console.error('Error uploading file:', error);
