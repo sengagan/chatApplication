@@ -14,7 +14,7 @@ const save = async (details) => {
                 reject("Error executing query");
             } else {
                 console.log("result---");
-                resolve(true);
+                resolve(result);
             }
         });
     });
