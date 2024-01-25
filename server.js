@@ -597,7 +597,7 @@ io.on('connection', (socket) => {
         io.to(data.room).emit('typing', { name: data.name, room: data.room, data: data });
     });
 
-    
+
 
     /************** save chat ****** */
     // socket.on('newchat',async (data) => {
@@ -627,22 +627,22 @@ io.on('connection', (socket) => {
     // });
 
     socket.on('newchat', async (data) => {
-        console.log("Received newchat data from client:",data.msg.imgUrl);
+        console.log("Received newchat data from client:", data.msg.imgUrl);
         // if(data.msg.imgUrl.lenght >1  || data.msg.videoImgUrl.lenght > 1 || data.msg.videoUrl.lenght > 1 || data.msg.audioUrl.lenght > 1 || data.msg.stickerImgUrl.lenght > 1 ){}
-        
-        try {
-        if(!data.msg.imgUrl == '' || !data.msg.videoImgUrl.lenght == '' || !data.msg.videoUrl.lenght == '' || !data.msg.audioUrl.lenght == '' || !data.msg.stickerImgUrl.lenght == '' ){
 
-     console.log("innside");
-            const fs = require("fs").promises;
-            var timestamp = new Date().getTime();
-            var imgName = timestamp + "-" + data.msg.name;    
-            const filePath = __dirname + "/images/" + imgName + ".jpg";
-            const base64Data = data.msg.data.split(';base64,').pop();
-            const buffer = Buffer.from(base64Data, 'base64');
-            await fs.writeFile(filePath, buffer);
-        }
-        console.log("uuuuyyyyuyuy--",data);
+        try {
+            if (!data.msg.imgUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
+
+                console.log("innside");
+                const fs = require("fs").promises;
+                var timestamp = new Date().getTime();
+                var imgName = timestamp + "-" + data.msg.name;
+                const filePath = __dirname + "/images/" + imgName + ".jpg";
+                const base64Data = data.msg.data.split(';base64,').pop();
+                const buffer = Buffer.from(base64Data, 'base64');
+                await fs.writeFile(filePath, buffer);
+            }
+            console.log("uuuuyyyyuyuy--", data);
 
             let response_server = messageController.save(data);
             console.log('Response from server:', response_server);
@@ -650,8 +650,8 @@ io.on('connection', (socket) => {
             console.error('Error in newchat:', error);
         }
     });
-    
-    
+
+
     /******************** */
 
     /********** load data ********** */
