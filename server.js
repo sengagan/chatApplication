@@ -653,7 +653,7 @@ io.on('connection', (socket) => {
 
 
     socket.on('newchat', async (data) => {
-        console.log("Received newchat data from client:", data +"data/msg/imgUrl:"+data.msg.imgUrl);
+        console.log("Received newchat data from client:", data );
         try {
             if (!data.msg.imgUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
                 console.log("inside");

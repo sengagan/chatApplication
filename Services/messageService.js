@@ -214,7 +214,7 @@ const save = async (data) => {
             const  timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;    
             const filePath = __dirname + "/images/" + imgName + ".jpg";
-            // console.log("......",timestamp,imgName,filePath);
+            console.log("......",timestamp,imgName,filePath);
             imageUrl = filePath;
         }
 
@@ -257,7 +257,7 @@ const save = async (data) => {
             const  timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;    
             const filePath = __dirname + "/images/" + imgName + ".jpg";
-            // console.log("......",timestamp,imgName,filePath);
+            console.log("......",timestamp,imgName,filePath);
             // imageUrl = filePath;
             videoUrl = filePath;
         }
