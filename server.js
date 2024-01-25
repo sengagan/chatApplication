@@ -683,14 +683,14 @@ io.on('connection', (socket) => {
 
     /********** load data ********** */
     socket.on('existschat', async function (data) {     // right  code 
-        console.log('receive existschat data from client');
-        try {
-            let get_data = await messageController.getData(data);
-            console.log("getdata/server----", get_data)
-            socket.emit('load-chat', { chat: "chat", loadedData: get_data });
-        } catch (error) {
-            console.error(error);
-        }
+        // console.log('receive existschat data from client');
+        // try {
+        //     let get_data = await messageController.getData(data);
+        //     console.log("getdata/server----", get_data)
+        //     socket.emit('load-chat', { chat: "chat", loadedData: get_data });
+        // } catch (error) {
+        //     console.error(error);
+        // }
     });
 
     /******************** */
