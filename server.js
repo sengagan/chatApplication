@@ -653,7 +653,7 @@ io.on('connection', (socket) => {
 
 
     socket.on('newchat', async (data) => {
-        console.log("Received newchat data from client:", data.msg.imgUrl);
+        console.log("Received newchat data from client:", data +"data/msg/imgUrl:"+data.msg.imgUrl);
         try {
             if (!data.msg.imgUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
                 console.log("inside");
@@ -672,8 +672,7 @@ io.on('connection', (socket) => {
             }
             console.log("uuuuyyyyuyuy--", data);
             let response_server = messageController.save(data);
-             io.to(data.room).emit('message', msg, data.room, data.image, data);
-
+             io.to(data).emit('message', data.room, data.image, data,response_server);
             console.log('Response from server:', response_server);
         } catch (error) {
             console.error('Error in newchat:', error);
