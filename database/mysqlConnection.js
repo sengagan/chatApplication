@@ -33,6 +33,9 @@ const connection = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
+
+   
+
 });
 
 // Testing the database connection

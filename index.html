@@ -28,25 +28,111 @@
 
 
 <!-- one to one chat -->
-<!-- 
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>whatsapp chat app</title>
     <link rel="stylesheet" href="/style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #f8f8f8;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        section.chat_section {
+            width: 800px;
+            max-width: 90%;
+            background: #fff;
+            box-shadow: 0 10px 15px -3px rgba(0 .0, .0, 0.1), 0 4px 6px -2px rgba(0, .0, .0, .0.05);
+        }
+
+        .brand {
+            padding: 20px;
+            background: #f1f1f1;
+            display: flex;
+            align-items: center;
+        }
+
+        .brand h1 {
+            text-transform: uppercase;
+            font-size: 20px;
+            color: #444;
+            margin-left: 10px;
+        }
+
+        .message_area {
+            height: 500px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding-top: 40px;
+        }
+
+        textarea {
+            width: 100%;
+            border: none;
+            padding: 20px;
+            font-size: 16px;
+            outline: none;
+            background: #f8f8f8;
+        }
+
+        .message {
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 40px;
+            max-width: 300px;
+            position: relative;
+        }
+
+        .incoming {
+            background: #a62929;
+            color: #fff
+        }
+
+        .outgoing {
+            background: #2b309a;
+            color: #787976;
+            margin-left: auto;
+        }
+
+        .message h4 {
+            position: absolute;
+            top: -20px;
+            left: 0;
+            color: #333;
+            font-size: 14px;
+        }
+    </style>
 </head>
+
 <body>
     <section class="chat_section">
         <div class="brand">
             <h1>whatsapp</h1>
         </div>
         <div class="user_list">
-           
+
         </div>
         <div class="message_area">
-           
+
         </div>
         <div>
             <textarea id="textarea" cols="30" rows="1" placeholder="write a message...."></textarea>
@@ -54,195 +140,6 @@
     </section>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>
-</body>
-</html> -->
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>whatsapp chat app</title>
-    <link rel="stylesheet" href="/public/style.css">
-</head>
-<body>
-    <section class="chat_section">
-        <div class="brand">
-            <h1>whatsapp</h1>
-        </div>
-        <div class="user_list">
-           
-        </div>
-        <div class="message_area" id="chat">
-           
-        </div>
-        <div>
-            <textarea id="textarea" cols="30" rows="1" placeholder="Write a message...."></textarea>
-        </div>
-        
-        <div id="notificationBell" style="cursor: pointer; text-align: center; padding: 10px; color: #128C7E;">
-            &#128276; Notifications
-        </div>
-    </section>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/client.js"></script>
-</body>
-</html> -->
-
-<!-- 27/1/24 -->
-
-
-<!-- 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>whatsapp chat app</title>
-    <link rel="stylesheet" href="/style.css">
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-</head>
-<body>
-    <section class="chat_section">
-        <div class="brand">
-            <h1>whatsapp</h1>
-        </div>
-        <div class="user_list">
-           
-        </div>
-        <div class="message_area" id="chat">
-           
-        </div>
-        <div>
-            <textarea id="textarea" cols="30" rows="1" placeholder="Write a message...."></textarea>
-        </div>
-
-        
-        <div id="notificationBell" style="cursor: pointer; text-align: center; padding: 10px; color: #128C7E;">
-            &#128276; Notifications
-        </div>
-    </section>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/client.js"></script>
-</body>
-</html>  -->
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Chat App</title>
-    <style>
-       
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-body{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #f8f8f8;
-    font-family: 'Roboto',sans-serif;
-}
-section.chat_section{
-    width: 800px;
-    max-width: 90%;
-    background: #fff;
-    box-shadow: 0 10px 15px -3px rgba(0 .0,.0,0.1),0 4px 6px -2px rgba(0,.0,.0,.0.05);
-}
-.brand{
-    padding: 20px;
-    background: #f1f1f1;
-    display: flex;
-    align-items: center;
-}
-.brand h1{
-    text-transform: uppercase;
-    font-size: 20px;
-    color:#444;
-    margin-left: 10px;
-}
-.message_area{
-    height: 500px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    overflow-y:auto ;
-    padding-top: 40px;
-}
-textarea{
-    width: 100%;
-    border: none;
-    padding: 20px;
-    font-size: 16px;
-    outline: none;
-    background: #f8f8f8;
-}
-.message{
-    padding: 20px;
-    border-radius: 4px;
-    margin-bottom: 40px;
-    max-width: 300px;
-    position: relative;
-}
-.incoming{
-    background: #a62929;
-    color:#fff
-}
-.outgoing{
-    background: #2b309a;
-    color: #787976;
-    margin-left: auto;
-}
-.message h4{
-    position: absolute;
-    top: -20px;
-    left: 0;
-    color:#333;
-    font-size: 14px;
-}
-    </style>
-</head>
-
-<body>
-    <section class="chat_section">
-        <div class="brand">
-            <h1>WhatsApp</h1>
-        </div>
-
-        <div class="user_list" id="userList">
-            <!-- Display connected users -->
-        </div>
-
-        <div class="message_area">
-            <!-- Display chat messages -->
-        </div>
-
-        <div>
-            <textarea id="textarea" cols="30" rows="1" placeholder="Write a message...."></textarea>
-        </div>
-
-        <!-- Notification bell -->
-        <div id="notificationBell" style="cursor: pointer; text-align: center; padding: 10px; color: #128C7E;">
-            &#128276; Notifications
-        </div>
-    </section>
-
-    <script src="/socket.io/socket.io.js"></script>
     <script>
 
         'use strict';
@@ -263,7 +160,6 @@ textarea{
         // Get sender and receiver IDs
         const sender_id = prompt('Enter your sender_id') || 'sender_default';
         const receiver_id = prompt('Enter your receiver_id') || 'receiver_default';
-
 
         // Emit event to join the room
         socket.emit('joinRoom', room);
@@ -294,6 +190,7 @@ textarea{
             appendMessage(msg, 'incoming');
             scrollToBottom();
             socket.emit('messageSeen', { room, messageId: msg.messageId });
+
             if (document.hidden) {
                 unreadMessageCount += 1;
                 updateNotificationBell();
@@ -341,9 +238,36 @@ textarea{
                 status: 'unseen',
             };
 
-            console.log("---===>", msg.user, msg.message, msg.status, room)
+            console.log("---===>", msg.user, msg.message, msg.status)
             // Emit event to send new chat message
-            socket.emit('newchat', { sender_id, receiver_id, msg: msg.message, user: msg.user, room: room });
+            socket.emit('newchat', { sender_id, receiver_id, msg: msg.message, user: msg.user,msg: 
+            {
+            chatId: room,
+            msgType: '',
+            fromUserId: '',
+            toUserId: '',
+            message: '',
+            imgUrl: '',
+            videoImgUrl: '',
+            videoUrl: '',
+            audioUrl: '',
+            stickerId:'',
+            stickerImgUrl: '',
+            area: '',
+            country:'',
+            city: '',
+            lat: '',
+            lng: '',
+            createAt: Date.now(),
+            removeAt: '',
+            removeFromUserId:  '0',
+            removeToUserId:'',
+            seenAt: '',
+            seenFromUserId: '',
+            seenToUserId: '',
+            u_agent: '',
+            ip_addr:  ''
+        } });
 
             appendMessage(msg, 'outgoing');
             textarea.value = '';
@@ -425,8 +349,432 @@ textarea{
                 notificationBell.style.color = '#128C7E';
             }
         }
-
     </script>
 </body>
 
 </html>
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>whatsapp chat app</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <section class="chat_section">
+        <div class="brand">
+            <h1>whatsapp</h1>
+        </div>
+        <div class="user_list">
+           
+        </div>
+        <div class="message_area" id="chat">
+           
+        </div>
+        <div>
+            <textarea id="textarea" cols="30" rows="1" placeholder="Write a message...."></textarea>
+        </div>
+        
+        <div id="notificationBell" style="cursor: pointer; text-align: center; padding: 10px; color: #128C7E;">
+            &#128276; Notifications
+        </div>
+    </section>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js"></script>
+</body>
+</html> -->
+
+<!-- 27/1/24 -->
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>whatsapp chat app</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <section class="chat_section">
+        <div class="brand">
+            <h1>whatsapp</h1>
+        </div>
+        <div class="user_list">
+           
+        </div>
+        <div class="message_area" id="chat">
+           
+        </div>
+        <div>
+            <textarea id="textarea" cols="30" rows="1" placeholder="Write a message...."></textarea>
+        </div>
+
+        
+        <div id="notificationBell" style="cursor: pointer; text-align: center; padding: 10px; color: #128C7E;">
+            &#128276; Notifications
+        </div>
+    </section>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js"></script>
+</body>
+</html>  -->
+
+<!-- /************************************************************************************* -->
+
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Chat App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <section class="chat_section">
+        <div class="brand">
+            <h1>WhatsApp</h1>
+        </div>
+
+        <div class="user_list" id="userList">
+           
+        </div>
+
+        <div class="message_area" id="messageArea">
+          
+        </div>
+
+        <div class="input_area">
+            <textarea id="textarea" cols="30" rows="1" placeholder="Write a message...."></textarea>
+            <input type="file" id="fileInput" class="file_input" />
+            <button id="sendButton">Send</button>
+        </div>
+
+       
+        <div id="notificationBell" class="notification-bell">
+            🔔 Notifications
+        </div>
+        <style>
+            * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #f8f8f8;
+    font-family: 'Roboto', sans-serif;
+}
+
+.chat_section {
+    width: 800px;
+    max-width: 90%;
+    background: #fff;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.brand {
+    padding: 20px;
+    background: #f1f1f1;
+    display: flex;
+    align-items: center;
+}
+
+.brand h1 {
+    text-transform: uppercase;
+    font-size: 20px;
+    color: #444;
+    margin-left: 10px;
+}
+
+.message_area {
+    height: 500px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-top: 40px;
+}
+
+.input_area {
+    display: flex;
+    align-items: center;
+}
+
+textarea {
+    width: calc(100% - 40px);
+    border: none;
+    padding: 20px;
+    font-size: 16px;
+    outline: none;
+    background: #f8f8f8;
+    margin: 10px;
+    resize: none;
+}
+
+.file_input {
+    margin-left: 10px;
+}
+
+.message {
+    padding: 20px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    max-width: 300px;
+    position: relative;
+}
+
+.incoming {
+    background: #a62929;
+    color: #fff;
+}
+
+.outgoing {
+    background: #2b309a;
+    color: #fff;
+    margin-left: auto;
+}
+
+.message h4 {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    color: #333;
+    font-size: 14px;
+}
+
+.message img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.notification-bell {
+    cursor: pointer;
+    text-align: center;
+    padding: 10px;
+    color: #128C7E;
+}
+
+        </style>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="script.js"></script>
+    <script>
+        'use strict';
+
+const socket = io();
+const textarea = document.getElementById('textarea');
+const messageArea = document.getElementById('messageArea');
+const notificationBell = document.getElementById('notificationBell');
+const fileInput = document.getElementById('fileInput');
+let unreadMessageCount = 0;
+
+// Request notification permission if not granted
+if ('Notification' in window && Notification.permission !== 'granted') {
+    Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            console.log('Notification permission granted');
+        }
+    });
+}
+
+// Get user name and room number
+const name = prompt('Please enter your name:') || 'Guest';
+const room = prompt('Enter room number:') || 'default';
+
+// Get sender and receiver IDs
+const sender_id = prompt('Enter your sender_id') || 'sender_default';
+const receiver_id = prompt('Enter your receiver_id') || 'receiver_default';
+
+// Emit event to join the room
+socket.emit('joinRoom', room);
+
+// Emit event to load old chat messages
+socket.emit('existschat', { sender_id, receiver_id });
+
+textarea.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage(e.target.value);
+    }
+});
+
+// Event listener for sending messages, images, and files when Enter key is pressed
+textarea.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') {
+        if (fileInput.files.length > 0) {
+            // If a file is selected, send the file
+            sendFile(fileInput.files[0]);
+        } else {
+            // If no file is selected, check if an image URL is entered
+            const isImageURL = isImageUrl(textarea.value);
+            if (isImageURL) {
+                sendImage(textarea.value);
+            } else {
+                // If neither a file nor an image URL is entered, send the text message
+                sendMessage(textarea.value);
+            }
+        }
+    }
+});
+
+// Event listener for handling visibility change of the document
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        notificationBell.style.color = '#128C7E';
+        unreadMessageCount = 0;
+        updateNotificationBell();
+    }
+});
+
+// Function to send a file
+function sendFile(file) {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        const fileData = e.target.result;
+
+        const msg = {
+            user: name,
+            file: {
+                name: file.name,
+                data: fileData,
+            },
+            status: 'unseen',
+        };
+
+        socket.emit('newchat', { sender_id, receiver_id, msg: msg.file, user: msg.user, room: room });
+
+        appendMessage(msg, 'outgoing');
+        clearInputFields();
+        scrollToBottom();
+
+        socket.emit('privateMessage', { room, msg });
+
+        socket.emit('notifyRecipient', { recipientRoom: room, sender: name, message: 'File sent' });
+    };
+
+    reader.readAsDataURL(file);
+}
+
+// Function to send an image URL
+function sendImage(imageURL) {
+    const msg = {
+        user: name,
+        image: {
+            url: imageURL,
+        },
+        status: 'unseen',
+    };
+
+    socket.emit('newchat', { sender_id, receiver_id, msg: msg.image, user: msg.user, room: room });
+
+    appendMessage(msg, 'outgoing');
+    clearInputFields();
+    scrollToBottom();
+
+    socket.emit('privateMessage', { room, msg });
+
+    socket.emit('notifyRecipient', { recipientRoom: room, sender: name, message: 'Image sent' });
+}
+
+// Function to check if a given URL is an image URL
+function isImageUrl(url) {
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+    const extension = url.split('.').pop().toLowerCase();
+    return imageExtensions.includes(extension);
+}
+
+// Function to update the notification bell UI
+function updateNotificationBell() {
+    if (unreadMessageCount > 0) {
+        notificationBell.innerHTML = `🔔 Notifications (${unreadMessageCount})`;
+        notificationBell.style.color = 'red';
+    } else {
+        notificationBell.innerHTML = `🔔 Notifications`;
+        notificationBell.style.color = '#128C7E';
+    }
+}
+
+// Event listener for sending messages, images, and files when Enter key is pressed
+textarea.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') {
+        if (fileInput.files.length > 0) {
+            // If a file is selected, send the image
+            sendImage(fileInput.files[0]);
+        } else {
+            // If no file is selected, check if an image URL is entered
+            const isImageURL = isImageUrl(textarea.value);
+            if (isImageURL) {
+                sendImage(textarea.value);
+            } else {
+                // If neither a file nor an image URL is entered, send the text message
+                sendMessage(textarea.value);
+            }
+        }
+    }
+});
+
+// Function to send an image (using FileReader)
+function sendImage(file) {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        const imageData = e.target.result;
+
+        const msg = {
+            user: name,
+            image: {
+                data: imageData,
+            },
+            status: 'unseen',
+        };
+
+        // Emit event to send the image
+        socket.emit('newImage', { sender_id, receiver_id, msg: msg.image, user: msg.user, room: room });
+
+        appendImage(msg, 'outgoing');
+        clearInputFields();
+        scrollToBottom();
+
+        // Emit a notification event to notify the recipient
+        socket.emit('notifyRecipient', { recipientRoom: room, sender: name, message: 'Image sent' });
+    };
+
+    reader.readAsDataURL(file);
+}
+
+// Function to append an image to the message area
+function appendImage(msg, type) {
+    const mainDiv = document.createElement('div');
+    const className = type === 'outgoing' ? 'outgoing' : 'incoming';
+    mainDiv.classList.add(className, 'message');
+
+    const imgElement = document.createElement('img');
+    imgElement.src = msg.image.data;
+    imgElement.alt = 'Sent Image';
+
+    mainDiv.appendChild(imgElement);
+    messageArea.appendChild(mainDiv);
+}
+
+// Your other functions and code...
+
+    </script>
+</body>
+
+</html> -->

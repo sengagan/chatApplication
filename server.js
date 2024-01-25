@@ -92,8 +92,8 @@
 //        let response =  io.to(data.room).emit('message', data.msg,data.room);
 //         // socket.broadcast.emit("message",data.msg);
 //         console.log("response ====",response,data.msg,data.room);
-    
-    
+
+
 // });
 
 // })
@@ -207,7 +207,7 @@
 //                 user:data.user
 //             });
 //             console.log("user====>", user);
-           
+
 //         } catch (error) {
 //             console.error("Error while processing newchat:", error);
 //         }
@@ -231,7 +231,7 @@
 //             console.error(error);
 //         }
 //     });
-    
+
 
 
 //     /******************** */
@@ -460,13 +460,13 @@
 // //             file = '';
 // //         }
 // //         console.log("file----2", file);
-        
-       
+
+
 // //         if(data.msg == ''){
 // //             data.msg = ''
 // //         }
 // //         // console.log("data---",data);
-        
+
 // //         let details = {
 // //             chatId: data.room,
 // //             fromUserId: data.sender_id,
@@ -518,7 +518,7 @@
 //         console.log("msg=---",msg);
 // /*** */
 
-       
+
 
 //         let details = {
 //             chatId: data.room,
@@ -534,10 +534,10 @@
 //         // Assuming 'messageController.save' is an asynchronous function
 
 //         res.status(200).send('Message saved successfully');
-   
+
 // // });
 
-    
+
 
 // /**** */
 //         io.to(data.room).emit('message', msg, data.room);
@@ -573,6 +573,7 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
 const messageController = require('./Controller/messageController');
+const path = require('path');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -588,7 +589,7 @@ http.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-   io.on('connection', (socket) => {
+io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
     socket.on('sendTyping', (data) => {
@@ -596,34 +597,74 @@ http.listen(PORT, () => {
         io.to(data.room).emit('typing', { name: data.name, room: data.room, data: data });
     });
 
+    
+
     /************** save chat ****** */
-    socket.on('newchat',async (data) => {
-        console.log("receive newchat data from client:",data);
+    // socket.on('newchat',async (data) => {
+    //     console.log("Received newchat data from client:");
+
+    //     try {
+    //         // const timestamp = new Date().getTime();
+    //         // const imgName = `${timestamp}-${data.user}`;
+    //         // const fileName = `${__dirname}/images/${imgName}.jpg`;  // filepath
+    //         const fs = require("fs").promises;
+    //         var timestamp = new Date().getTime();
+    //         var imgName = timestamp + "-" + data.msg.name ;
+    //         const filePath = __dirname + "/images/" + imgName + ".jpg";
+    //         const base64Data = data.msg.data.split(';base64,').pop();
+    //         console.log("base64Data",base64Data);
+    //         const decodedData = Buffer.from(base64Data,'base64');
+    //         console.log("decodedData", decodedData);
+    //         console.log("filepath", filePath);
+    //         console.log("imgName", imgName);
+    //         console.log("timestamp", timestamp);
+    //         fs.writeFile(filePath,decodedData,"binary");
+    //         let response_server = messageController.save(data);
+    //         console.log('Response from server:', response_server);
+    //     } catch (error) {
+    //         console.error('Error in newchat:', error);
+    //     }
+    // });
+
+    socket.on('newchat', async (data) => {
+        console.log("Received newchat data from client:",data.msg.imgUrl);
+        // if(data.msg.imgUrl.lenght >1  || data.msg.videoImgUrl.lenght > 1 || data.msg.videoUrl.lenght > 1 || data.msg.audioUrl.lenght > 1 || data.msg.stickerImgUrl.lenght > 1 ){}
+        
         try {
-            // let details = {
-            //     chatId:data.room,
-            //     fromUserId: data.sender_id,
-            //     toUserId: data.receiver_id,
-            //     message: data.msg,
-            // };
-           let response_server =  await messageController.save(data);
-            console.log('response_server:',response_server);
+        if(!data.msg.imgUrl == '' || !data.msg.videoImgUrl.lenght == '' || !data.msg.videoUrl.lenght == '' || !data.msg.audioUrl.lenght == '' || !data.msg.stickerImgUrl.lenght == '' ){
+
+     console.log("innside");
+            const fs = require("fs").promises;
+            var timestamp = new Date().getTime();
+            var imgName = timestamp + "-" + data.msg.name;    
+            const filePath = __dirname + "/images/" + imgName + ".jpg";
+            const base64Data = data.msg.data.split(';base64,').pop();
+            const buffer = Buffer.from(base64Data, 'base64');
+            await fs.writeFile(filePath, buffer);
+        }
+        console.log("uuuuyyyyuyuy--",data);
+
+            let response_server = messageController.save(data);
+            console.log('Response from server:', response_server);
         } catch (error) {
-            console.error('Error newchat:', error);
+            console.error('Error in newchat:', error);
         }
     });
+    
+    
     /******************** */
 
     /********** load data ********** */
     socket.on('existschat', async function (data) {     // right  code 
-        console.log('receive existschat data from client', data);
-        try {
-           let get_data =  await messageController.getData(data);
-           console.log("getdata/server----",get_data)
-            socket.emit('load-chat', { chat: "chat",loadedData:get_data });
-        } catch (error) {
-            console.error(error);
-        }
+        // console.log('receive existschat data from client');
+        // return false;
+        // try {
+        //     let get_data = await messageController.getData(data);
+        //     console.log("getdata/server----", get_data)
+        //     socket.emit('load-chat', { chat: "chat", loadedData: get_data });
+        // } catch (error) {
+        //     console.error(error);
+        // }
     });
 
     /******************** */
@@ -638,9 +679,10 @@ http.listen(PORT, () => {
     });
 
     socket.on('privateMessage', (data) => {
-        console.log("privateMessage data receive from client:",data);
-        const msg = { ...data.msg, status: 'delivered' };
-        io.to(data.room).emit('message', msg, data.room,data.image,data);
+
+        // console.log("privateMessage data receive from client:", data);
+        // const msg = { ...data.msg, status: 'delivered' };
+        // io.to(data.room).emit('message', msg, data.room, data.image, data);
     });
 
     socket.on('messageDelivered', (data) => {
