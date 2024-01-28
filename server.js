@@ -665,7 +665,7 @@ io.on('connection', (socket) => {
                 if (data.msg.imgUrl.includes('data:image/jpeg;base64,')) {
                     base64Data = data.msg.imgUrl.split(';base64,').pop();
                 } else {
-                    base64Data = data.msg.imgUrl; // Assuming the string is already in base64 format
+                    base64Data = data.msg.imgUrl; 
                 }
                 const buffer = Buffer.from(base64Data, 'base64');
                 await fs.writeFile(filePath, buffer);
@@ -683,14 +683,14 @@ io.on('connection', (socket) => {
 
     /********** load data ********** */
     socket.on('existschat', async function (data) {     // right  code 
-        // console.log('receive existschat data from client');
-        // try {
-        //     let get_data = await messageController.getData(data);
-        //     console.log("getdata/server----", get_data)
-        //     socket.emit('load-chat', { chat: "chat", loadedData: get_data });
-        // } catch (error) {
-        //     console.error(error);
-        // }
+        console.log('receive existschat data from client');
+        try {
+            let get_data = await messageController.getData(data);
+            console.log("getdata/server----", get_data)
+            socket.emit('load-chat', { chat: "chat", loadedData: get_data });
+        } catch (error) {
+            console.error(error);
+        }
     });
 
     /******************** */

@@ -23,11 +23,11 @@ const save = async (data) => {
 };
 
 const getData = async(data)=>{
-    console.log("data/cpntroller");
+    console.log("data/cpntroller-gg--->>>>",data);
     return new Promise(async (resolve, reject) => {
         try {
             let response = await messageServices.getData(data);
-            console.log('response --/controoler---', );
+            console.log('response --/controoler--gg-',response );
             resolve(response);  
         } catch (error) {
             reject({ status: 500, error: 'Internal Server Error' });

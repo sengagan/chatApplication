@@ -214,7 +214,7 @@ const save = async (data) => {
             const  timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;    
             const filePath = __dirname + "/images/" + imgName + ".jpg";
-            console.log("......",timestamp,imgName,filePath);
+            // console.log("......",timestamp,imgName,filePath);
             imageUrl = filePath;
         }
 
@@ -225,7 +225,6 @@ const save = async (data) => {
             const imgName = timestamp + "-" + data.msg.name;    
             const filePath = __dirname + "/images/" + imgName + ".jpg";
             // console.log("......",timestamp,imgName,filePath);
-            // imageUrl = filePath;
             stickerUrl = filePath;
         }
 
@@ -236,7 +235,6 @@ const save = async (data) => {
             const imgName = timestamp + "-" + data.msg.name;    
             const filePath = __dirname + "/images/" + imgName + ".jpg";
             // console.log("......",timestamp,imgName,filePath);
-            // imageUrl = filePath;
             videoImgUrl = filePath;
         }
 
@@ -247,7 +245,6 @@ const save = async (data) => {
             const imgName = timestamp + "-" + data.msg.name;    
             const filePath = __dirname + "/images/" + imgName + ".jpg";
             // console.log("......",timestamp,imgName,filePath);
-            // imageUrl = filePath;
             audioUrl = filePath;
         }
 
@@ -257,8 +254,7 @@ const save = async (data) => {
             const  timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;    
             const filePath = __dirname + "/images/" + imgName + ".jpg";
-            console.log("......",timestamp,imgName,filePath);
-            // imageUrl = filePath;
+            // console.log("......",timestamp,imgName,filePath);
             videoUrl = filePath;
         }
 
@@ -305,9 +301,9 @@ const save = async (data) => {
 };
 
 const getData = async (data) => {
-    console.log("getdata/service---");
+    console.log("getdata/service-gg--",data);
     let response = await messagesModel.getData(data);
-    console.log("response-----");
+    console.log("response---gg--",response);
     return response;
 }
 
