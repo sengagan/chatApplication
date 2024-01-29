@@ -686,8 +686,8 @@ io.on('connection', (socket) => {
         console.log('receive existschat data from client',data);
         try {
             let get_data = await messageController.getData(data);
-            console.log("getdata/server----", get_data)
-            socket.emit('load-chat', { chat: "chat", loadedData: get_data });
+            console.log("getdata/server----", get_data,data)
+            socket.emit('load-chat', { chat: "chat", loadedData: get_data , data : data });
         } catch (error) {
             console.error(error);
         }
