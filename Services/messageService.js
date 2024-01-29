@@ -190,7 +190,7 @@ const messagesModel = require('../model/messagesModel');
 
 const save = async (data) => {
     try {
-        console.log("data receive from controller",data);
+        console.log("data receive from controller");
         // data = data.msg.data;
         let imageUrl = '';
         let stickerUrl = '';

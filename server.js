@@ -670,7 +670,7 @@ io.on('connection', (socket) => {
                 const buffer = Buffer.from(base64Data, 'base64');
                 await fs.writeFile(filePath, buffer);
             }
-            console.log("uuuuyyyyuyuy--", data);
+            console.log("uuuuyyyyuyuy--");
             let response_server = messageController.save(data);
              io.to(data).emit('message', data.room, data.image, data,response_server);
             console.log('Response from server:', response_server);
@@ -683,7 +683,7 @@ io.on('connection', (socket) => {
 
     /********** load data ********** */
     socket.on('existschat', async function (data) {     // right  code 
-        console.log('receive existschat data from client');
+        console.log('receive existschat data from client',data);
         try {
             let get_data = await messageController.getData(data);
             console.log("getdata/server----", get_data)

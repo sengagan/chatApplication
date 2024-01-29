@@ -210,6 +210,7 @@
 
         // Server-side logic for loading old chat messages
         socket.on('load-chat', function (msg) {
+            console.log("msg/load-chat:",msg);
             const chatMessages = msg.chat;
             chatMessages.forEach(message => appendMessage(message, 'incoming'));
             scrollToBottom();
