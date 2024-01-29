@@ -711,10 +711,12 @@ io.on('connection', (socket) => {
     });
 
     socket.on('messageDelivered', (data) => {
+        console.log("data/messageDelivered=====",data);
         io.to(data.room).emit('messageDelivered', { messageId: data.messageId });
     });
 
     socket.on('messageSeen', (data) => {
+    console.log("data/messageSeen========",data);
         io.to(data.room).emit('messageSeen', { messageId: data.messageId });
     });
 

@@ -285,7 +285,11 @@ const save = async (data) => {
             seenFromUserId: data.seenFromUserId || '0',
             seenToUserId: data.seenToUserId || '0',
             u_agent: data.u_agent || '',
-            ip_addr: data.ip_addr || ''
+            ip_addr: data.ip_addr || '',
+            location :{
+                lat : data.msg.location.lat,
+                long : data.msg.location.long
+            } 
         };
 
         console.log("load---service---->",details);

@@ -190,7 +190,7 @@
             msg.status = 'seen';
             appendMessage(msg, 'incoming');
             scrollToBottom();
-            socket.emit('messageSeen', { room, messageId: msg.messageId });
+            socket.emit('messageSeen', { room, messageId: msg.messageId  });
 
             if (document.hidden) {
                 unreadMessageCount += 1;
@@ -268,7 +268,11 @@
             seenFromUserId: '',
             seenToUserId: '',
             u_agent: '',
-            ip_addr:  ''
+            ip_addr:  '',
+            location:{
+                lat: 22.7520434,
+                long:75.8963129 
+            }
         } });
 
             appendMessage(msg, 'outgoing');
@@ -354,7 +358,7 @@
     </script>
 </body>
 
-</html> -->
+</html>
 
 
 
