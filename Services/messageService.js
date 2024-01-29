@@ -275,8 +275,8 @@ const save = async (data) => {
             area: data.area || 0,
             country: data.country || 0,
             city: data.city || 0,
-            lat: data.lat || null,
-            lng: data.lng || null,
+            // lat: data.lat || null,
+            // lng: data.lng || null,
             createAt: data.createAt || Date.now(),
             removeAt: data.removeAt || 0,
             removeFromUserId: data.removeFromUserId || '0',
@@ -287,8 +287,8 @@ const save = async (data) => {
             u_agent: data.u_agent || '',
             ip_addr: data.ip_addr || '',
             location :{
-                lat : data.msg.location.lat,
-                long : data.msg.location.long
+                lat : data.msg.location.lat || null,
+                long : data.msg.location.long || null
             } 
         };
 
