@@ -253,8 +253,8 @@ const save = async (data) => {
             imageUrl = data.msg.data
             const  timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;    
-            const filePath = __dirname + "/images/" + imgName + ".jpg";
-            // console.log("......",timestamp,imgName,filePath);
+            const filePath = __dirname + "/images/" + imgName;
+            console.log("......",timestamp,imgName,filePath);
             videoUrl = filePath;
         }
 
