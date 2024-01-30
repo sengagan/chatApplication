@@ -190,7 +190,7 @@ const messagesModel = require('../model/messagesModel');
 
 const save = async (data) => {
     try {
-        console.log("data receive from controller",data);
+        console.log("data receive from controller");
         // data = data.msg.data;
         let imageUrl = '';
         let stickerUrl = '';
@@ -292,7 +292,7 @@ const save = async (data) => {
             } 
         };
 
-        console.log("load---service---->",details);
+        console.log("load---service---->");
         let response = await messagesModel.save(details);
         console.log("resp-service---->");
         return response;
@@ -310,5 +310,7 @@ const getData = async (data) => {
     console.log("response---gg--",response);
     return response;
 }
+
+
 
 module.exports = { save, getData };

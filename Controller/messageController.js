@@ -23,11 +23,11 @@ const save = async (data) => {
 };
 
 const getData = async(data)=>{
-    console.log("data/cpntroller-gg--->>>>",data);
+    console.log("data/cpntroller-gg--->>>>");
     return new Promise(async (resolve, reject) => {
         try {
             let response = await messageServices.getData(data);
-            console.log('response --/controoler--gg-',response );
+            console.log('response --/controoler--gg-' );
             resolve(response);  
         } catch (error) {
             reject({ status: 500, error: 'Internal Server Error' });
@@ -36,4 +36,4 @@ const getData = async(data)=>{
 }
 
 
-module.exports = { save , getData };
+module.exports = { save , getData  };

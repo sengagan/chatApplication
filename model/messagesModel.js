@@ -3,7 +3,7 @@ const { connection } = require('../database/mysqlConnection');
 
 
 const save = async (details) => {
-    console.log("receive data from service", details);
+    console.log("receive data from service");
 
     var lat = details.location.lat;
     var lng = details.location.long;
@@ -29,9 +29,11 @@ const save = async (details) => {
 
 const getData = async (data) => {
     console.log("getdata/model--", data);
-
-    let query = `SELECT * FROM messages WHERE (fromUserId = ${data.sender_id} AND toUserId = ${data.receiver_id})
-    OR (fromUserId = ${data.receiver_id} AND toUserId = ${data.sender_id});`;
+    
+    let query = `SELECT * FROM messages 
+              WHERE (fromUserId = ${data.sender_id} AND toUserId = ${data.receiver_id})
+              OR (fromUserId = ${data.receiver_id} AND toUserId = ${data.sender_id})
+              ORDER BY id DESC`;
     console.log("getdata/model-->>2>>>");
     return new Promise((resolve, reject) => {
         connection.query(query, (error, result) => {
@@ -47,5 +49,39 @@ const getData = async (data) => {
 };
 
 
-module.exports = { save, getData };
+const markMessagesAsSeen = async(data)=>{       //update
+    console.log("data",data);
+    let query = `UPDATE messages SET seenAt = '1', seenFromUserId = '1',seenToUserId = '1' WHERE chatId = ${data.room} AND seenAt = '0'`;
+    return new Promise((resolve, reject) => {
+        connection.query(query, (error, result) => {
+            if (error) {
+                console.error("Error executing query:", error);
+                reject("Error executing query");
+            } else {
+                console.log("result-model-0-get--", result);
+                resolve(result);
+            }
+        });
+    });
+}
+
+const getDataById = async (data) => {
+    console.log("getdata/model--", data);
+
+    let query = `SELECT * FROM messages WHERE (id = ${data});`;
+    console.log("getdata/model-->>2>>>");
+    return new Promise((resolve, reject) => {
+        connection.query(query, (error, result) => {
+            if (error) {
+                console.error("Error executing query:", error);
+                reject("Error executing query");
+            } else {
+                console.log("result-model-0-get--", result);
+                resolve(result);
+            }
+        });
+    });
+};
+
+module.exports = { save, getData , markMessagesAsSeen , getDataById};
 

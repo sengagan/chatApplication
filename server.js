@@ -562,7 +562,7 @@
 
 
 
-
+//          29/1/24     ************************
 
 
 'use strict';
@@ -574,6 +574,8 @@ const io = require('socket.io')(http);
 
 const messageController = require('./Controller/messageController');
 const path = require('path');
+const { count } = require('console');
+const { object } = require('joi');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -589,11 +591,12 @@ http.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
+
 io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
     socket.on('sendTyping', (data) => {
-        console.log('typing data :', data);
+        console.log('typing data :');
         io.to(data.room).emit('typing', { name: data.name, room: data.room, data: data });
     });
 
@@ -653,7 +656,7 @@ io.on('connection', (socket) => {
 
 
     socket.on('newchat', async (data) => {
-        console.log("Received newchat data from client:", data );
+        console.log("Received newchat data from client:");
         try {
             if (!data.msg.imgUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
                 console.log("inside");
@@ -665,38 +668,40 @@ io.on('connection', (socket) => {
                 if (data.msg.imgUrl.includes('data:image/jpeg;base64,')) {
                     base64Data = data.msg.imgUrl.split(';base64,').pop();
                 } else {
-                    base64Data = data.msg.imgUrl; 
+                    base64Data = data.msg.imgUrl;
                 }
                 const buffer = Buffer.from(base64Data, 'base64');
                 await fs.writeFile(filePath, buffer);
             }
             console.log("uuuuyyyyuyuy--");
             let response_server = messageController.save(data);
-             io.to(data).emit('message', data.room, data.image, data,response_server);
-            console.log('Response from server:', response_server);
+            io.to(data).emit('message', data.room, data.image, data, response_server);
+            console.log('Response from server:');
         } catch (error) {
             console.error('Error in newchat:', error);
         }
     });
 
+
     /******************** */
 
     /********** load data ********** */
     socket.on('existschat', async function (data) {     // right  code 
-        console.log('receive existschat data from client',data);
+        console.log('receive existschat data from client', data);
         try {
             let get_data = await messageController.getData(data);
-            console.log("getdata/server----", get_data,data)
-            socket.emit('load-chat', { chat: "chat", loadedData: get_data , data : data });
+            console.log("getdata/server----", get_data, data)
+            socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
         } catch (error) {
             console.error(error);
         }
     });
 
     /******************** */
-
+    let u = 0
     socket.on('joinRoom', (room) => {
         socket.join(room);
+        console.log("u",u);
         // console.log(`User ${socket.id} joined room ${room}`);
     });
 
@@ -710,14 +715,19 @@ io.on('connection', (socket) => {
         io.to(data.room).emit('message', msg, data.room, data.image, data);
     });
 
-    socket.on('messageDelivered', (data) => {
-        console.log("data/messageDelivered=====",data);
-        io.to(data.room).emit('messageDelivered', { messageId: data.messageId });
+    socket.on('messageDelivered', (data) => {       // room id , sender id , recerver id,status unseen
+        console.log("data/messageDelivered=====", data);
+        io.to(data.room).emit('messageDelivered', { messageId: data.messageId, status: true });
     });
 
-    socket.on('messageSeen', (data) => {
-    console.log("data/messageSeen========",data);
-        io.to(data.room).emit('messageSeen', { messageId: data.messageId });
+    socket.on('leave', (data) => {                      // kaun leave hua hai room se
+        console.log("data/leave", data);
+        io.to(data.room).emit('leave', emit('data', { data: data, status: false }));
+    })
+
+    socket.on('messageSeen', (data) => {         //  room id , sender id , recerver id
+        console.log("data/messageSeen========", data);
+        io.to(data.room).emit('messageSeen', { messageId: data.messageId, status: true , data: data});
     });
 
     socket.on('notifyRecipient', (data) => {
@@ -727,3 +737,198 @@ io.on('connection', (socket) => {
         });
     });
 });
+
+
+
+
+
+
+
+
+
+// 'use strict';
+// const dotenv = require('dotenv').config()
+// const express = require('express');
+// const app = express();
+// const http = require('http').createServer(app);
+// const io = require('socket.io')(http);
+
+// const messageController = require('./Controller/messageController');
+// const messageModel = require("./model/messagesModel");
+// const path = require('path');
+// const { count } = require('console');
+// const { object } = require('joi');
+
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
+// app.use(express.static(__dirname + './public'));
+
+// app.get('/', (req, res) => {
+//     res.sendFile(__dirname + '/index.html');
+// });
+
+// const PORT = process.env.PORT || 3000;
+// http.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });
+
+
+// io.on('connection', (socket) => {
+//     console.log('User connected:', socket.id);
+
+//     socket.on('sendTyping', (data) => {
+//         console.log('typing data :');
+//         io.to(data.room).emit('typing', { name: data.name, room: data.room, data: data });
+//     });
+
+//     /***************** */
+
+//     socket.on('markMessagesAsSeen', async (data) => {
+//         try {
+//             // Assuming you have a function to mark messages as seen in your controller
+//             console.log("seen-----",data);      // jab user2 seen karega tb update hoga aur get api chalegi
+//              await messageModel.markMessagesAsSeen(data);
+//             data.id=9      
+//             let response = await messageModel.getDataById(data.id)
+//             console.log("response/seen/server",response);
+//             // Emit an event to notify clients that messages have been marked as seen
+//             io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id,resp});
+//             // Inside the markMessagesAsSeen event handler
+//             // io.to(data.room).emit('messageSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id });
+
+//         } catch (error) {
+//             console.error('Error marking messages as seen:', error);
+//         }
+//     });
+
+//     // const userId = socket.handshake.query.userId;
+
+//     // if (userId !== "undefined") {
+//     //     userSocketMap[userId] = socket.id;
+//     //     io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+//     //     socket.on("MarkMessagesAsSeen", async ({ room, userId }) => {
+//     //         try {
+//     //             // await executeQuery(`UPDATE message SET seen = true WHERE room = ${room} AND seen = false`);
+//     //             // await executeQuery(`UPDATE conversation SET lastMessage_seen = true WHERE _id = ${room}`);
+
+//     //             // io.to(userSocketMap[userId]).emit("messageSeen", { room });
+//     //         } catch (error) {
+//     //             console.log(error);
+//     //         }
+//     //     });
+//     // }
+
+//     // function executeQuery(query) {
+//     //     return new Promise((resolve, reject) => {
+//     //         connection.query(query, (error, results) => {
+//     //             if (error) {
+//     //                 reject(error);
+//     //             } else {
+//     //                 resolve(results);
+//     //             }
+//     //         });
+//     //     });
+//     // }
+
+
+
+//     /***************** */
+
+//     socket.on('newchat', async (data) => {
+//         console.log("Received newchat data from client:");
+//         try {
+//             if (!data.msg.imgUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
+//                 console.log("inside");
+//                 const fs = require("fs").promises;
+//                 var timestamp = new Date().getTime();
+//                 var imgName = timestamp + "-" + data.msg.name;
+//                 const filePath = __dirname + "/images/" + imgName + ".jpg";
+//                 let base64Data;
+//                 if (data.msg.imgUrl.includes('data:image/jpeg;base64,')) {
+//                     base64Data = data.msg.imgUrl.split(';base64,').pop();
+//                 } else {
+//                     base64Data = data.msg.imgUrl;
+//                 }
+//                 const buffer = Buffer.from(base64Data, 'base64');
+//                 await fs.writeFile(filePath, buffer);
+//             }
+//             console.log("uuuuyyyyuyuy--");
+//             let response_server = messageController.save(data);
+//             io.to(data).emit('message', data.room, data.image, data, response_server);
+//             console.log('Response from server:');
+//         } catch (error) {
+//             console.error('Error in newchat:', error);
+//         }
+//     });
+
+
+//     /******************** */
+
+//     /********** load data ********** */
+//     socket.on('existschat', async function (data) {     // right  code 
+//         console.log('receive existschat data from client', data);
+//         try {
+//             let get_data = await messageController.getData(data);
+//             console.log("getdata/server----", get_data, data)
+//             socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
+//         } catch (error) {
+//             console.error(error);
+//         }
+//     });
+
+//     /******************** */
+
+//     socket.on('joinRoom', (room) => {
+//         socket.join(room);
+//         // console.log(`User ${socket.id} joined room ${room.room}`);
+
+//         // const roomMembers = io.sockets.adapter.rooms.get(room.room);
+//         // console.log("roomMembers");
+//         // const numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
+//         // console.log(`Number of people in room ${room.room}: ${numberOfPeopleInRoom}`);
+    
+        
+//         console.log("roomlength==")
+//         if((room.room ==room.room)&&(room.sender_id ==room.receiver_id) && (room.receiver_id==room.sender_id)){
+//             console.log("room========",room);
+//             // console.log(`User ${socket.id} joined room ${room}`);
+//         }
+//     });
+
+//     socket.on('disconnect', () => {
+//         console.log('User disconnected:', socket.id);
+//     });
+
+//     socket.on('privateMessage', (data) => {
+//         console.log("privateMessage data receive from client:", data);
+//         const msg = { ...data.msg, status: 'delivered' };
+//         io.to(data.room).emit('message', msg, data.room, data.image, data);
+//     });
+
+//     socket.on('messageDelivered', (data) => {       // room id , sender id , recerver id,status unseen
+//         console.log("data/messageDelivered=====", data);
+//         io.to(data.room).emit('messageDelivered', { messageId: data.messageId, status: true });
+//     });
+
+//     socket.on('leave', (data) => {                      // kaun leave hua hai room se
+//         console.log("data/leave", data);
+//         io.to(data.room).emit('leave', emit('data', { data: data, status: false }));
+//     })
+
+//     socket.on('messageSeen', (data) => {         //  room id , sender id , recerver id
+//         console.log("data/messageSeen========", data);
+//         io.to(data.room).emit('messageSeen', { messageId: data.messageId, status: true, data: data });
+//     });
+
+//     socket.on('notifyRecipient', (data) => {
+//         io.to(data.recipientRoom).emit('notifyRecipient', {
+//             sender: data.sender,
+//             message: data.message,
+//         });
+//     });
+// });
+
+// // ==================================================================
+
