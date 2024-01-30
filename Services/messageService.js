@@ -277,7 +277,7 @@ const save = async (data) => {
             city: data.city || 0,
             // lat: data.lat || null,
             // lng: data.lng || null,
-            createAt: data.createAt || new Date(),
+            createAt: data.timestamp || 1,
             removeAt: data.removeAt || 0,
             removeFromUserId: data.removeFromUserId || '0',
             removeToUserId: data.removeToUserId || '0',
