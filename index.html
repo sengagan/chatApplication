@@ -29,7 +29,7 @@
 
 <!-- one to one chat -->
 <!-- 29/1/2024 -->
-
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -369,7 +369,7 @@
     </script>
 </body>
 
-</html>
+</html> -->
 
 
 
@@ -450,7 +450,7 @@
 <!-- /************************************************************************************* -->
 
 <!-- for image -->
-<!-- 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -620,8 +620,8 @@ const name = prompt('Please enter your name:') || 'Guest';
 const room = prompt('Enter room number:') || 'default';
 
 // Get sender and receiver IDs
-const sender_id = prompt('Enter your sender_id') || 'sender_default';
-const receiver_id = prompt('Enter your receiver_id') || 'receiver_default';
+const sender_id = prompt('Enter your sender_id') 
+const receiver_id = prompt('Enter your receiver_id') 
 
 // Emit event to join the room
 socket.emit('joinRoom', room);
@@ -799,9 +799,7 @@ function appendImage(msg, type) {
     </script>
 </body>
 
-</html>  -->
-
-
+</html> 
 
 
 
@@ -811,6 +809,8 @@ function appendImage(msg, type) {
 
 
 <!-- 
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -920,11 +920,11 @@ function appendImage(msg, type) {
         <div>
             <textarea id="textarea" cols="30" rows="1" placeholder="write a message...."></textarea>
         </div>
-         <div style="background-color: green; max-width: 350px; padding: 1px; border-radius: 4px;"> //
+        <div style="background-color: green; max-width: 350px; padding: 1px; border-radius: 4px;">
             <p style="color: white;">{message.text}</p>
           </div>
-          <div style="align-self: flex-end; margin: 1px; color: blue; font-weight: bold;"></div>       //
-
+          <div style="align-self: flex-end; margin: 1px; color: blue; font-weight: bold;"></div>      
+        
     </section>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>
@@ -950,7 +950,7 @@ function appendImage(msg, type) {
         const receiver_id = prompt('Enter your receiver_id') || 'receiver_default';
 
         // Emit event to join the room
-        socket.emit('joinRoom', {room,sender_id,receiver_id});
+        socket.emit('joinRoom', room);
 
         // Emit event to load old chat messages
         console.log("sender_id/receiver_id", sender_id, receiver_id);
@@ -1079,9 +1079,6 @@ function appendImage(msg, type) {
 
             socket.emit('privateMessage', { room, msg });
 
-     /**/       socket.emit("markMessagesAsSeen", { room: room, sender_id: sender_id, receiver_id: receiver_id });
-
-
             // Emit a notification event to notify the recipient
             socket.emit('notifyRecipient', { recipientRoom: room, sender: name, message });
         }
@@ -1188,64 +1185,44 @@ function appendImage(msg, type) {
         //     })
         // })
 
-        // Example client-side code
-
-
-        //  let message =  document.querySelectorAll('.message');
-        //     console.log("message===",message);
-        //     const lastMessageIsFromOtherUser = message.length && message[message.length - 1].sender !== currentUser.sender_id;
-        //     if (lastMessageIsFromOtherUser) {
-        // Inside your sendMessage function or wherever appropriate
-        socket.emit('markMessagesAsSeen', { room, sender_id, receiver_id });
-        // }
-
-        socket.on('messageSeen', (data) => {
-            console.log("Message seen data:", data);
-            // Update the UI to mark the message as seen
-
-
-
-            updateMessageStatus(data.messageId, 'seen');
+        const lastMessageIsFromOtherUser = message.length && message[message.length - 1].sender !== currentUser.sender_id;
+        if (lastMessageIsFromOtherUser) {
+            socket.emit("markMessagesAsSeen", { conversationId: selectedConversation._id, userId: selectedConversation.userId });
+        }
+        socket.on("messageSeen", ({ conversationId }) => {
+            if (selectedConversation._id === conversationId) {
+                setMessages(prev => {
+                    const updatedMessages = prev.map(message => {
+                        if (!message.seen) {
+                            return {
+                                ...message,
+                                seen: true
+                            };
+                        }
+                        return message;
+                    });
+                    return updatedMessages;
+                });
+            }
         });
 
-        // Inside your existschat event handler
-        socket.emit('markMessagesAsSeen', { room, sender_id, receiver_id });
+        socket?.on("messageseen", ({ conversationId }) => {
+            setConversations(prev => {
+                const updatedConversations = prev.map(conversation => {
+                    if (conversation._id === conversationId) {
+                        return {
+                            ...conversation,
+                            seen: true
+                        };
+                    }
+                    return conversation;
+                });
+                return updatedConversations;
+            });
+        });
 
 
-        // socket.on("messageSeen", ({ conversationId }) => {
-        //     if (selectedConversation._id === conversationId) {
-        //         setMessages(prev => {
-        //             const updatedMessages = prev.map(message => {
-        //                 if (!message.seen) {
-        //                     return {
-        //                         ...message,
-        //                         seen: true
-        //                     };
-        //                 }
-        //                 return message;
-        //             });
-        //             return updatedMessages;
-        //         });
-        //     }
-        // });
-
-        // socket?.on("messageseen", ({ room }) => {
-        //     setConversations(prev => {
-        //         const updatedConversations = prev.map(conversation => {
-        //             if (conversation._id === conversationId) {
-        //                 return {
-        //                     ...conversation,
-        //                     seen: true
-        //                 };
-        //             }
-        //             return conversation;
-        //         });
-        //         return updatedConversations;
-        //     });
-        // });
-
-
-       
+        /********************************************/
 
 
     </script>

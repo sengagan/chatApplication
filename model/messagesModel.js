@@ -33,7 +33,7 @@ const getData = async (data) => {
     let query = `SELECT * FROM messages 
               WHERE (fromUserId = ${data.sender_id} AND toUserId = ${data.receiver_id})
               OR (fromUserId = ${data.receiver_id} AND toUserId = ${data.sender_id})
-              ORDER BY id DESC`;
+              ORDER BY id ASC`;
     console.log("getdata/model-->>2>>>");
     return new Promise((resolve, reject) => {
         connection.query(query, (error, result) => {
