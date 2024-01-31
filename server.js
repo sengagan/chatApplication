@@ -1044,6 +1044,16 @@ io.on('connection', (socket) => {
         socket.emit('numberOfPeopleInRoom', { numberOfPeopleInRoom:numberOfPeopleInRoom });
         console.log("numm");
     });
+
+    socket.on("leaveRoom",async (room)=>{
+        socket.leave(room);
+        // socket.to(room).emit('user left', socket.id);
+        const roomMembers = io.sockets.adapter.rooms.get(room);
+        var numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
+        console.log(`Number of people in room ${room}: ${numberOfPeopleInRoom}`);
+        socket.emit('numberOfPeopleInRoom', { numberOfPeopleInRoom:numberOfPeopleInRoom });
+        console.log("nummleave");
+    })
     
 //    if(numberOfPeopleInRoom>1){
 //     newchat    ---message
