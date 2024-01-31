@@ -974,10 +974,10 @@ io.on('connection', (socket) => {
 
     socket.on('markMessagesAsSeen', async (data) => {
         try {
-            console.log("seen-----", data);      // jab user2 seen karega tb update hoga aur get api chalegi
+            console.log("seen-----");      // jab user2 seen karega tb update hoga aur get api chalegi
             await messageModel.markMessagesAsSeen(data);
             let response = await messageModel.getDataById(data.id)
-            console.log("response/seen/server", response);
+            console.log("response/seen/server");
             io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id, response });
             // io.to(data.room).emit('messageSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id });
 
@@ -1046,6 +1046,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on("leaveRoom",async (room)=>{
+        console.log("leaveRoom",room);
         socket.leave(room);
         // socket.to(room).emit('user left', socket.id);
         const roomMembers = io.sockets.adapter.rooms.get(room);
@@ -1076,17 +1077,17 @@ io.on('connection', (socket) => {
     });
 
     socket.on('messageDelivered', (data) => {       // room id , sender id , recerver id,status unseen
-        console.log("data/messageDelivered=====", data);
+        console.log("data/messageDelivered=====");
         io.to(data.room).emit('messageDelivered', { messageId: data.messageId, status: true });
     });
 
     socket.on('leave', (data) => {                      // kaun leave hua hai room se
-        console.log("data/leave", data);
+        console.log("data/leave");
         io.to(data.room).emit('leave', emit('data', { data: data, status: false }));
     })
 
     socket.on('messageSeen', (data) => {         //  room id , sender id , recerver id
-        console.log("data/messageSeen========", data);
+        console.log("data/messageSeen========");
         io.to(data.room).emit('messageSeen', { messageId: data.messageId, status: true, data: data });
     });
 

@@ -49,7 +49,7 @@ const getData = async (data) => {
 
 
 const markMessagesAsSeen = async(data)=>{       //update
-    console.log("data/mark==",data.room,data);
+    console.log("data/mark==");
     let query = `UPDATE messages SET seenAt = '1', seenFromUserId = '1',seenToUserId = '1' WHERE chatId = ${data.room} AND seenAt = '0'`;
     return new Promise((resolve, reject) => {
         connection.query(query, (error, result) => {
@@ -57,7 +57,7 @@ const markMessagesAsSeen = async(data)=>{       //update
                 console.error("Error executing query:", error);
                 reject("Error executing query");
             } else {
-                console.log("result-model-0-get--", result);
+                console.log("result-model-0-get--");
                 resolve(result);
             }
         });
@@ -65,7 +65,7 @@ const markMessagesAsSeen = async(data)=>{       //update
 }
 
 const getDataById = async (data) => {
-    console.log("getdata/model--", data);
+    console.log("getdata/model--");
 
     let query = `SELECT * FROM messages WHERE (id = ${data});`;
     console.log("getdata/model-->>2>>>");
@@ -75,7 +75,7 @@ const getDataById = async (data) => {
                 console.error("Error executing query:", error);
                 reject("Error executing query");
             } else {
-                console.log("result-model-0-get--", result);
+                console.log("result-model-0-get--");
                 resolve(result);
             }
         });

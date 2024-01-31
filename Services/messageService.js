@@ -305,7 +305,7 @@ const save = async (data) => {
 };
 
 const getData = async (data) => {
-    console.log("getdata/service-gg--",data);
+    console.log("getdata/service-gg--");
     let response = await messagesModel.getData(data);
     console.log("response---gg--",response);
     return response;
