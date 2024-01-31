@@ -1037,7 +1037,7 @@ io.on('connection', (socket) => {
     const path = require("path");
     
     socket.on('joinRoom', async (room) => {
-       let join =  socket.join(room); 
+       let join =  socket.join(room);
         const roomMembers = io.sockets.adapter.rooms.get(room);
         var numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
         console.log(`Number of people in room ${room}: ${numberOfPeopleInRoom}`);
@@ -1045,16 +1045,28 @@ io.on('connection', (socket) => {
         console.log("numm");
     });
 
-    // socket.on("leaveRoom",async (room)=>{
-    //     console.log("leaveRoom",room);
-    //     socket.leave(room);
-    //     // socket.to(room).emit('user left', socket.id);
+    // socket.on('joinRoom', async (room) => {
+    //     socket.join(room);
+    //     updateNumberOfPeopleInRoom(room);
+    // });
+    
+    // socket.on('disconnect', () => {
+    //     // Check if the socket was in any room
+    //     const rooms = Object.keys(socket.rooms);
+    //     rooms.forEach((room) => {
+    //         updateNumberOfPeopleInRoom(room);
+    //     });
+    // });
+    
+    // function updateNumberOfPeopleInRoom(room) {
     //     const roomMembers = io.sockets.adapter.rooms.get(room);
-    //     var numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
+    //     const numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
     //     console.log(`Number of people in room ${room}: ${numberOfPeopleInRoom}`);
-    //     socket.emit('numberOfPeopleInRoom', { numberOfPeopleInRoom:numberOfPeopleInRoom });
-    //     console.log("nummleave");
-    // })
+    //     io.to(room).emit('numberOfPeopleInRoom', { numberOfPeopleInRoom });
+    // }
+    
+
+    
     
 //    if(numberOfPeopleInRoom>1){
 //     newchat    ---message
