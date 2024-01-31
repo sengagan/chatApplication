@@ -49,7 +49,7 @@ const getData = async (data) => {
 
 
 const markMessagesAsSeen = async(data)=>{       //update
-    console.log("data",data);
+    console.log("data/mark==",data.room,data);
     let query = `UPDATE messages SET seenAt = '1', seenFromUserId = '1',seenToUserId = '1' WHERE chatId = ${data.room} AND seenAt = '0'`;
     return new Promise((resolve, reject) => {
         connection.query(query, (error, result) => {

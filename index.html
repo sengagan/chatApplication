@@ -29,7 +29,7 @@
 
 <!-- one to one chat -->
 <!-- 29/1/2024 -->
-
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -163,7 +163,7 @@
         const receiver_id = prompt('Enter your receiver_id') 
 
         // Emit event to join the room
-        socket.emit('joinRoom', room);
+        socket.emit('joinRoom', {room,sender_id,receiver_id});
 
         // Emit event to load old chat messages
         console.log("sender_id/receiver_id", sender_id, receiver_id);
@@ -199,7 +199,6 @@
             }
         });
 
-        
 
         // Event listener for notification bell click
         notificationBell.addEventListener('click', () => {
@@ -369,7 +368,7 @@
     </script>
 </body>
 </html>
-
+ -->
 
 
 
@@ -807,7 +806,7 @@ function appendImage(msg, type) {
 
 
 
-<!-- 
+
 
 
 
@@ -937,6 +936,8 @@ function appendImage(msg, type) {
         const notificationBell = document.getElementById('notificationBell');
         let unreadMessageCount = 0;
 
+      
+
         // Request notification permission when the script is loaded
         Notification.requestPermission();
 
@@ -945,11 +946,15 @@ function appendImage(msg, type) {
         const room = prompt('Enter room number:') || 'default';
 
         // Get sender and receiver IDs
-        const sender_id = prompt('Enter your sender_id') || 'sender_default';
-        const receiver_id = prompt('Enter your receiver_id') || 'receiver_default';
+        const sender_id = prompt('Enter your sender_id') ;
+        const receiver_id = prompt('Enter your receiver_id') ;
 
         // Emit event to join the room
         socket.emit('joinRoom', room);
+        socket.on("numberOfPeopleInRoom",(data)=>{
+            console.log("numberOfPeopleInRoom===",data)
+            
+           
 
         // Emit event to load old chat messages
         console.log("sender_id/receiver_id", sender_id, receiver_id);
@@ -985,6 +990,14 @@ function appendImage(msg, type) {
             }
         });
 
+        socket.on("numberOfPeopleInRoom",(data)=>{
+            console.log("Data",data);
+            if(data > 1){
+               console.log("nnnnnnnnn");
+            }
+        })
+
+    })
 
 
         // Event listener for notification bell click
@@ -1037,6 +1050,7 @@ function appendImage(msg, type) {
 
             console.log("---===>", msg.user, msg.message, msg.status)
             // Emit event to send new chat message
+
             socket.emit('newchat', {
                 sender_id, receiver_id, msg: msg.message, user: msg.user, msg:
                 {
@@ -1081,7 +1095,7 @@ function appendImage(msg, type) {
             // Emit a notification event to notify the recipient
             socket.emit('notifyRecipient', { recipientRoom: room, sender: name, message });
         }
-
+    
         // Function to append a message to the message area
         function appendMessage(msg, type) {
             const mainDiv = document.createElement('div');
@@ -1155,6 +1169,11 @@ function appendImage(msg, type) {
             }
         }
 
+       
+
+      
+
+
         /********************************************/
         // const lastMessageIsFromOtherUser = message.length && message[message.length-1].sender !== currectUser.sender_id
         // if(lastMessageIsFromOtherUser){
@@ -1183,11 +1202,13 @@ function appendImage(msg, type) {
         //         })
         //     })
         // })
-
+           
         const lastMessageIsFromOtherUser = message.length && message[message.length - 1].sender !== currentUser.sender_id;
         if (lastMessageIsFromOtherUser) {
             socket.emit("markMessagesAsSeen", { conversationId: selectedConversation._id, userId: selectedConversation.userId });
+            console.log("emit/markMessageAsSeen");
         }
+
         socket.on("messageSeen", ({ conversationId }) => {
             if (selectedConversation._id === conversationId) {
                 setMessages(prev => {
@@ -1227,4 +1248,4 @@ function appendImage(msg, type) {
     </script>
 </body>
 
-</html> -->
+</html>

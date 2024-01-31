@@ -888,8 +888,8 @@
 //         // console.log("roomMembers");
 //         // const numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
 //         // console.log(`Number of people in room ${room.room}: ${numberOfPeopleInRoom}`);
-    
-        
+
+
 //         console.log("roomlength==")
 //         if((room.room ==room.room)&&(room.sender_id ==room.receiver_id) && (room.receiver_id==room.sender_id)){
 //             console.log("room========",room);
@@ -971,14 +971,14 @@ io.on('connection', (socket) => {
 
     /***************** */
 
+
     socket.on('markMessagesAsSeen', async (data) => {
         try {
-              console.log("seen-----",data);      // jab user2 seen karega tb update hoga aur get api chalegi
-             await messageModel.markMessagesAsSeen(data);
-             data.id=9      
+            console.log("seen-----", data);      // jab user2 seen karega tb update hoga aur get api chalegi
+            await messageModel.markMessagesAsSeen(data);
             let response = await messageModel.getDataById(data.id)
-            console.log("response/seen/server",response);
-            io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id,response});
+            console.log("response/seen/server", response);
+            io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id, response });
             // io.to(data.room).emit('messageSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id });
 
         } catch (error) {
@@ -1020,22 +1020,40 @@ io.on('connection', (socket) => {
     /******************** */
 
     /********** load data ********** */
-    socket.on('existschat', async function (data) {     
-        console.log('receive existschat data from client', data);
+    socket.on('existschat', async function (data) {
+        console.log('receive existschat data from client');
         try {
             let get_data = await messageController.getData(data);
-            console.log("getdata/server----", get_data, data)
+            console.log("getdata/server----")
             socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
         } catch (error) {
             console.error(error);
         }
     });
 
-    /******************** */
-
-    socket.on('joinRoom', (room) => {
+    /***************** */
+   
+    const fs = require("fs").promises;
+    const path = require("path");
+    
+    socket.on('joinRoom', async (room) => {
         socket.join(room);
+        const roomMembers = io.sockets.adapter.rooms.get(room);
+        var numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
+        console.log(`Number of people in room ${room}: ${numberOfPeopleInRoom}`);
+        socket.emit('numberOfPeopleInRoom', { numberOfPeopleInRoom:numberOfPeopleInRoom });
+        console.log("numm");
     });
+    
+//    if(numberOfPeopleInRoom>1){
+//     newchat    ---message
+//     messageModel.markMessagesAsSeen   ----messagesSeen
+//    }else{
+//     newchat
+//    }
+
+
+
 
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);
