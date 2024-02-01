@@ -1003,11 +1003,9 @@ io.on('connection', (socket) => {
             console.log("response_server===",response_server);
 
             let response = await messageModel.getDataWithRoom(data)
-            // console.log("response==1==",response);
-           let  len = response[response.length - 1];
-            console.log("response==2=",len,len.id);
+           
             if(data.noofpeopleinroom >1){
-            await messageModel.markMessagesAsSeen(len.id);
+            await messageModel.markMessagesAsSeen(response.id);
         }
         let getData = await messageModel.getDataById(len.id);
         console.log("getData=====;;;",getData,data.msg.chatId);
