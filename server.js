@@ -1105,12 +1105,12 @@ io.on('connection', (socket) => {
         console.log('User disconnected:', socket.id);
     });
 
-    socket.on('privateMessage', (data) => {
-        console.log("privateMessage data receive from client:");
-        const msg = { ...data.msg, status: 'delivered' };
-        console.log("msg",msg, data.room, data.image, data,data.status)
-        io.to(data.room).emit('message', msg, data.room, data.image, data,data.status);
-    });
+    // socket.on('privateMessage', (data) => {
+    //     console.log("privateMessage data receive from client:");
+    //     const msg = { ...data.msg, status: 'delivered' };
+    //     console.log("msg",msg, data.room, data.image, data,data.status)         //yha bhi object bnanana hai
+    //     io.to(data.room).emit('message', msg, data.room, data.image, data,data.status);
+    // });
 
     socket.on('messageDelivered', (data) => {       // room id , sender id , recerver id,status unseen
         console.log("data/messageDelivered=====");
