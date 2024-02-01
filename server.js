@@ -1011,8 +1011,8 @@ io.on('connection', (socket) => {
         }
         let getData = await messageModel.getDataById(len.id);
         console.log("getData=====;;;",getData,data.msg.chatId);
-       
-            io.to(data.msg.chatId).emit('message', data.room, data.image, data, response_server,getData );
+            
+            io.to(data.msg.chatId).emit('message',getData );
             console.log('Response from server:');
         } catch (error) {
             console.error('Error in newchat:', error);
