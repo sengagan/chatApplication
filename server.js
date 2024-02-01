@@ -1011,9 +1011,9 @@ io.on('connection', (socket) => {
         }
         let getData = await messageModel.getDataById(len.id);
         console.log("getData=====;;;",getData,data.msg.chatId);
-        const msg = { ...data.msg, status: 'delivered' };
+        const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };
         
-        io.to(data.msg.chatId).emit('message', msg, data.msg.chatId,getData);
+        io.to(data.msg.chatId).emit('message', msg);
           
             console.log('Response from server:');
         } catch (error) {
