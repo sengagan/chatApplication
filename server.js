@@ -1003,7 +1003,7 @@ io.on('connection', (socket) => {
             console.log("response_server===",response_server);
 
             let response = await messageModel.getDataWithRoom(data)
-           
+            console.log("responSeenAt",response)
             if(data.noofpeopleinroom >1){
             await messageModel.markMessagesAsSeen(response.id);
         }
