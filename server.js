@@ -1007,11 +1007,19 @@ io.on('connection', (socket) => {
             if(data.noofpeopleinroom >1){   
             let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
             console.log("updateResponse==",updateResponse);
-        }
+        }  //see3 
         let getData = await messageModel.getDataById(response[0].id);
         console.log("getData=====;;;",getData,data.msg.chatId);
-        const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };
-        
+        let seenStatus = {
+            seenAt:getData[0].seenAt,
+            seenFromUserId:getData[0].seenFromUserId,
+            seenToUserId:getData[0].seenToUserId
+        }
+        console.log("seenStatus",seenStatus);
+        // const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };
+                                                            //seenat
+        const msg = { ...data.msg,"chatId":data.msg.chatId,"seenStatus":seenStatus };
+
         io.to(data.msg.chatId).emit('message', msg);
           
             console.log('Response from server:');
@@ -1112,7 +1120,7 @@ io.on('connection', (socket) => {
     //     console.log("msg",msg, data.room, data.image, data,data.status)         //yha bhi object bnanana hai
     //     io.to(data.room).emit('message', msg, data.room, data.image, data,data.status);
     // });
-    
+
 /**** */
     // socket.on('messageDelivered', (data) => {       // room id , sender id , recerver id,status unseen
     //     console.log("data/messageDelivered=====");
