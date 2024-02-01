@@ -1004,7 +1004,7 @@ io.on('connection', (socket) => {
 
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt",response,data.noofpeopleinroom)
-            if(data.noofpeopleinroom >1){
+            if(data.noofpeopleinroom >1){   
             let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
             console.log("updateResponse==",updateResponse);
         }
@@ -1112,21 +1112,23 @@ io.on('connection', (socket) => {
     //     console.log("msg",msg, data.room, data.image, data,data.status)         //yha bhi object bnanana hai
     //     io.to(data.room).emit('message', msg, data.room, data.image, data,data.status);
     // });
+    
+/**** */
+    // socket.on('messageDelivered', (data) => {       // room id , sender id , recerver id,status unseen
+    //     console.log("data/messageDelivered=====");
+    //     io.to(data.room).emit('messageDelivered', { messageId: data.messageId, status: true });
+    // });
 
-    socket.on('messageDelivered', (data) => {       // room id , sender id , recerver id,status unseen
-        console.log("data/messageDelivered=====");
-        io.to(data.room).emit('messageDelivered', { messageId: data.messageId, status: true });
-    });
+    // socket.on('leave', (data) => {                      // kaun leave hua hai room se
+    //     console.log("data/leave");
+    //     io.to(data.room).emit('leave', emit('data', { data: data, status: false }));
+    // })
 
-    socket.on('leave', (data) => {                      // kaun leave hua hai room se
-        console.log("data/leave");
-        io.to(data.room).emit('leave', emit('data', { data: data, status: false }));
-    })
-
-    socket.on('messageSeen', (data) => {  
-        console.log("messageSeen/data",data);       //  room id , sender id , recerver id
-        io.to(data.room).emit('messageSeen', { messageId: data.messageId, data: data ,status:data.status });
-    });
+    // socket.on('messageSeen', (data) => {  
+    //     console.log("messageSeen/data",data);       //  room id , sender id , recerver id
+    //     io.to(data.room).emit('messageSeen', { messageId: data.messageId, data: data ,status:data.status });
+    // });
+/**** */
 
     socket.on('notifyRecipient', (data) => {
         io.to(data.recipientRoom).emit('notifyRecipient', {
