@@ -86,6 +86,24 @@ const markMessagesAsSeen = async(data)=>{       //update
     });
 }
 
+const updateOne = async(data)=>{       //update  extra
+    console.log("data/mark==",data,data[0].fromUserId);
+    let query = `UPDATE messages SET  seenFromUserId = ${data[0].fromUserId}  WHERE id = ${data[0].id} AND seenAt = '0'`;
+    return new Promise((resolve, reject) => {
+        connection.query(query, (error, result) => {
+            if (error) {
+                console.error("Error executing query:", error);
+                reject("Error executing query");
+            } else {
+                console.log("result-model-0-get--",result);
+                resolve(result);
+            }
+        });
+    });
+}
+
+
+
 const getDataById = async (data) => {
     console.log("getdata/model--");
 
@@ -108,5 +126,5 @@ const getDataById = async (data) => {
     });
 };
 
-module.exports = { save, getData , markMessagesAsSeen , getDataById , getDataWithRoom };
+module.exports = { save, getData , markMessagesAsSeen , getDataById , getDataWithRoom ,updateOne };
 

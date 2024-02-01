@@ -1004,10 +1004,15 @@ io.on('connection', (socket) => {
 
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt",response,data.noofpeopleinroom)
-            if(data.noofpeopleinroom >1){   
+        if(data.noofpeopleinroom >1){   
             let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
             console.log("updateResponse==",updateResponse);
-        }  //see3 
+        }  
+/******************* */
+        let updateOne = await messageModel.updateOne(response);       //jab userone ho
+        console.log("updateOne==",updateOne);                           // extra code
+/******************* */
+
         let getData = await messageModel.getDataById(response[0].id);
         console.log("getData=====;;;",getData,data.msg.chatId);
         let seenStatus = {
@@ -1017,7 +1022,7 @@ io.on('connection', (socket) => {
         }
         console.log("seenStatus",seenStatus);
         // const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };
-                                                            //seenat
+                                                           
         const msg = { ...data.msg,"chatId":data.msg.chatId,"seenStatus":seenStatus };
 
         io.to(data.msg.chatId).emit('message', msg);
