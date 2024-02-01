@@ -1009,8 +1009,8 @@ io.on('connection', (socket) => {
             await messageModel.markMessagesAsSeen(len.id);
         }
         let getData = await messageModel.getDataById(len.id);
-        // console.log("getData=====;;;",getData);
-            io.to(data).emit('message', data.room, data.image, data, response_server,getData );
+         console.log("getData=====;;;",getData);
+            io.to(data).emit('message',getData );
             console.log('Response from server:');
         } catch (error) {
             console.error('Error in newchat:', error);
