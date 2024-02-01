@@ -71,7 +71,7 @@ const getDataWithRoom = async (data) => {
 };
 
 const markMessagesAsSeen = async(data)=>{       //update
-    console.log("data/mark==");
+    console.log("data/mark==",data);
     let query = `UPDATE messages SET seenAt = '1', seenFromUserId = '1',seenToUserId = '1' WHERE id = ${data} AND seenAt = '0'`;
     return new Promise((resolve, reject) => {
         connection.query(query, (error, result) => {
@@ -79,7 +79,7 @@ const markMessagesAsSeen = async(data)=>{       //update
                 console.error("Error executing query:", error);
                 reject("Error executing query");
             } else {
-                console.log("result-model-0-get--");
+                console.log("result-model-0-get--",result);
                 resolve(result);
             }
         });
