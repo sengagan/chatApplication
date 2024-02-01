@@ -1005,9 +1005,9 @@ io.on('connection', (socket) => {
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt",response)
             if(data.noofpeopleinroom >1){
-            await messageModel.markMessagesAsSeen(response.id);
+            await messageModel.markMessagesAsSeen(response[0].id);
         }
-        let getData = await messageModel.getDataById(response.id);
+        let getData = await messageModel.getDataById(response[0].id);
         console.log("getData=====;;;",getData,data.msg.chatId);
         const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };
         
