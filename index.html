@@ -939,7 +939,7 @@ function appendImage(msg, type) {
 
         socket.emit('joinRoom', room);                                      //1
         // console.log("sender/receiver/leaveRomm===",room,sender_id,receiver_id);
-        socket.emit('leaveRoom',  room );                                   //2
+        // socket.emit('leaveRoom',  room );                                   //2
 
         console.log("sender_id/receiver_id", sender_id, receiver_id);
         socket.emit('existschat', { sender_id, receiver_id });
@@ -1018,6 +1018,8 @@ function appendImage(msg, type) {
             };
 
             console.log("---===>", msg.user, msg.message, msg.status)
+
+           
        
                                                             // yha per noofpeopleinroom ko dynamic krna hai
             socket.emit('newchat', {                                //4

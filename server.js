@@ -1002,15 +1002,17 @@ io.on('connection', (socket) => {
             let response_server =await messageController.save(data);
             console.log("response_server===",response_server);
 
-            let response = await messageModel.getData(data)
+            let response = await messageModel.getDataWithRoom(data)
+            // console.log("response==1==",response);
            let  len = response[response.length - 1];
-            console.log("response===",len,len.id);
+            console.log("response==2=",len,len.id);
             if(data.noofpeopleinroom >1){
             await messageModel.markMessagesAsSeen(len.id);
         }
         let getData = await messageModel.getDataById(len.id);
-         console.log("getData=====;;;",getData);
-            io.to(data).emit('message',getData );
+        console.log("getData=====;;;",getData,data.msg.chatId);
+       
+            io.to(data.msg.chatId).emit('message', data.room, data.image, data, response_server,getData );
             console.log('Response from server:');
         } catch (error) {
             console.error('Error in newchat:', error);
@@ -1106,6 +1108,7 @@ io.on('connection', (socket) => {
     socket.on('privateMessage', (data) => {
         console.log("privateMessage data receive from client:");
         const msg = { ...data.msg, status: 'delivered' };
+        console.log("msg",msg, data.room, data.image, data,data.status)
         io.to(data.room).emit('message', msg, data.room, data.image, data,data.status);
     });
 

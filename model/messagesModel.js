@@ -27,7 +27,7 @@ const save = async (details) => {
 };
 
 const getData = async (data) => {
-    console.log("getdata/model--");
+    console.log("getdata/model-==-",data);
     
     let query = `SELECT * FROM messages 
               WHERE (fromUserId = ${data.sender_id} AND toUserId = ${data.receiver_id})
@@ -47,6 +47,27 @@ const getData = async (data) => {
     });
 };
 
+
+const getDataWithRoom = async (data) => {
+    console.log("getdata/model-==-",data);
+    
+    let query = `SELECT * FROM messages 
+              WHERE (fromUserId = ${data.sender_id} AND toUserId = ${data.receiver_id} AND chatId= ${data.msg.chatId} )
+              OR (fromUserId = ${data.receiver_id} AND toUserId = ${data.sender_id} AND chatId= ${data.msg.chatId})
+              ORDER BY id ASC`;
+    console.log("getdata/model-->>2>>>");
+    return new Promise((resolve, reject) => {
+        connection.query(query, (error, result) => {
+            if (error) {
+                console.error("Error executing query:", error);
+                reject("Error executing query");
+            } else {
+                console.log("result-model-0-get--");
+                resolve(result);
+            }
+        });
+    });
+};
 
 const markMessagesAsSeen = async(data)=>{       //update
     console.log("data/mark==");
@@ -86,5 +107,5 @@ const getDataById = async (data) => {
     });
 };
 
-module.exports = { save, getData , markMessagesAsSeen , getDataById};
+module.exports = { save, getData , markMessagesAsSeen , getDataById , getDataWithRoom };
 
