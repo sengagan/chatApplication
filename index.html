@@ -918,67 +918,49 @@ function appendImage(msg, type) {
         <div>
             <textarea id="textarea" cols="30" rows="1" placeholder="write a message...."></textarea>
         </div>
-        <div style="background-color: green; max-width: 350px; padding: 1px; border-radius: 4px;">
-            <p style="color: white;">{message.text}</p>
-          </div>
-          <div style="align-self: flex-end; margin: 1px; color: blue; font-weight: bold;"></div>      
-        
+
     </section>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>
     <script>
 
         'use strict';
-
         const socket = io();
         const textarea = document.querySelector('#textarea');
         const messageArea = document.querySelector('.message_area');
         const notificationBell = document.getElementById('notificationBell');
         let unreadMessageCount = 0;
-
-      
-
-        // Request notification permission when the script is loaded
         Notification.requestPermission();
 
-        // Get user name and room number
-        const name = prompt('Please enter your name:') || 'Guest'; // Default to 'Guest' if name is not provided
+        const name = prompt('Please enter your name:') || 'Guest';
         const room = prompt('Enter room number:') || 'default';
+        const sender_id = prompt('Enter your sender_id');
+        const receiver_id = prompt('Enter your receiver_id');
 
-        // Get sender and receiver IDs
-        const sender_id = prompt('Enter your sender_id') ;
-        const receiver_id = prompt('Enter your receiver_id') ;
+        socket.emit('joinRoom', room);                                      //1
+        // console.log("sender/receiver/leaveRomm===",room,sender_id,receiver_id);
+        socket.emit('leaveRoom',  room );                                   //2
 
-        // Emit event to join the room
-        socket.emit('joinRoom', room);
-        socket.on("numberOfPeopleInRoom",(data)=>{
-            console.log("numberOfPeopleInRoom===",data)
-            
-           
-        socket.emit('leaveRoom',{room,sender_id,receiver_id});    
-
-        // Emit event to load old chat messages
         console.log("sender_id/receiver_id", sender_id, receiver_id);
         socket.emit('existschat', { sender_id, receiver_id });
 
-        // Event listener for sending messages when Enter key is pressed
         textarea.addEventListener('keyup', (e) => {
             if (e.key === 'Enter') {
                 sendMessage(e.target.value);
             }
         });
 
-        // Event listener for handling visibility change of the document
+
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) {
                 notificationBell.style.color = '#128C7E';
-                unreadMessageCount = 0; // Reset unread message count when the document is in focus
+                unreadMessageCount = 0;
                 updateNotificationBell();
             }
         });
 
-        // Event listener for incoming messages
         socket.on('message', (msg, room) => {
+            console.log("msg/room",msg,room);
             msg.status = 'seen';
             appendMessage(msg, 'incoming');
             scrollToBottom();
@@ -991,27 +973,22 @@ function appendImage(msg, type) {
             }
         });
 
-        socket.on("numberOfPeopleInRoom",(data)=>{
-            console.log("Data",data);
-            if(data > 1){
-               console.log("nnnnnnnnn");
+        socket.on("numberOfPeopleInRoom", (data) => {                       // 3
+            console.log("Data", data);
+            socket.emit('numberOfPersonInRoom', data)
+            if (data.numberOfPeopleInRoom > 1) {
+                console.log("nnnnnnnnn");
             }
         })
 
-    })
-
-
-        // Event listener for notification bell click
         notificationBell.addEventListener('click', () => {
-            document.click(); // Assuming this was intended to simulate a click on the document
+            document.click();
         });
 
-        // Event listener for textarea input to send typing status
         textarea.addEventListener('input', () => {
             socket.emit('typing', { name, room });
         });
 
-        // Server-side logic for loading old chat messages
         socket.on('load-chat', function (msg) {
             console.log("msg/load-chat:", msg);
             const chatMessages = msg.chat;
@@ -1019,41 +996,32 @@ function appendImage(msg, type) {
             scrollToBottom();
         });
 
-
-
-        // Event listener for message seen status update
         socket.on('messageSeen', (data) => {
             console.log("data/messageSeen", data);
             let user = updateMessageStatus(data.messageId, data.status);
         });
 
-
-
-
-        // Event listener for typing status
         socket.on('typing', (data) => {
             updateTypingStatus(data.name);
         });
 
-        // Event listener for stopping typing status
         socket.on('stopTyping', () => {
             updateTypingStatus();
         });
 
-        // Function to send a chat message
         function sendMessage(message) {
-
+            console.log('message111',message);
             const msg = {
                 user: name,
                 message: message.trim(),
-                status: 'unseen',
+                status: message.status,
             };
 
             console.log("---===>", msg.user, msg.message, msg.status)
-            // Emit event to send new chat message
-
-            socket.emit('newchat', {
-                sender_id, receiver_id, msg: msg.message, user: msg.user, msg:
+       
+                                                            // yha per noofpeopleinroom ko dynamic krna hai
+            socket.emit('newchat', {                                //4
+                noofpeopleinroom:2,sender_id, receiver_id, msg: msg.message, user: msg.user, msg:
                 {
                     chatId: room,
                     msgType: '',
@@ -1086,18 +1054,17 @@ function appendImage(msg, type) {
                     }
                 }
             });
+        
+           
+
 
             appendMessage(msg, 'outgoing');
             textarea.value = '';
             scrollToBottom();
 
             socket.emit('privateMessage', { room, msg });
-
-            // Emit a notification event to notify the recipient
             socket.emit('notifyRecipient', { recipientRoom: room, sender: name, message });
         }
-    
-        // Function to append a message to the message area
         function appendMessage(msg, type) {
             const mainDiv = document.createElement('div');
             const className = type;
@@ -1113,8 +1080,6 @@ function appendImage(msg, type) {
                 messageArea.appendChild(mainDiv);
             }
         }
-
-        // Function to update the message status (seen/unseen)
         function updateMessageStatus(messageId, status) {
             console.log("status--", status);
             const messages = document.querySelectorAll('.message');
@@ -1127,19 +1092,13 @@ function appendImage(msg, type) {
             });
 
         }
-
-        // Function to update the typing status in the user list
         function updateTypingStatus(name = '') {
             const userList = document.querySelector('.user_list');
             userList.innerHTML = name ? `<h3 class="typing">${name} is typing...</h3>` : '';
         }
-
-        // Function to scroll to the bottom of the message area
         function scrollToBottom() {
             messageArea.scrollTop = messageArea.scrollHeight;
         }
-
-        // Function to show a notification
         function showNotification(message) {
             if ('Notification' in window && Notification.permission === 'granted') {
                 const notification = new Notification('New Message', {
@@ -1158,8 +1117,6 @@ function appendImage(msg, type) {
                 });
             }
         }
-
-        // Function to update the notification bell UI
         function updateNotificationBell() {
             if (unreadMessageCount > 0) {
                 notificationBell.innerHTML = `🔔 Notifications (${unreadMessageCount})`;
@@ -1170,12 +1127,19 @@ function appendImage(msg, type) {
             }
         }
 
-       
+        // const lastMessageIsFromOtherUser = message.length && message[message.length - 1].sender !== currentUser.sender_id;
+        // if (lastMessageIsFromOtherUser) {
+            socket.emit("markMessagesAsSeen", { conversationId: selectedConversation._id, userId: selectedConversation.userId });
+        //     console.log("emit/markMessageAsSeen");
+        // }
 
-      
+    </script>
+</body>
+</html>
 
 
-        /********************************************/
+<!-- 
+/********************************************/
         // const lastMessageIsFromOtherUser = message.length && message[message.length-1].sender !== currectUser.sender_id
         // if(lastMessageIsFromOtherUser){
         //     socket.emit("markMessagesAsSeen",{conversationId:selectedConversation._id,userId:selectedConversation.userId})
@@ -1203,50 +1167,36 @@ function appendImage(msg, type) {
         //         })
         //     })
         // })
-           
-        const lastMessageIsFromOtherUser = message.length && message[message.length - 1].sender !== currentUser.sender_id;
-        if (lastMessageIsFromOtherUser) {
-            socket.emit("markMessagesAsSeen", { conversationId: selectedConversation._id, userId: selectedConversation.userId });
-            console.log("emit/markMessageAsSeen");
-        }
-
-        socket.on("messageSeen", ({ conversationId }) => {
-            if (selectedConversation._id === conversationId) {
-                setMessages(prev => {
-                    const updatedMessages = prev.map(message => {
-                        if (!message.seen) {
-                            return {
-                                ...message,
-                                seen: true
-                            };
-                        }
-                        return message;
-                    });
-                    return updatedMessages;
-                });
-            }
-        });
-
-        socket?.on("messageseen", ({ conversationId }) => {
-            setConversations(prev => {
-                const updatedConversations = prev.map(conversation => {
-                    if (conversation._id === conversationId) {
-                        return {
-                            ...conversation,
-                            seen: true
-                        };
-                    }
-                    return conversation;
-                });
-                return updatedConversations;
-            });
-        });
 
 
-        /********************************************/
-
-
-    </script>
-</body>
-
-</html>
+        // socket.on("messageSeen", ({ conversationId }) => {
+            //     if (selectedConversation._id === conversationId) {
+            //         setMessages(prev => {
+            //             const updatedMessages = prev.map(message => {
+            //                 if (!message.seen) {
+            //                     return {
+            //                         ...message,
+            //                         seen: true
+            //                     };
+            //                 }
+            //                 return message;
+            //             });
+            //             return updatedMessages;
+            //         });
+            //     }
+            // });
+    
+            // socket?.on("messageseen", ({ conversationId }) => {
+            //     setConversations(prev => {
+            //         const updatedConversations = prev.map(conversation => {
+            //             if (conversation._id === conversationId) {
+            //                 return {
+            //                     ...conversation,
+            //                     seen: true
+            //                 };
+            //             }
+            //             return conversation;
+            //         });
+            //         return updatedConversations;
+            //     });
+            // }); -->

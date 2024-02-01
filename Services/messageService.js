@@ -209,7 +209,7 @@ const save = async (data) => {
         // }
 
         if (data && data.msg.imgUrl && data.msg.imgUrl) {
-            console.log("imagUrl.,.,.,.,",);
+            console.log("imagUrl.,.,.,.,");
             imageUrl = data.msg.data
             const  timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;    
@@ -219,7 +219,7 @@ const save = async (data) => {
         }
 
         if (data && data.msg.stickerUrl && data.msg.stickerUrl) {
-            console.log("stickerUrl.,.,.,.,",);
+            console.log("stickerUrl.,.,.,.,");
             imageUrl = data.msg.data
             const  timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;    
@@ -229,7 +229,7 @@ const save = async (data) => {
         }
 
         if (data && data.msg.videoImgUrl && data.msg.videoImgUrl) {
-            console.log("videoImgUrl.,.,.,.,",);
+            console.log("videoImgUrl.,.,.,.,");
             imageUrl = data.msg.data
             const  timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;    
@@ -239,7 +239,7 @@ const save = async (data) => {
         }
 
         if (data && data.msg.audioUrl && data.msg.audioUrl) {
-            console.log("audioUrl.,.,.,.,",);
+            console.log("audioUrl.,.,.,.,");
             imageUrl = data.msg.data
             const  timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;    
@@ -307,7 +307,7 @@ const save = async (data) => {
 const getData = async (data) => {
     console.log("getdata/service-gg--");
     let response = await messagesModel.getData(data);
-    console.log("response---gg--",response);
+    console.log("response---gg--");
     return response;
 }
 

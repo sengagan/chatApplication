@@ -960,7 +960,6 @@ http.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-
 io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
@@ -969,25 +968,17 @@ io.on('connection', (socket) => {
         io.to(data.room).emit('typing', { name: data.name, room: data.room, data: data });
     });
 
-    /***************** */
-
-
     socket.on('markMessagesAsSeen', async (data) => {
         try {
-            console.log("seen-----");      // jab user2 seen karega tb update hoga aur get api chalegi
+            console.log("seen-----",data);      // jab user2 seen karega tb update hoga aur get api chalegi
             await messageModel.markMessagesAsSeen(data);
             let response = await messageModel.getDataById(data.id)
-            console.log("response/seen/server");
+            console.log("response/seen/server",response);
             io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id, response });
-            // io.to(data.room).emit('messageSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id });
-
         } catch (error) {
             console.error('Error marking messages as seen:', error);
         }
     });
-
-
-    /***************** */
 
     socket.on('newchat', async (data) => {
         console.log("Received newchat data from client:");
@@ -1007,19 +998,25 @@ io.on('connection', (socket) => {
                 const buffer = Buffer.from(base64Data, 'base64');
                 await fs.writeFile(filePath, buffer);
             }
-            console.log("uuuuyyyyuyuy--");
-            let response_server = messageController.save(data);
-            io.to(data).emit('message', data.room, data.image, data, response_server);
+            console.log("uuuuyyyyuyuy--",data);
+            let response_server =await messageController.save(data);
+            console.log("response_server===",response_server);
+
+            let response = await messageModel.getData(data)
+           let  len = response[response.length - 1];
+            console.log("response===",len,len.id);
+            if(data.noofpeopleinroom >1){
+            await messageModel.markMessagesAsSeen(len.id);
+        }
+        let getData = await messageModel.getDataById(len.id);
+        // console.log("getData=====;;;",getData);
+            io.to(data).emit('message', data.room, data.image, data, response_server,getData );
             console.log('Response from server:');
         } catch (error) {
             console.error('Error in newchat:', error);
         }
     });
 
-
-    /******************** */
-
-    /********** load data ********** */
     socket.on('existschat', async function (data) {
         console.log('receive existschat data from client');
         try {
@@ -1031,19 +1028,111 @@ io.on('connection', (socket) => {
         }
     });
 
-    /***************** */
+    
    
     const fs = require("fs").promises;
     const path = require("path");
     
+    // socket.on('joinRoom', async (room) => {
+    //     console.log("room====>>>>",room)
+    //     socket.join(room);
+    //     const roomMembers = io.sockets.adapter.rooms.get(room);
+    //     var numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
+    //     console.log(`Number of people in room ${room}: ${numberOfPeopleInRoom}`);
+    //     socket.emit('numberOfPeopleInRoom', { numberOfPeopleInRoom:numberOfPeopleInRoom });
+    //     io.to(room).emit('numberOfPeopleInRoom', { numberOfPeopleInRoom });
+    //     console.log("numm");
+    // });
+
+
+
+    // socket.on('joinRoom', async (room) => {
+    //     console.log("room====>>>>", room)
+    //     socket.join(room);
+    //     updateNumberOfPeopleInRoom(room);
+    // });
+    
+    // socket.on('leaveRoom', async (room) => {
+    //     console.log("room====>>>>", room)
+    //     socket.leave(room);
+    //     updateNumberOfPeopleInRoom(room);
+    // });
+    
+    // function updateNumberOfPeopleInRoom(room) {
+    //     const roomMembers = io.sockets.adapter.rooms.get(room);
+    //     const numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
+    //     console.log(`Number of people in room ${room}: ${numberOfPeopleInRoom}`);
+        
+    //     // Emit the updated number of people to all clients in the room
+    //     io.to(room).emit('numberOfPeopleInRoom', { numberOfPeopleInRoom });
+    
+    //     console.log("numm");
+    // }
+    
+
     socket.on('joinRoom', async (room) => {
-       let join =  socket.join(room);
-        const roomMembers = io.sockets.adapter.rooms.get(room);
-        var numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
-        console.log(`Number of people in room ${room}: ${numberOfPeopleInRoom}`);
-        socket.emit('numberOfPeopleInRoom', { numberOfPeopleInRoom:numberOfPeopleInRoom });
-        console.log("numm");
+        console.log("room====>>>>", room);
+        socket.join(room);
+        console.log("roomjoin-",room);
+        updateNumberOfPeopleInRoom(room);
     });
+    
+    socket.on('leaveRoom', async (room) => {
+        console.log("room====>>>>", room);
+        socket.leave(room);
+        console.log("roomleave-",room);
+        updateNumberOfPeopleInRoom(room);
+    });
+    
+    function updateNumberOfPeopleInRoom(room) {
+        console.log("room==",room);
+        const roomMembers = io.sockets.adapter.rooms.get(room);
+        console.log("roomMembers-------",roomMembers);
+        const numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
+        console.log(`Number of people in room ${room}: ${numberOfPeopleInRoom}`);
+    
+        // Emit the updated number of people to all clients in the room
+        io.to(room).emit('numberOfPeopleInRoom', { numberOfPeopleInRoom });
+    
+        console.log("Updated number of people in room sent to clients");
+    }
+    
+
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected:', socket.id);
+    });
+
+    socket.on('privateMessage', (data) => {
+        console.log("privateMessage data receive from client:");
+        const msg = { ...data.msg, status: 'delivered' };
+        io.to(data.room).emit('message', msg, data.room, data.image, data,data.status);
+    });
+
+    socket.on('messageDelivered', (data) => {       // room id , sender id , recerver id,status unseen
+        console.log("data/messageDelivered=====");
+        io.to(data.room).emit('messageDelivered', { messageId: data.messageId, status: true });
+    });
+
+    socket.on('leave', (data) => {                      // kaun leave hua hai room se
+        console.log("data/leave");
+        io.to(data.room).emit('leave', emit('data', { data: data, status: false }));
+    })
+
+    socket.on('messageSeen', (data) => {  
+        console.log("messageSeen/data",data);       //  room id , sender id , recerver id
+        io.to(data.room).emit('messageSeen', { messageId: data.messageId, data: data ,status:data.status });
+    });
+
+    socket.on('notifyRecipient', (data) => {
+        io.to(data.recipientRoom).emit('notifyRecipient', {
+            sender: data.sender,
+            message: data.message,
+        });
+    });
+});
+ 
+// ==============================================================================================
 
     // socket.on('joinRoom', async (room) => {
     //     socket.join(room);
@@ -1076,39 +1165,5 @@ io.on('connection', (socket) => {
 //    }
 
 
-
-
-    socket.on('disconnect', () => {
-        console.log('User disconnected:', socket.id);
-    });
-
-    socket.on('privateMessage', (data) => {
-        console.log("privateMessage data receive from client:", data);
-        const msg = { ...data.msg, status: 'delivered' };
-        io.to(data.room).emit('message', msg, data.room, data.image, data);
-    });
-
-    socket.on('messageDelivered', (data) => {       // room id , sender id , recerver id,status unseen
-        console.log("data/messageDelivered=====");
-        io.to(data.room).emit('messageDelivered', { messageId: data.messageId, status: true });
-    });
-
-    socket.on('leave', (data) => {                      // kaun leave hua hai room se
-        console.log("data/leave");
-        io.to(data.room).emit('leave', emit('data', { data: data, status: false }));
-    })
-
-    socket.on('messageSeen', (data) => {         //  room id , sender id , recerver id
-        console.log("data/messageSeen========");
-        io.to(data.room).emit('messageSeen', { messageId: data.messageId, status: true, data: data });
-    });
-
-    socket.on('notifyRecipient', (data) => {
-        io.to(data.recipientRoom).emit('notifyRecipient', {
-            sender: data.sender,
-            message: data.message,
-        });
-    });
-});
-
+// *******************************************************************************************
 
