@@ -1011,9 +1011,17 @@ io.on('connection', (socket) => {
 /******************* */
         let updateOne = await messageModel.updateOne(response);       //jab userone ho
         console.log("updateOne==",updateOne);                           // extra code
+
 /******************* */
 
         let getData = await messageModel.getDataById(response[0].id);
+/** */
+        if(getData[0].seenFromUserId == 1 && getData[0].seenToUserId == 1 ){
+            getData[0].seenAt = '1'
+        }
+        console.log("getdata[0].seenAt",getData[0].seenAt);
+/** */
+
         console.log("getData=====;;;",getData,data.msg.chatId);
         let seenStatus = {
             seenAt:getData[0].seenAt,
