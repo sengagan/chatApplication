@@ -271,7 +271,7 @@ const deleteImgUrl = async (data) => {
     // let query = `DELETE FROM messages WHERE (chatId=${data.chatId} AND fromUserId=${data.fromUserId} AND toUserId=${data.toUserId}} ) imgUrl < NOW() - INTERVAL 1 MINUTE`;
     let query
     // setTimeout(async () => {
-         query = `UPDATE messages SET imgUrl = NULL WHERE chatId=${data.chatId} AND fromUserId=${data.fromUserId} AND toUserId=${data.toUserId} ;`
+         query = `DELETE  FROM  messages WHERE chatId=${data.chatId} AND fromUserId=${data.fromUserId} AND toUserId=${data.toUserId} ;`
     // }, 60000);
 
     console.log("getdata/model-->>2>>>");
@@ -289,7 +289,39 @@ const deleteImgUrl = async (data) => {
 
 }
 
-module.exports = { save, getData, markMessagesAsSeen, getDataById, getDataWithRoom, updateOne, deleteImgUrl };
+const savePhrases = async(details)=>{
+    console.log("details/savephrases=",details);
+    let query = `INSERT INTO phrases (user_id,text) VALUE  ('${details.id}','${details.text}')`
+    return new Promise((resolve, reject) => {
+        connection.query(query, (error, result) => {
+            if (error) {
+                // console.error("Error executing query:", error);
+                reject("Error executing query",error);
+            } else {
+                // console.log("result-savePhrases-0-get--");
+                resolve(true);
+            }
+        });
+    });
+}
+
+const getPhrasesById = async(details)=>{
+    console.log("details/savephrases=",details);
+    let query = `SELECT * FROM phrases WHERE user_id=${details.id} `
+    return new Promise((resolve, reject) => {
+        connection.query(query, (error, result) => {
+            if (error) {
+                // console.error("Error executing query:", error);
+                reject("Error executing query",error);
+            } else {
+                // console.log("result-savePhrases-0-get--",result);
+                resolve(result);
+            }
+        });
+    });
+}
+
+module.exports = { save, getData, markMessagesAsSeen, getDataById, getDataWithRoom, updateOne, deleteImgUrl , savePhrases , getPhrasesById };
 
 
 

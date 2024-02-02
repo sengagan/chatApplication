@@ -437,6 +437,7 @@ const save = async (data) => {
         
             setTimeout(async () => {
                 try {
+                    console.log("setTimeOut====",details);
                      await messagesModel.deleteImgUrl(details);
                     console.log(`Image deleted successfully.`);
                 } catch (error) {
@@ -463,6 +464,22 @@ const getData = async (data) => {
     return response;
 }
 
+const savePhrases = async(details)=>{
+    let data = {
+        text: details.text,
+        id: details.id 
+    };
+    console.log("data---->",data);
+    let response = await messagesModel.savePhrases(data);
+    console.log("resp-service---->",response);
+    return response;
+}
 
+const getPhrasesById = async(data)=>{
+    // console.log("getdata/service-gg--");
+    let response = await messagesModel.getPhrasesById(data);
+    // console.log("response---gg--");
+    return response;
+}
 
-module.exports = { save, getData };
+module.exports = { save, getData,savePhrases ,getPhrasesById };

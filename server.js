@@ -1117,6 +1117,7 @@
 const dotenv = require('dotenv').config()
 const express = require('express');
 const app = express();
+var bodyParser = require('body-parser')
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
@@ -1128,12 +1129,16 @@ const { object } = require('joi');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 
 app.use(express.static(__dirname + './public'));
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
+
+const userRouter = require("./Routes/messageRouter");
+app.use("/route",userRouter);
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
@@ -1246,8 +1251,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    
-   
     const fs = require("fs").promises;
     const path = require("path");
     

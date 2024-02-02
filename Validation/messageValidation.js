@@ -35,4 +35,14 @@ const save = async (data) => {
     return response;
 }
 
-module.exports = {save}
+const savePhrases = async(details)=>{
+    let schema = joi.object({
+        text: joi.string(),
+        id: joi.string()
+    })
+    let response = await comman.commanPhrases(schema, details);
+    return response;
+
+}
+
+module.exports = {save , savePhrases }

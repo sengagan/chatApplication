@@ -1,4 +1,4 @@
-
+const url = require("url");
 
 const messageValidation = require('../Validation/messageValidation');
 const messageServices = require('../Services/messageService');
@@ -35,5 +35,34 @@ const getData = async(data)=>{
     });
 }
 
+const savePhrases = async(req,res)=>{
+    let details = req.body;
+    console.log("details===>>>",details);
+    try {
+        let validate = await messageValidation.savePhrases(details);
+        console.log('validate',validate);
+        if (validate.status === 'ERROR') {
+            return reject({ status: 400, error: validate.message });
+        }
+        let response = await messageServices.savePhrases(details);
+        console.log('response controller:',response);
+        res.status(200).json({"message":"user created successfully"}) 
+    } catch (error) {
+        // console.log({ status: 500, error: 'Internal Server Error' });
+        res.status(500).json({"error":error}); 
+    }
+}
 
-module.exports = { save , getData  };
+const getPhrasesById = async(req,res,next)=>{
+    let  id  = req.body;
+    // console.log("user_id",id)
+    try {
+        let response = await messageServices.getPhrasesById(id);
+        // console.log('response --/getPhrasesById--gg-',response );
+        res.status(200).json({"data":response});   
+    } catch (error) {
+        res.status(500).json({"error":error}); 
+    }
+}
+
+module.exports = { save , getData ,savePhrases ,getPhrasesById };
