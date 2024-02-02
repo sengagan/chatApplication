@@ -1170,10 +1170,10 @@ io.on('connection', (socket) => {
                 var imgName = timestamp + "-" + data.msg.name;
                 const filePath = __dirname + "/images/" + imgName + ".jpg";
                 let base64Data;
-                if (data.msg.data.includes('data:image/jpeg;base64,')) {
-                    base64Data = data.msg.data.split(';base64,').pop();
+                if (data.msg.imgUrl.includes('data:image/jpeg;base64,')) {
+                    base64Data = data.msg.imgUrl.split(';base64,').pop();
                 } else {
-                    base64Data = data.msg.data;
+                    base64Data = data.msg.imgUrl;
                 }
                 console.log("base64Data",base64Data)
                 const buffer = Buffer.from(base64Data, 'base64');
