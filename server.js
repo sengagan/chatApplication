@@ -1194,7 +1194,7 @@ io.on('connection', (socket) => {
                     } catch (error) {
                         console.error(`Error deleting image ${imgName}:`, error);
                     }
-                }, 60000); // 1 minute in milliseconds
+                }, 300000); // 1 minute in milliseconds
             }
                 /*********************************** */
 
