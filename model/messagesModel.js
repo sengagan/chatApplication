@@ -88,8 +88,8 @@ const markMessagesAsSeen = async(data)=>{       //update
 
 const updateOne = async(data)=>{       //update  extra              // room and sender_id and receiver_id
     console.log("data/mark==",data,data[0].fromUserId);
-    let query = `UPDATE messages SET  seenFromUserId = '1'  WHERE id = ${data[0].id} AND seenAt = '0' `;
-    // let query = `UPDATE messages SET  seenFromUserId = '1'  WHERE id <= ${data[0].id} AND seenAt = '0' AND (fromUserId=${data,data[0].fromUserId} AND toUserId=${data,data[0].toUserId} ) `;
+    // let query = `UPDATE messages SET  seenFromUserId = '1'  WHERE id = ${data[0].id} AND seenAt = '0' `;
+    let query = `UPDATE messages SET  seenFromUserId = '1'  WHERE id <= ${data[0].id} AND seenAt = '0' AND (fromUserId=${data,data[0].fromUserId} AND toUserId=${data,data[0].toUserId} ) `;
 
     return new Promise((resolve, reject) => {
         connection.query(query, (error, result) => {
