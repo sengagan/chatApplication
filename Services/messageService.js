@@ -443,7 +443,7 @@ const save = async (data) => {
                 } catch (error) {
                     console.error(`Error deleting image :`, error);
                 }
-            },6000);
+            },300000);
         }
             /** */
 
