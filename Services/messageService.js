@@ -346,9 +346,9 @@ const save = async (data) => {
         //     imageUrl = filePath;
         // }
 
-        if (data && data.msg.imgUrl && data.msg.imgUrl) {
+        if (data && data.msg.imageUrl && data.msg.imageUrl) {
             console.log("imagUrl.,.,.,.,");
-            imageUrl = data.msg.imgUrl
+            imageUrl = data.msg.imageUrl
             const  timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;    
             const filePath = __dirname + "/images/" + imgName ;
@@ -424,27 +424,27 @@ const save = async (data) => {
             seenToUserId: data.seenToUserId || '0',
             u_agent: data.u_agent || '',
             ip_addr: data.ip_addr || '',
-            location :{
-                lat : data.msg.location.lat || null ,
-                long : data.msg.location.long || null 
-            } 
+            // location :{
+            //     lat : data.msg.location.lat || null  ,
+            //     long : data.msg.location.long || null  
+            // } 
         };
 
         console.log("load---service---->");
         let response = await messagesModel.save(details);
-        console.log("resp-service---->");
+        console.log("resp-service---->",response);
          /** */
-        
+        if(data.expiryImage == 1){
+          const  imageUrlPath = details.imgUrl;
             setTimeout(async () => {
                 try {
-                    console.log("setTimeOut====",details);
                      await messagesModel.deleteImgUrl(details);
                     console.log(`Image deleted successfully.`);
                 } catch (error) {
                     console.error(`Error deleting image :`, error);
                 }
-            }, 60000);
-          
+            },6000);
+        }
             /** */
 
 

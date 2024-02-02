@@ -1168,22 +1168,24 @@ io.on('connection', (socket) => {
     socket.on('newchat', async (data) => {
         console.log("Received newchat data from client:");
         try {
-            if (!data.msg.imgUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
+            if (!data.msg.imageUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
                 console.log("inside");
                 const fs = require("fs").promises;
                 var timestamp = new Date().getTime();
                 var imgName = timestamp + "-" + data.msg.name;
                 const filePath = __dirname + "/images/" + imgName + ".jpg";
                 let base64Data;
-                if (data.msg.imgUrl.includes('data:image/jpeg;base64,')) {
-                    base64Data = data.msg.imgUrl.split(';base64,').pop();
+                if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                    base64Data = data.msg.imageUrl.split(';base64,').pop();
                 } else {
-                    base64Data = data.msg.imgUrl;
+                    base64Data = data.msg.imageUrl;
                 }
-                console.log("base64Data",base64Data)
+                // console.log("base64Data",base64Data)
                 const buffer = Buffer.from(base64Data, 'base64');
                 await fs.writeFile(filePath, buffer);
                 /****************************** */
+                if(data.expiryImage == '1'){
+                    console.log("data.expiryImage",data.expiryImage);
                 setTimeout(async () => {
                     try {
                         // Delete the image file
@@ -1193,10 +1195,11 @@ io.on('connection', (socket) => {
                         console.error(`Error deleting image ${imgName}:`, error);
                     }
                 }, 60000); // 1 minute in milliseconds
+            }
                 /*********************************** */
 
             }
-            console.log("uuuuyyyyuyuy--",data);
+            console.log("uuuuyyyyuyuy--");
             let response_server =await messageController.save(data);
             console.log("response_server===",response_server);
            

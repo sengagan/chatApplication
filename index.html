@@ -677,7 +677,7 @@ function sendFile(file) {
             status: 'unseen',
         };
 
-        socket.emit('newchat', { sender_id, receiver_id, msg: msg.file, user: msg.user, room: room });
+        socket.emit('newchat', { sender_id, receiver_id, msg: msg.file, user: msg.user, room: room , expiryImage:'1' });
 
         appendMessage(msg, 'outgoing');
         clearInputFields();
@@ -699,6 +699,7 @@ function sendImage(imageURL) {
             url: imageURL,
         },
         status: 'unseen',
+        
     };
 
     socket.emit('newchat', { sender_id, receiver_id, msg: msg.image, user: msg.user, room: room });
@@ -765,6 +766,7 @@ function sendImage(file) {
         };
 
         // Emit event to send the image
+       
         socket.emit('newImage', { sender_id, receiver_id, msg: msg.image, user: msg.user, room: room });
 
         appendImage(msg, 'outgoing');
