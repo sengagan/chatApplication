@@ -180,6 +180,144 @@
 
 
 
+// ===========================  final  correct code 1/2/24 start=================================================================== 
+
+
+// const fs = require("fs");
+// const express = require('express');
+// const multer = require("multer");
+// const path = require("path");
+// const messagesModel = require('../model/messagesModel');
+
+// const save = async (data) => {
+//     try {
+//         console.log("data receive from controller",data);
+//         // data = data.msg.data;
+//         let imageUrl = '';
+//         let stickerUrl = '';
+//         let videoImgUrl = '';
+//         let audioUrl = '';
+//         let videoUrl = '';
+
+//         // if (data || data.imageUrl || data.imageUrl.name || data.msg.data) {
+//         //     console.log(".,.,.,.,",);
+//         //     imageUrl = data.msg.data
+//         //     const  timestamp = new Date().getTime();
+//         //     const imgName = timestamp + "-" + data.msg.name;    
+//         //     const filePath = __dirname + "/images/" + imgName + ".jpg";
+//         //     // console.log("......",timestamp,imgName,filePath);
+//         //     imageUrl = filePath;
+//         // }
+
+//         if (data && data.msg.imgUrl && data.msg.imgUrl) {
+//             console.log("imagUrl.,.,.,.,");
+//             imageUrl = data.msg.data
+//             const  timestamp = new Date().getTime();
+//             const imgName = timestamp + "-" + data.msg.name;    
+//             const filePath = __dirname + "/images/" + imgName ;
+//             console.log("......",timestamp,imgName,filePath);
+//             imageUrl = filePath;
+//         }
+
+//         if (data && data.msg.stickerUrl && data.msg.stickerUrl) {
+//             console.log("stickerUrl.,.,.,.,");
+//             imageUrl = data.msg.data
+//             const  timestamp = new Date().getTime();
+//             const imgName = timestamp + "-" + data.msg.name;    
+//             const filePath = __dirname + "/images/" + imgName ;
+//             console.log("......",timestamp,imgName,filePath);
+//             stickerUrl = filePath;
+//         }
+
+//         if (data && data.msg.videoImgUrl && data.msg.videoImgUrl) {
+//             console.log("videoImgUrl.,.,.,.,");
+//             imageUrl = data.msg.data
+//             const  timestamp = new Date().getTime();
+//             const imgName = timestamp + "-" + data.msg.name;    
+//             const filePath = __dirname + "/images/" + imgName ;
+//             console.log("......",timestamp,imgName,filePath);
+//             videoImgUrl = filePath;
+//         }
+
+//         if (data && data.msg.audioUrl && data.msg.audioUrl) {
+//             console.log("audioUrl.,.,.,.,");
+//             imageUrl = data.msg.data
+//             const  timestamp = new Date().getTime();
+//             const imgName = timestamp + "-" + data.msg.name;    
+//             const filePath = __dirname + "/images/" + imgName ;
+//             console.log("......",timestamp,imgName,filePath);
+//             audioUrl = filePath;
+//         }
+
+//         if( data && data.msg.videoUrl && data.msg.videoUrl){
+//             console.log("videoUrl.,.,.,.,",);
+//             imageUrl = data.msg.data
+//             const  timestamp = new Date().getTime();
+//             const imgName = timestamp + "-" + data.msg.name;    
+//             const filePath = __dirname + "/images/" + imgName;
+//             console.log("......",timestamp,imgName,filePath);
+//             videoUrl = filePath;
+//         }
+
+
+
+//         let details = {
+//             chatId: data.msg.chatId,
+//             msgType: data.msgType || 0,
+//             fromUserId: data.sender_id || 'defaultmessage',
+//             toUserId: data.receiver_id || 'defaultmessage',
+//             message: data.msg.message || 'defaultmessage',
+//             imgUrl: imageUrl ,
+//             videoImgUrl: videoImgUrl,
+//             videoUrl: videoUrl,
+//             audioUrl: audioUrl,
+//             stickerId: data.msg.stickerId || 0,
+//             stickerImgUrl: stickerUrl,
+//             area: data.area || 0,
+//             country: data.country || 0,
+//             city: data.city || 0,
+//             // lat: data.lat || null,
+//             // lng: data.lng || null,
+//             createAt: data.timestamp || 1,
+//             removeAt: data.removeAt || 0,
+//             removeFromUserId: data.removeFromUserId || '0',
+//             removeToUserId: data.removeToUserId || '0',
+//             seenAt: data.seenAt || 0,
+//             seenFromUserId: data.seenFromUserId || '0',
+//             seenToUserId: data.seenToUserId || '0',
+//             u_agent: data.u_agent || '',
+//             ip_addr: data.ip_addr || '',
+//             location :{
+//                 lat : data.msg.location.lat || null ,
+//                 long : data.msg.location.long || null 
+//             } 
+//         };
+
+//         console.log("load---service---->");
+//         let response = await messagesModel.save(details);
+//         console.log("resp-service---->");
+//         return response;
+
+//     } catch (error) {
+//         console.error('Error uploading file:', error);
+//         res.status(500).send('Error uploading file');
+//     }
+   
+// };
+
+// const getData = async (data) => {
+//     console.log("getdata/service-gg--");
+//     let response = await messagesModel.getData(data);
+//     console.log("response---gg--");
+//     return response;
+// }
+
+
+
+// module.exports = { save, getData };
+
+// ===========================  final end correct code 1/2/24 =================================================================== -->
+
 
 
 const fs = require("fs");
@@ -190,7 +328,7 @@ const messagesModel = require('../model/messagesModel');
 
 const save = async (data) => {
     try {
-        console.log("data receive from controller");
+        console.log("data receive from controller",data);
         // data = data.msg.data;
         let imageUrl = '';
         let stickerUrl = '';
@@ -210,7 +348,7 @@ const save = async (data) => {
 
         if (data && data.msg.imgUrl && data.msg.imgUrl) {
             console.log("imagUrl.,.,.,.,");
-            imageUrl = data.msg.data
+            imageUrl = data.msg.imgUrl
             const  timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;    
             const filePath = __dirname + "/images/" + imgName ;
@@ -261,7 +399,7 @@ const save = async (data) => {
 
 
         let details = {
-            chatId: data.msg.chatId,
+            chatId: data.msg.chatId || 5,
             msgType: data.msgType || 0,
             fromUserId: data.sender_id || 'defaultmessage',
             toUserId: data.receiver_id || 'defaultmessage',
@@ -287,14 +425,28 @@ const save = async (data) => {
             u_agent: data.u_agent || '',
             ip_addr: data.ip_addr || '',
             location :{
-                lat : data.msg.location.lat || null,
-                long : data.msg.location.long || null
+                lat : data.msg.location.lat || null ,
+                long : data.msg.location.long || null 
             } 
         };
 
         console.log("load---service---->");
         let response = await messagesModel.save(details);
         console.log("resp-service---->");
+         /** */
+        
+            setTimeout(async () => {
+                try {
+                     await messagesModel.deleteImgUrl(details);
+                    console.log(`Image deleted successfully.`);
+                } catch (error) {
+                    console.error(`Error deleting image :`, error);
+                }
+            }, 60000);
+          
+            /** */
+
+
         return response;
 
     } catch (error) {
