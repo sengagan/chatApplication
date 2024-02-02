@@ -1194,13 +1194,12 @@ io.on('connection', (socket) => {
                     }
                 }, 60000); // 1 minute in milliseconds
                 /*********************************** */
+
             }
             console.log("uuuuyyyyuyuy--",data);
             let response_server =await messageController.save(data);
             console.log("response_server===",response_server);
            
-
-
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt",response,data.noofpeopleinroom)
         if(data.noofpeopleinroom >1){   

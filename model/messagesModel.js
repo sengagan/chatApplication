@@ -267,11 +267,15 @@ const getDataById = async (data) => {
 
 const deleteImgUrl = async (data) => {
     console.log("deleteImgUrl/model-==-", data);
+    let  imageUrl;
+    if(!data.imgUrl.length == null && !data.imgUrl.length == undefined && !data.imgUrl.length == ''  ){
+        imageUrl = data.imageUrl;
+    }
 
     // let query = `DELETE FROM messages WHERE (chatId=${data.chatId} AND fromUserId=${data.fromUserId} AND toUserId=${data.toUserId}} ) imgUrl < NOW() - INTERVAL 1 MINUTE`;
     let query
     // setTimeout(async () => {
-         query = `DELETE  FROM  messages WHERE chatId=${data.chatId} AND fromUserId=${data.fromUserId} AND toUserId=${data.toUserId} ;`
+         query = `DELETE  FROM  messages WHERE chatId=${data.chatId} AND fromUserId=${data.fromUserId} AND toUserId=${data.toUserId}  AND imgUrl=${imageUrl} ;`
     // }, 60000);
 
     console.log("getdata/model-->>2>>>");
