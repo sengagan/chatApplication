@@ -188,7 +188,7 @@ const getData = async (data) => {
                 reject (error)
             }else{
                 console.log("result-model-0-get--");
-                resolve (true)
+                resolve (result)
             }
         })
     })
