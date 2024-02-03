@@ -302,7 +302,7 @@
 //         console.error('Error uploading file:', error);
 //         res.status(500).send('Error uploading file');
 //     }
-   
+
 // };
 
 // const getData = async (data) => {
@@ -325,10 +325,11 @@ const express = require('express');
 const multer = require("multer");
 const path = require("path");
 const messagesModel = require('../model/messagesModel');
+const { log } = require("console");
 
 const save = async (data) => {
     try {
-        console.log("data receive from controller",data);
+        console.log("data receive from controller", data);
         // data = data.msg.data;
         let imageUrl = '';
         let stickerUrl = '';
@@ -349,50 +350,50 @@ const save = async (data) => {
         if (data && data.msg.imageUrl && data.msg.imageUrl) {
             console.log("imagUrl.,.,.,.,");
             imageUrl = data.msg.imageUrl
-            const  timestamp = new Date().getTime();
-            const imgName = timestamp + "-" + data.msg.name;    
-            const filePath = __dirname + "/images/" + imgName ;
-            console.log("......",timestamp,imgName,filePath);
+            const timestamp = new Date().getTime();
+            const imgName = timestamp + "-" + data.msg.name;
+            const filePath = __dirname + "/images/" + imgName;
+            console.log("......", timestamp, imgName, filePath);
             imageUrl = filePath;
         }
 
         if (data && data.msg.stickerUrl && data.msg.stickerUrl) {
             console.log("stickerUrl.,.,.,.,");
             imageUrl = data.msg.data
-            const  timestamp = new Date().getTime();
-            const imgName = timestamp + "-" + data.msg.name;    
-            const filePath = __dirname + "/images/" + imgName ;
-            console.log("......",timestamp,imgName,filePath);
+            const timestamp = new Date().getTime();
+            const imgName = timestamp + "-" + data.msg.name;
+            const filePath = __dirname + "/images/" + imgName;
+            console.log("......", timestamp, imgName, filePath);
             stickerUrl = filePath;
         }
 
         if (data && data.msg.videoImgUrl && data.msg.videoImgUrl) {
             console.log("videoImgUrl.,.,.,.,");
             imageUrl = data.msg.data
-            const  timestamp = new Date().getTime();
-            const imgName = timestamp + "-" + data.msg.name;    
-            const filePath = __dirname + "/images/" + imgName ;
-            console.log("......",timestamp,imgName,filePath);
+            const timestamp = new Date().getTime();
+            const imgName = timestamp + "-" + data.msg.name;
+            const filePath = __dirname + "/images/" + imgName;
+            console.log("......", timestamp, imgName, filePath);
             videoImgUrl = filePath;
         }
 
         if (data && data.msg.audioUrl && data.msg.audioUrl) {
             console.log("audioUrl.,.,.,.,");
             imageUrl = data.msg.data
-            const  timestamp = new Date().getTime();
-            const imgName = timestamp + "-" + data.msg.name;    
-            const filePath = __dirname + "/images/" + imgName ;
-            console.log("......",timestamp,imgName,filePath);
+            const timestamp = new Date().getTime();
+            const imgName = timestamp + "-" + data.msg.name;
+            const filePath = __dirname + "/images/" + imgName;
+            console.log("......", timestamp, imgName, filePath);
             audioUrl = filePath;
         }
 
-        if( data && data.msg.videoUrl && data.msg.videoUrl){
+        if (data && data.msg.videoUrl && data.msg.videoUrl) {
             console.log("videoUrl.,.,.,.,",);
             imageUrl = data.msg.data
-            const  timestamp = new Date().getTime();
-            const imgName = timestamp + "-" + data.msg.name;    
+            const timestamp = new Date().getTime();
+            const imgName = timestamp + "-" + data.msg.name;
             const filePath = __dirname + "/images/" + imgName;
-            console.log("......",timestamp,imgName,filePath);
+            console.log("......", timestamp, imgName, filePath);
             videoUrl = filePath;
         }
 
@@ -404,7 +405,7 @@ const save = async (data) => {
             fromUserId: data.sender_id || 'defaultmessage',
             toUserId: data.receiver_id || 'defaultmessage',
             message: data.msg.message || 'defaultmessage',
-            imgUrl: imageUrl ,
+            imgUrl: imageUrl,
             videoImgUrl: videoImgUrl,
             videoUrl: videoUrl,
             audioUrl: audioUrl,
@@ -432,20 +433,20 @@ const save = async (data) => {
 
         console.log("load---service---->");
         let response = await messagesModel.save(details);
-        console.log("resp-service---->",response);
-         /** */
-        if(data.expiryImage == 1){
-          const  imageUrlPath = details.imgUrl;
+        console.log("resp-service---->", response);
+        /** */
+        if (data.expiryImage == 1) {
+            const imageUrlPath = details.imgUrl;
             setTimeout(async () => {
                 try {
-                     await messagesModel.deleteImgUrl(details);
+                    await messagesModel.deleteImgUrl(details);
                     console.log(`Image deleted successfully.`);
                 } catch (error) {
                     console.error(`Error deleting image :`, error);
                 }
-            },300000);
+            }, 60000);
         }
-            /** */
+        /** */
 
 
         return response;
@@ -454,7 +455,7 @@ const save = async (data) => {
         console.error('Error uploading file:', error);
         res.status(500).send('Error uploading file');
     }
-   
+
 };
 
 const getData = async (data) => {
@@ -464,22 +465,74 @@ const getData = async (data) => {
     return response;
 }
 
-const savePhrases = async(details)=>{
+const savePhrases = async (details) => {
     let data = {
         text: details.text,
-        id: details.id 
+        id: details.id
     };
-    console.log("data---->",data);
+    console.log("data---->", data);
     let response = await messagesModel.savePhrases(data);
-    console.log("resp-service---->",response);
+    console.log("resp-service---->", response);
     return response;
 }
 
-const getPhrasesById = async(data)=>{
+const getPhrasesById = async (data) => {
     // console.log("getdata/service-gg--");
     let response = await messagesModel.getPhrasesById(data);
     // console.log("response---gg--");
     return response;
 }
 
-module.exports = { save, getData,savePhrases ,getPhrasesById };
+/********************************************** */
+const createGallery = async (details) => {
+    console.log("createGalleryservices-->>>>");
+    let data = {
+        user_id: details.user_id,
+        image: details.image
+    };
+    const fs = require("fs").promises;
+    var timestamp = new Date().getTime();
+    // var imgName = timestamp + "-" + data.msg.name ;
+    const filePath = __dirname + "/../photo/" + timestamp + ".jpg";
+    let base64Data;
+    if (data.image.includes('data:image/jpeg;base64,')) {
+        base64Data = data.image.split(';base64,').pop();
+    } else {
+        base64Data = data.image;
+    }
+    const buffer = Buffer.from(base64Data, 'base64');
+    await fs.writeFile(filePath, buffer);
+    let response = await messagesModel.createGallery(data.user_id,filePath);
+    return response;
+}
+
+const readGallery = async (user_id) => {
+    console.log("readGallery services-->>>>");
+    let response = await messagesModel.readGallery(user_id);
+    console.log("response", response);
+    return response;
+
+}
+const updateGallery = async (data) => {
+    console.log("updateGallery services-->>>>");
+    let response = await messagesModel.updateGallery(data);
+    console.log("response", response);
+
+    return response;
+
+}
+const deleteGallery = async (user_id) => {
+    console.log("deleteGallery services-->>>>")
+    let getData = await messagesModel.readGallery(user_id)
+    console.log("getData",getData);
+    let path =getData[0].imgUrl;
+    console.log("path",path);
+    await fs.unlink(path);
+    // let response = await messagesModel.deleteGallery(user_id);
+    // console.log("response", response);
+
+    return response;
+
+}
+/**********************************************/
+module.exports = { save, getData, savePhrases, getPhrasesById, createGallery, readGallery, updateGallery, deleteGallery };

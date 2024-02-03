@@ -12,18 +12,6 @@ const comman = async (schema, data) => {
     return response;
 }
 
-// const filecomman = async(schema,file)=>{
-// let response={
-//     status:null,
-//     message:null
-// }
-// let validate=schema.validate(file);
-// if(validate && validate.error && validate.error.details){
-//     response.status="ERROR";
-//     response.message="file select file"
-// }
-// return response
-// }
 
 const commanPhrases = async (schema, details) => {
     let response = {
@@ -38,4 +26,18 @@ const commanPhrases = async (schema, details) => {
     return response;
 }
 
-module.exports = { comman , commanPhrases }
+
+const filecomman = async(schema,image)=>{
+    let response = {
+        status: null,
+        message: null
+    }
+    let validate = schema.validate(image);
+    if (validate && validate.error && validate.error.details) {
+        response.status = "ERROR";
+        response.message = "please select file";
+    }
+    return response;
+}
+
+module.exports = { comman , commanPhrases , filecomman }

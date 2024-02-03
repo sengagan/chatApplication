@@ -1041,11 +1041,11 @@
 //         }
 //         console.log("seenStatus",seenStatus);
 //         // const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };
-                                                           
+
 //         const msg = { ...data.msg,"chatId":data.msg.chatId,"seenStatus":seenStatus };
 
 //         io.to(data.msg.chatId).emit('message', msg);
-          
+
 //             console.log('Response from server:');
 //         } catch (error) {
 //             console.error('Error in newchat:', error);
@@ -1063,38 +1063,38 @@
 //         }
 //     });
 
-    
-   
+
+
 //     const fs = require("fs").promises;
 //     const path = require("path");
-    
+
 //     socket.on('joinRoom', async (room) => {
 //         console.log("room====>>>>", room);
 //         socket.join(room);
 //         console.log("roomjoin-",room);
 //         updateNumberOfPeopleInRoom(room);
 //     });
-    
+
 //     socket.on('leaveRoom', async (room) => {
 //         console.log("room====>>>>", room);
 //         socket.leave(room);
 //         console.log("roomleave-",room);
 //         updateNumberOfPeopleInRoom(room);
 //     });
-    
+
 //     function updateNumberOfPeopleInRoom(room) {
 //         console.log("room==",room);
 //         const roomMembers = io.sockets.adapter.rooms.get(room);
 //         console.log("roomMembers-------",roomMembers);
 //         const numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
 //         console.log(`Number of people in room ${room}: ${numberOfPeopleInRoom}`);
-    
+
 //         // Emit the updated number of people to all clients in the room
 //         io.to(room).emit('numberOfPeopleInRoom', { numberOfPeopleInRoom });
-    
+
 //         console.log("Updated number of people in room sent to clients");
 //     }
-    
+
 
 
 //     socket.on('disconnect', () => {
@@ -1109,10 +1109,10 @@
 //         });
 //     });
 // });
- 
+
 // ===========================  final end correct code 1/2/24 ===================================================================
 
-   
+
 'use strict';
 const dotenv = require('dotenv').config()
 const express = require('express');
@@ -1138,7 +1138,7 @@ app.get('/', (req, res) => {
 });
 
 const userRouter = require("./Routes/messageRouter");
-app.use("/route",userRouter);
+app.use("/route", userRouter);
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
@@ -1155,10 +1155,10 @@ io.on('connection', (socket) => {
 
     socket.on('markMessagesAsSeen', async (data) => {
         try {
-            console.log("seen-----",data);      // jab user2 seen karega tb update hoga aur get api chalegi
+            console.log("seen-----", data);      // jab user2 seen karega tb update hoga aur get api chalegi
             await messageModel.markMessagesAsSeen(data);
             let response = await messageModel.getDataById(data.id)
-            console.log("response/seen/server",response);
+            console.log("response/seen/server", response);
             io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id, response });
         } catch (error) {
             console.error('Error marking messages as seen:', error);
@@ -1184,58 +1184,51 @@ io.on('connection', (socket) => {
                 const buffer = Buffer.from(base64Data, 'base64');
                 await fs.writeFile(filePath, buffer);
                 /****************************** */
-                if(data.expiryImage == '1'){
-                    console.log("data.expiryImage",data.expiryImage);
-                setTimeout(async () => {
-                    try {
-                        // Delete the image file
-                        await fs.unlink(filePath);
-                        console.log(`Image ${imgName} deleted successfully.`);
-                    } catch (error) {
-                        console.error(`Error deleting image ${imgName}:`, error);
-                    }
-                }, 300000); // 1 minute in milliseconds
-            }
+                if (data.expiryImage == '1') {
+                    console.log("data.expiryImage", data.expiryImage);
+                    setTimeout(async () => {
+                        try {
+                            // Delete the image file
+                            await fs.unlink(filePath);
+                            console.log(`Image ${imgName} deleted successfully.`);
+                        } catch (error) {
+                            console.error(`Error deleting image ${imgName}:`, error);
+                        }
+                    },60000); // 1 minute in milliseconds
+                }
                 /*********************************** */
 
             }
             console.log("uuuuyyyyuyuy--");
-            let response_server =await messageController.save(data);
-            console.log("response_server===",response_server);
-           
+            let response_server = await messageController.save(data);
+            console.log("response_server===");
             let response = await messageModel.getDataWithRoom(data)
-            console.log("responSeenAt",response,data.noofpeopleinroom)
-        if(data.noofpeopleinroom >1){   
-            let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
-            console.log("updateResponse==",updateResponse);
-        }  
-/******************* */
-        let updateOne = await messageModel.updateOne(response);       //jab userone ho
-        console.log("updateOne==",updateOne);                           // extra code
-
-/******************* */
-
-        let getData = await messageModel.getDataById(response[0].id);
-/** */
-        if(getData[0].seenFromUserId == 1 && getData[0].seenToUserId == 1 ){
-            getData[0].seenAt = '1'
-        }
-        console.log("getdata[0].seenAt",getData[0].seenAt);
-/** */
-
-        console.log("getData=====;;;",getData,data.msg.chatId);
-        let seenStatus = {
-            seenAt:getData[0].seenAt,
-            seenFromUserId:getData[0].seenFromUserId,
-            seenToUserId:getData[0].seenToUserId
-        }
-        console.log("seenStatus",seenStatus);
-        // const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };
-                                                           
-        const msg = { ...data.msg,"chatId":data.msg.chatId,"seenStatus":seenStatus };
-
-        io.to(data.msg.chatId).emit('message', msg);
-          
+            console.log("responSeenAt")
+            if (data.noofpeopleinroom > 1) {
+                let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
+                console.log("updateResponse==");
+            }
+            /******************* */
+            let updateOne = await messageModel.updateOne(response);       //jab userone ho
+            console.log("updateOne==", updateOne);                           // extra code
+            /******************* */
+            let getData = await messageModel.getDataById(response[0].id);
+            /** */
+            if (getData[0].seenFromUserId == 1 && getData[0].seenToUserId == 1) {
+                getData[0].seenAt = '1'
+            }
+            console.log("getdata[0].seenAt");
+            /** */
+            console.log("getData=====;;;");
+            let seenStatus = {
+                seenAt: getData[0].seenAt,
+                seenFromUserId: getData[0].seenFromUserId,
+                seenToUserId: getData[0].seenToUserId
+            }
+            console.log("seenStatus");
+            // const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };                                                 
+            const msg = { ...data.msg, "chatId": data.msg.chatId, "seenStatus": seenStatus };
+            io.to(data.msg.chatId).emit('message', msg);
             console.log('Response from server:');
         } catch (error) {
             console.error('Error in newchat:', error);
@@ -1246,7 +1239,7 @@ io.on('connection', (socket) => {
         console.log('receive existschat data from client');
         try {
             let get_data = await messageController.getData(data);
-            console.log("getdata/server----")
+            console.log("getdata/server----",get_data)
             socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
         } catch (error) {
             console.error(error);
@@ -1255,35 +1248,31 @@ io.on('connection', (socket) => {
 
     const fs = require("fs").promises;
     const path = require("path");
-    
+
     socket.on('joinRoom', async (room) => {
         console.log("room====>>>>", room);
         socket.join(room);
-        console.log("roomjoin-",room);
+        console.log("roomjoin-", room);
         updateNumberOfPeopleInRoom(room);
     });
-    
+
     socket.on('leaveRoom', async (room) => {
         console.log("room====>>>>", room);
         socket.leave(room);
-        console.log("roomleave-",room);
+        console.log("roomleave-", room);
         updateNumberOfPeopleInRoom(room);
     });
-    
+
     function updateNumberOfPeopleInRoom(room) {
-        console.log("room==",room);
+        console.log("room==", room);
         const roomMembers = io.sockets.adapter.rooms.get(room);
-        console.log("roomMembers-------",roomMembers);
+        console.log("roomMembers-------", roomMembers);
         const numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
         console.log(`Number of people in room ${room}: ${numberOfPeopleInRoom}`);
-    
         // Emit the updated number of people to all clients in the room
         io.to(room).emit('numberOfPeopleInRoom', { numberOfPeopleInRoom });
-    
         console.log("Updated number of people in room sent to clients");
     }
-    
-
 
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);

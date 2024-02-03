@@ -140,8 +140,8 @@ const { connection } = require('../database/mysqlConnection');
 const save = async (details) => {
     console.log("receive data from service", details);
 
-    // var lat = details.location.lat || null;
-    // var lng = details.location.long || null;
+    var lat = details.location.lat || null;
+    var lng = details.location.long || null;
 
     console.log("location/model");
 
@@ -170,17 +170,28 @@ const getData = async (data) => {
               OR (fromUserId = ${data.receiver_id} AND toUserId = ${data.sender_id})
               ORDER BY id ASC`;
     console.log("getdata/model-->>2>>>");
-    return new Promise((resolve, reject) => {
-        connection.query(query, (error, result) => {
-            if (error) {
+    // return new Promise((resolve, reject) => {
+    //     connection.query(query, (error, result) => {
+    //         if (error) {
+    //             console.error("Error executing query:", error);
+    //             reject("Error executing query");
+    //         } else {
+    //             console.log("result-model-0-get--");
+    //             resolve(result);
+    //         }
+    //     });
+    // });
+    return new Promise(await function(resolve,reject){
+        connection.query(query,function(error,result){
+            if(error){
                 console.error("Error executing query:", error);
-                reject("Error executing query");
-            } else {
+                reject (error)
+            }else{
                 console.log("result-model-0-get--");
-                resolve(result);
+                resolve (true)
             }
-        });
-    });
+        })
+    })
 };
 
 
@@ -323,7 +334,58 @@ const getPhrasesById = async(details)=>{
     });
 }
 
-module.exports = { save, getData, markMessagesAsSeen, getDataById, getDataWithRoom, updateOne, deleteImgUrl , savePhrases , getPhrasesById };
+/********************************************* */
+const createGallery = async(user_id,imagePath)=>{
+   
+    let query = `INSERT INTO gallery (user_id, imgUrl) VALUES (${user_id}, '${imagePath}')`;
+    return new Promise((resolve, reject) => {
+        connection.query(query, (error, result) => {
+            if (error) {
+                console.error("Error executing query:", error);
+                reject("Error executing query",error);
+            } else {
+                console.log("result-savePhrases-0-get--",result);
+                resolve(result);
+            }
+        });
+    });
+}
+
+
+const readGallery = async(user_id)=>{
+   
+    let query = `SELECT * FROM gallery WHERE user_id=${user_id}`;
+    return new Promise((resolve, reject) => {
+        connection.query(query, (error, result) => {
+            if (error) {
+                console.error("Error executing query:", error);
+                reject("Error executing query",error);
+            } else {
+                console.log("result-savePhrases-0-get--",result);
+                resolve(result);
+            }
+        });
+    });
+}
+
+
+const deleteGallery = async(user_id)=>{
+    console.log("user_id",user_id);
+    let query = `DELETE FROM gallery WHERE user_id='${user_id}'`;
+    return new Promise((resolve, reject) => {
+        connection.query(query, (error, result) => {
+            if (error) {
+                console.error("Error executing query:", error);
+                reject("Error executing query",error);
+            } else {
+                console.log("result-savePhrases-0-get--",result);
+                resolve(result);
+            }
+        });
+    });
+}
+
+module.exports = { save, getData, markMessagesAsSeen, getDataById, getDataWithRoom, updateOne, deleteImgUrl , savePhrases , getPhrasesById,createGallery,readGallery ,deleteGallery};
 
 
 

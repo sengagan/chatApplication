@@ -44,5 +44,34 @@ const savePhrases = async(details)=>{
     return response;
 
 }
+/********************************************** */
+const createGallery = async(data)=>{
+    let schema=joi.object({
+        user_id:joi.number().required(),
+        image:joi.string().required()
+    })
+    let response= await comman.commanPhrases(schema, data);
+    // if(response.message == '"image" is not allowed' || response.message == null){
+    //     schema= joi.object({
+    //         image:joi.any().required(),
+    //     });
+    //     response = await comman.filecomman(schema,image);
+    // };   
+    return response;
+}
 
-module.exports = {save , savePhrases }
+const updateGallery = async()=>{
+    let schema=joi.object({
+        user_id:joi.number().required(),
+    })
+    let response= await comman.commanPhrases(schema, req.body);
+    if(response.message == '"image" is not allowed' || response.message == null){
+        schema= joi.object({
+            image:joi.any().required(),
+        });
+        response = await comman.filecomman(schema, req.files);
+    };   
+    return response;
+}
+
+module.exports = {save , savePhrases ,createGallery , updateGallery }
