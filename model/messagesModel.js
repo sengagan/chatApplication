@@ -197,7 +197,6 @@ const getData = async (data) => {
 
 const getDataWithRoom = async (data) => {
     console.log("getdata/model-==-", data);
-
     let query = `SELECT * FROM messages
               WHERE (fromUserId = ${data.sender_id} AND toUserId = ${data.receiver_id} AND chatId = ${data.msg.chatId})
               OR (fromUserId = ${data.receiver_id} AND toUserId = ${data.sender_id} AND chatId = ${data.msg.chatId})

@@ -402,9 +402,9 @@ const save = async (data) => {
         let details = {
             chatId: data.msg.chatId || 5,
             msgType: data.msgType || 0,
-            fromUserId: data.sender_id || 'defaultmessage',
-            toUserId: data.receiver_id || 'defaultmessage',
-            message: data.msg.message || 'defaultmessage',
+            fromUserId: data.sender_id ,
+            toUserId: data.receiver_id ,
+            message: data.msg.message ,
             imgUrl: imageUrl,
             videoImgUrl: videoImgUrl,
             videoUrl: videoUrl,
@@ -425,10 +425,10 @@ const save = async (data) => {
             seenToUserId: data.seenToUserId || '0',
             u_agent: data.u_agent || '',
             ip_addr: data.ip_addr || '',
-            // location :{
-            //     lat : data.msg.location.lat || null  ,
-            //     long : data.msg.location.long || null  
-            // } 
+            location :{
+                lat : data.msg.location.lat || null  ,
+                long : data.msg.location.long || null  
+            } 
         };
 
         console.log("load---service---->");

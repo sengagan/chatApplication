@@ -1248,7 +1248,6 @@ io.on('connection', (socket) => {
 
     const fs = require("fs").promises;
     const path = require("path");
-
     socket.on('joinRoom', async (room) => {
         console.log("room====>>>>", room);
         socket.join(room);
