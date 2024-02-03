@@ -140,8 +140,8 @@ const { connection } = require('../database/mysqlConnection');
 const save = async (details) => {
     console.log("receive data from service", details);
 
-    var lat = details.location.lat || null;
-    var lng = details.location.long || null;
+    // var lat = details.location.lat || null;
+    // var lng = details.location.long || null;
 
     console.log("location/model");
 
