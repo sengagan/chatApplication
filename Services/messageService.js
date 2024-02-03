@@ -490,7 +490,7 @@ const createGallery = async (details) => {
         user_id: details.user_id,
         image: details.image
     };
-    const fs = require("fs").promises;
+
     var timestamp = new Date().getTime();
     // var imgName = timestamp + "-" + data.msg.name ;
     const filePath = __dirname + "/../photo/" + timestamp + ".jpg";
@@ -500,9 +500,14 @@ const createGallery = async (details) => {
     } else {
         base64Data = data.image;
     }
+
+    // var bs64 = base64.encode(isUtf8.encode());
+    // Uint8List decodedImage = base64.decode(bs64);
+    // Image.memory(decodedImage)
+    const fs = require("fs").promises;
     const buffer = Buffer.from(base64Data, 'base64');
     await fs.writeFile(filePath, buffer);
-    let response = await messagesModel.createGallery(data.user_id,filePath);
+    let response = await messagesModel.createGallery(data.user_id, filePath);
     return response;
 }
 
@@ -511,28 +516,148 @@ const readGallery = async (user_id) => {
     let response = await messagesModel.readGallery(user_id);
     console.log("response", response);
     return response;
-
 }
-const updateGallery = async (data) => {
-    console.log("updateGallery services-->>>>");
-    let response = await messagesModel.updateGallery(data);
-    console.log("response", response);
 
-    return response;
+// const deleteGallery = async (user_id) => {
+//     console.log("deleteGallery services-->>>>")
+//     let getData = await messagesModel.readGallery(user_id)
+//     console.log("getData",getData);
+//     let path =getData[0].imgUrl;
+//     console.log("path",path);
+//     await fs.unlink(path);
+//     // let response = await messagesModel.deleteGallery(user_id);
+//     // console.log("response", response);
 
-}
+//     return response;
+// }
+
+
+const util = require('util');
+const { isUtf8 } = require("buffer");
+const unlinkAsync = util.promisify(fs.unlink);
+
 const deleteGallery = async (user_id) => {
-    console.log("deleteGallery services-->>>>")
-    let getData = await messagesModel.readGallery(user_id)
-    console.log("getData",getData);
-    let path =getData[0].imgUrl;
-    console.log("path",path);
-    await fs.unlink(path);
-    // let response = await messagesModel.deleteGallery(user_id);
+    console.log("deleteGallery services-->>>>");
+    try {
+        let getData = await messagesModel.readGallery(user_id);
+        console.log("getData", getData);
+        if (getData && getData.length > 0) {
+            let path = getData[0].imgUrl;
+            console.log("path", path);
+            await unlinkAsync(path);
+            let response = await messagesModel.deleteGallery(user_id);
+            console.log("response", response);
+            return response;
+        } else {
+            console.log("No data found for user_id:", user_id);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error in deleteGallery:", error);
+        throw error;
+    }
+};
+
+const updateGallery = async (details) => {
+    console.log("updateGallery services-->>>>");
+    // let response = await messagesModel.updateGallery(data);
     // console.log("response", response);
+    // return response;
+    let data = {
+        user_id: details.user_id,
+        image: details.image
+    };
+    let getData = await messagesModel.readGallery(data.user_id);
+    let path;
+    if (getData && getData.length > 0) {
+        path = getData[0].imgUrl;
+        // console.log("Deleting old image:", path);
+        await unlinkAsync(path);
+    } else {
+        console.log("No data found for user_id:", data.user_id);
+    }
+    // console.log("oldpath",path);
+    const fs = require('fs').promises;
+    var timestamp = new Date().getTime();
+    const filePath = __dirname + "/../photo/" + timestamp + ".jpg";
+    let base64Data;
+    if (data.image.includes('data:image/jpeg;base64,')) {
+        base64Data = data.image.split(';base64,').pop();
+    } else {
+        base64Data = data.image;
+    }
+    const buffer = Buffer.from(base64Data, 'base64');
+    // console.log("buffer/filepath",filePath,buffer);
+    await fs.writeFile(filePath, buffer, "binary");
 
+    let updateData = {
+        user_id: data.user_id,
+        oldImgUrl: path,
+        newImgUrl: filePath
+    }
+
+    let response = await messagesModel.updateGallery(updateData);
+    // console.log("updateGallery response", response);
     return response;
-
 }
+
 /**********************************************/
-module.exports = { save, getData, savePhrases, getPhrasesById, createGallery, readGallery, updateGallery, deleteGallery };
+
+// const multipleImage = async (req, res) => {
+//     let details = {
+//         chatId: req.body.chatId,
+//         fromUserId: req.body.fromUserId,
+//         toUserId: req.body.toUserId,
+//         imgUrl: req.body.imgUrl,
+//         seenAt: req.body.seenAt || 0,
+//         seenFromUserId: req.body.seenFromUserId || '0',
+//         seenToUserId: req.body.seenToUserId || '0',
+//     }
+//     console.log("details/service");
+//     let file = details.imgUrl;
+//     console.log("updateGallery services-->>>>",file);
+//     if (file.length ) {
+//         console.log("file");
+//         await messagesModel.multipleImage(file,details);
+//     } else {
+//         for (let i = 0; i < file.length; i++) {
+//             console.log("filelength", file[i]);
+//             await messagesModel.multipleImage(file[i],details);
+//         }
+//     }
+//     return true
+// }
+
+const multipleImage = async (req, res) => {
+    try {
+        const details = {
+            chatId: req.body.chatId,
+            fromUserId: req.body.fromUserId,
+            toUserId: req.body.toUserId,
+            imgUrl: req.body.imgUrl,
+            seenAt: req.body.seenAt || 0,
+            seenFromUserId: req.body.seenFromUserId || '0',
+            seenToUserId: req.body.seenToUserId || '0',
+        };
+
+        console.log("details/service", details);
+
+        const files = Array.isArray(details.imgUrl) ? details.imgUrl : [details.imgUrl];
+        console.log("updateGallery services-->>>>", files);
+
+        const maxImagesToSave = 6;
+
+        for (let i = 0; i < Math.min(files.length, maxImagesToSave); i++) {
+            console.log("filelength", files[i]);
+            await messagesModel.multipleImage(files[i], details);
+        }
+
+        return true
+    } catch (error) {
+        console.error("Error in multipleImage:", error);
+        res.status(500).json({ success: false, error: "Internal Server Error" });
+    }
+};
+
+
+module.exports = { save, getData, savePhrases, getPhrasesById, createGallery, readGallery, updateGallery, deleteGallery, multipleImage };

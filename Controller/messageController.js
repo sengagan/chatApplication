@@ -94,13 +94,29 @@ const readGallery = async (req, res) => {
     res.status(200).json({ "data": response });
 }
 const updateGallery = async (req, res) => {
-    console.log("updateGallery-controller->>>>");
-    let data =req.body;
-    let response = await messageServices.updateGallery(data);
-    console.log('response controller:', response);
-    res.status(200).json({ "data": "image save successfully" });
-
+    // let data =req.body;
+    // console.log("updateGallery-controller->>>>",data);
+    // let response = await messageServices.updateGallery(data);
+    // console.log('response controller:', response);
+    // res.status(200).json({ "data": "image save successfully" });
+    try {
+        const data = req.body;
+        
+        console.log("createGallery-controller->>>>");
+        let validate = await messageValidation.updateGallery(data);
+        console.log('validate', validate);
+        if (validate.status === 'ERROR') {
+            return res.status(400).json({ error: validate.message });
+        }
+        let response = await messageServices.updateGallery(data);
+        console.log('response controller:', response);
+        return res.status(200).json({ data: "image saved successfully" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 }
+
 const deleteGallery = async (req, res) => {
     let user_id = req.body.user_id;
     console.log("readGallery-controller->>>>",user_id);
@@ -109,4 +125,24 @@ const deleteGallery = async (req, res) => {
     res.status(200).json({ "data": response });
 }
 /*******************************************************/
-module.exports = { save, getData, savePhrases, getPhrasesById, createGallery, readGallery, updateGallery, deleteGallery };
+
+const multipleImage = async(req,res)=>{
+    let image = req.body;
+    console.log("multipleImage from server:",image);
+        try {
+            let validate = await messageValidation.multipleImage(req.body);
+            console.log('validate',validate);
+            if (validate.status === 'ERROR') {
+                return reject({ status: 400, error: validate.message });
+            }
+            let response = await messageServices.multipleImage(req,res);
+            console.log('response controller:',response);
+            res.status(200).json({ "data": "created " });
+        } catch (error) {
+            res.status(200).json({ "error": error });
+        }
+}
+
+module.exports = { save, getData, savePhrases, getPhrasesById, createGallery, readGallery, updateGallery, deleteGallery ,multipleImage};
+
+

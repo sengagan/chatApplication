@@ -204,8 +204,10 @@ const getDataWithRoom = async (data) => {
               ORDER BY id DESC
               LIMIT 1`;
     console.log("getdata/model-->>2>>>");
-    return new Promise((resolve, reject) => {
-        connection.query(query, (error, result) => {
+    // return new Promise((resolve, reject) => {
+    //     connection.query(query, (error, result) => {
+        return new Promise(await function(resolve,reject){
+            connection.query(query,function(error,result){
             if (error) {
                 console.error("Error executing query:", error);
                 reject("Error executing query");
@@ -220,8 +222,8 @@ const getDataWithRoom = async (data) => {
 const markMessagesAsSeen = async (data) => {       //update
     console.log("data/mark==", data);
     let query = `UPDATE messages SET seenAt = '1', seenFromUserId = '1',seenToUserId = '1' WHERE id = ${data} AND seenAt = '0'`;
-    return new Promise((resolve, reject) => {
-        connection.query(query, (error, result) => {
+        return new Promise(await function(resolve,reject){
+            connection.query(query,function(error,result){
             if (error) {
                 console.error("Error executing query:", error);
                 reject("Error executing query");
@@ -238,8 +240,8 @@ const updateOne = async (data) => {       //update  extra              // room a
     // let query = `UPDATE messages SET  seenFromUserId = '1'  WHERE id = ${data[0].id} AND seenAt = '0' `;
     let query = `UPDATE messages SET  seenFromUserId = '1'  WHERE id <= ${data[0].id} AND seenAt = '0' AND (fromUserId=${data, data[0].fromUserId} AND toUserId=${data, data[0].toUserId} ) `;
 
-    return new Promise((resolve, reject) => {
-        connection.query(query, (error, result) => {
+        return new Promise(await function(resolve,reject){
+            connection.query(query,function(error,result){
             if (error) {
                 console.error("Error executing query:", error);
                 reject("Error executing query");
@@ -262,8 +264,8 @@ const getDataById = async (data) => {
     //           OR (fromUserId = ${data.receiver_id} AND toUserId = ${data.sender_id})
     //           ORDER BY id ASC`;
     console.log("getdata/model-->>2>>>");
-    return new Promise((resolve, reject) => {
-        connection.query(query, (error, result) => {
+        return new Promise(await function(resolve,reject){
+            connection.query(query,function(error,result){
             if (error) {
                 console.error("Error executing query:", error);
                 reject("Error executing query");
@@ -277,17 +279,12 @@ const getDataById = async (data) => {
 
 const deleteImgUrl = async (data) => {
     console.log("deleteImgUrl/model-==-", data);
-
-    // Use a parameterized query to avoid SQL injection
     let query = `
         DELETE FROM messages
         WHERE chatId = ? AND fromUserId = ? AND toUserId = ? AND imgUrl = ? AND imgUrl < NOW() - INTERVAL 1 MINUTE;
     `;
-
     console.log("-=-=-=-", data.chatId, data.fromUserId, data.toUserId, data.imgUrl);
-
     console.log("getdata/model-->>2>>>");
-
     return new Promise((resolve, reject) => {
         connection.query(query, [data.chatId, data.fromUserId, data.toUserId, data.imgUrl], (error, result) => {
             if (error) {
@@ -305,13 +302,13 @@ const deleteImgUrl = async (data) => {
 const savePhrases = async(details)=>{
     console.log("details/savephrases=",details);
     let query = `INSERT INTO phrases (user_id,text) VALUE  ('${details.id}','${details.text}')`
-    return new Promise((resolve, reject) => {
-        connection.query(query, (error, result) => {
+        return new Promise(await function(resolve,reject){
+            connection.query(query,function(error,result){
             if (error) {
-                // console.error("Error executing query:", error);
+                console.error("Error executing query:", error);
                 reject("Error executing query",error);
             } else {
-                // console.log("result-savePhrases-0-get--");
+                console.log("result-savePhrases-0-get--");
                 resolve(true);
             }
         });
@@ -321,13 +318,13 @@ const savePhrases = async(details)=>{
 const getPhrasesById = async(details)=>{
     console.log("details/savephrases=",details);
     let query = `SELECT * FROM phrases WHERE user_id=${details.id} `
-    return new Promise((resolve, reject) => {
-        connection.query(query, (error, result) => {
+          return new Promise(await function(resolve,reject){
+            connection.query(query,function(error,result){
             if (error) {
-                // console.error("Error executing query:", error);
+                console.error("Error executing query:", error);
                 reject("Error executing query",error);
             } else {
-                // console.log("result-savePhrases-0-get--",result);
+                console.log("result-savePhrases-0-get--",result);
                 resolve(result);
             }
         });
@@ -338,8 +335,8 @@ const getPhrasesById = async(details)=>{
 const createGallery = async(user_id,imagePath)=>{
    
     let query = `INSERT INTO gallery (user_id, imgUrl) VALUES (${user_id}, '${imagePath}')`;
-    return new Promise((resolve, reject) => {
-        connection.query(query, (error, result) => {
+        return new Promise(await function(resolve,reject){
+            connection.query(query,function(error,result){
             if (error) {
                 console.error("Error executing query:", error);
                 reject("Error executing query",error);
@@ -355,8 +352,8 @@ const createGallery = async(user_id,imagePath)=>{
 const readGallery = async(user_id)=>{
    
     let query = `SELECT * FROM gallery WHERE user_id=${user_id}`;
-    return new Promise((resolve, reject) => {
-        connection.query(query, (error, result) => {
+          return new Promise(await function(resolve,reject){
+            connection.query(query,function(error,result){
             if (error) {
                 console.error("Error executing query:", error);
                 reject("Error executing query",error);
@@ -367,13 +364,12 @@ const readGallery = async(user_id)=>{
         });
     });
 }
-
 
 const deleteGallery = async(user_id)=>{
     console.log("user_id",user_id);
     let query = `DELETE FROM gallery WHERE user_id='${user_id}'`;
-    return new Promise((resolve, reject) => {
-        connection.query(query, (error, result) => {
+        return new Promise(await function(resolve,reject){
+            connection.query(query,function(error,result){
             if (error) {
                 console.error("Error executing query:", error);
                 reject("Error executing query",error);
@@ -385,7 +381,86 @@ const deleteGallery = async(user_id)=>{
     });
 }
 
-module.exports = { save, getData, markMessagesAsSeen, getDataById, getDataWithRoom, updateOne, deleteImgUrl , savePhrases , getPhrasesById,createGallery,readGallery ,deleteGallery};
+const updateGallery = async(data)=>{
+    // console.log("user_id",data.user_id,data.newImgUrl,data.oldImgUrl);
+    let query = `UPDATE gallery SET imgUrl='${data.newImgUrl}' WHERE user_id='${data.user_id}' AND imgUrl='${data.oldImgUrl}'`;
+        return new Promise(await function(resolve,reject){
+            connection.query(query,function(error,result){
+            if (error) {
+                console.error("Error executing query:", error);
+                reject("Error executing query",error);
+            } else {
+                console.log("result-savePhrases-0-get--",result);
+                resolve(result);
+            }
+        });
+    });
+}
+// ==============================================================
+
+// const multipleImage = async(image,details)=>{
+//     console.log("image",image,details);
+//     let query = `INSERT INTO messages(chatId,fromUserId,toUserId,imgUrl,seenAt,seenFromUserId,seenToUserId) VALUES ('${details.chatId}','${details.fromUserId}','${details.toUserId}','${image}','${details.seenAt}','${details.seenFromUserId}','${details.seenToUserId}')`;
+//     return new Promise(await function(resolve,reject){
+//         connection.query(query,function(error,result){
+//         if (error) {
+//             console.error("Error executing query:", error);
+//             reject("Error executing query",error);
+//         } else {
+//             console.log("result-savePhrases-0-get--",result);
+//             resolve(result);
+//         }
+//     });
+// });
+// }
+
+const multipleImage = async (image, details) => {
+    try {
+        console.log("image", image, details);
+
+        // Convert the array of image URLs into a string, separated by commas
+        const imgUrls = Array.isArray(image) ? image.join(',') : image;
+        console.log("imgUrls", imgUrls);
+
+        const query = `INSERT INTO messages(chatId, fromUserId, toUserId, imgUrl, seenAt, seenFromUserId, seenToUserId) 
+                       VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+        const values = [
+            details.chatId,
+            details.fromUserId,
+            details.toUserId,
+            imgUrls,
+            details.seenAt,
+            details.seenFromUserId,
+            details.seenToUserId,
+        ];
+
+        const result = await executeQuery(query, values);
+
+        console.log("result-savePhrases-0-get--", result);
+        return result;
+    } catch (error) {
+        console.error("Error in multipleImage:", error);
+        throw error;
+    }
+};
+
+const executeQuery = (query, values) => {
+    return new Promise((resolve, reject) => {
+        connection.query(query, values, (error, result) => {
+            if (error) {
+                console.error("Error executing query:", error);
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
+
+
+module.exports = { save, getData, markMessagesAsSeen, getDataById, getDataWithRoom, updateOne, deleteImgUrl , savePhrases , getPhrasesById,createGallery,readGallery ,deleteGallery , updateGallery , multipleImage };
 
 
 
