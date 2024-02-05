@@ -1350,12 +1350,15 @@ io.on('connection', (socket) => {
                 var timestamp = new Date().getTime();
                 var imgName = timestamp + "-" + data.msg.name;
                 const filePath = __dirname + "/images/" + imgName + ".jpg";
+                
                 let base64Data;
                 if (data.msg.data.includes('data:image/jpeg;base64,')) {
                     base64Data = data.msg.imageUrl.split(';base64,').pop();
                 } else {
                     base64Data = data.msg.imageUrl;
                 }
+
+
                 // console.log("base64Data",base64Data)
                 const buffer = Buffer.from(base64Data, 'base64');
                 await fs.writeFile(filePath, buffer);
