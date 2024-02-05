@@ -351,7 +351,8 @@ const save = async (data) => {
             console.log("imagUrl.,.,.,.,");
             // imageUrl = data.msg.imageUrl
             const timestamp = new Date().getTime();
-            const imgName = timestamp + "-" + data.msg.name;
+            // const imgName = timestamp + "-" + data.msg.name;
+            const imgName = timestamp;
             const filePath = __dirname + "/images/" + imgName;
             console.log("......", timestamp, imgName, filePath);
             imageUrl = filePath;
@@ -361,7 +362,7 @@ const save = async (data) => {
             console.log("stickerUrl.,.,.,.,");
             // imageUrl = data.msg.stickerImgUrl
             const timestamp = new Date().getTime();
-            const imgName = timestamp + "-" + data.msg.name;
+            const imgName = timestamp ;
             const filePath = __dirname + "/images/" + imgName;
             console.log("......", timestamp, imgName, filePath);
             stickerUrl = filePath;
