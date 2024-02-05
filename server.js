@@ -1173,7 +1173,7 @@ io.on('connection', (socket) => {
                 const fs = require("fs").promises;
                 var timestamp = new Date().getTime();
                 var imgName = timestamp;
-                const filePath = __dirname + "/images/" + imgName + ".jpg";
+                const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
                 let base64Data;
                 // if (data.msg.data.includes('data:image/jpeg;base64,')) {
                 //     base64Data = data.msg.imageUrl.split(';base64,').pop();
@@ -1232,7 +1232,6 @@ io.on('connection', (socket) => {
                     },60000); // 1 minute in milliseconds
                 }
                 /*********************************** */
-
             }
             console.log("uuuuyyyyuyuy--",data);
             let response_server = await messageController.save(data);

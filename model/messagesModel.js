@@ -172,8 +172,6 @@ const save = async (details) => {
     // Convert empty strings to null for numeric fields
     const lat = details.location.lat !== '' ? details.location.lat : null;
     const lng = details.location.long !== '' ? details.location.long : null;
-    // const lat = null
-    // const lng = null
 
     console.log("location/model");
 

@@ -363,7 +363,7 @@ const save = async (data) => {
             // imageUrl = data.msg.stickerImgUrl
             const timestamp = new Date().getTime();
             const imgName = timestamp;
-            const filePath = __dirname + "/images/" + imgName + ".jpg";
+            const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
             console.log("......", timestamp, imgName, filePath);
             stickerUrl = filePath;
         }
@@ -373,7 +373,7 @@ const save = async (data) => {
             // imageUrl = data.msg.data
             const timestamp = new Date().getTime();
             const imgName = timestamp;
-            const filePath = __dirname + "/images/" + imgName + ".jpg";
+            const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
             console.log("......", timestamp, imgName, filePath);
             videoImgUrl = filePath;
         }
@@ -383,7 +383,7 @@ const save = async (data) => {
             // imageUrl = data.msg.data
             const timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;
-            const filePath = __dirname + "/images/" + imgName;
+            const filePath =path.join(__dirname + "/images/" + imgName + ".jpg");
             console.log("......", timestamp, imgName, filePath);
             audioUrl = filePath;
         }
@@ -393,7 +393,7 @@ const save = async (data) => {
             // imageUrl = data.msg.data
             const timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;
-            const filePath = __dirname + "/images/" + imgName;
+            const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
             console.log("......", timestamp, imgName, filePath);
             videoUrl = filePath;
         }
@@ -446,10 +446,7 @@ const save = async (data) => {
             }, 60000);
         }
         /** */
-
-
         return response;
-
     } catch (error) {
         console.error('Error uploading file:', error);
         res.status(500).send('Error uploading file');
