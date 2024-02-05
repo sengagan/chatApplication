@@ -1342,7 +1342,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('newchat', async (data) => {
-        console.log("Received newchat data from client:",data);
+        console.log("Received newchat data from client:", data);
         try {
             if (!data.msg.imageUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
                 console.log("inside");
@@ -1350,15 +1350,44 @@ io.on('connection', (socket) => {
                 var timestamp = new Date().getTime();
                 var imgName = timestamp + "-" + data.msg.name;
                 const filePath = __dirname + "/images/" + imgName + ".jpg";
-                
+
                 let base64Data;
-                if (data.msg.data.includes('data:image/jpeg;base64,')) {
-                    base64Data = data.msg.imageUrl.split(';base64,').pop();
-                } else {
-                    base64Data = data.msg.imageUrl;
+                if (data.msg.imageUrl) {
+                    if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                        base64Data = data.msg.imageUrl.split(';base64,').pop();
+                    } else {
+                        base64Data = data.msg.imageUrl;
+                    }
                 }
-
-
+                else if(data.msg.stickerImgUrl){
+                    if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                        base64Data = data.msg.stickerImgUrl.split(';base64,').pop();
+                    } else {
+                        base64Data = data.msg.stickerImgUrl;
+                    }
+                }
+                else if(data.msg.videoImgUrl){
+                    if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                        base64Data = data.msg.videoImgUrl.split(';base64,').pop();
+                    } else {
+                        base64Data = data.msg.videoImgUrl;
+                    }
+                }
+                else if(data.msg.videoUrl){
+                    if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                        base64Data = data.msg.videoUrl.split(';base64,').pop();
+                    } else {
+                        base64Data = data.msg.videoUrl;
+                    }
+                }
+                else if(data.msg.audioUrl){
+                    if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                        base64Data = data.msg.audioUrl.split(';base64,').pop();
+                    } else {
+                        base64Data = data.msg.audioUrl;
+                    }
+                }
+            
                 // console.log("base64Data",base64Data)
                 const buffer = Buffer.from(base64Data, 'base64');
                 await fs.writeFile(filePath, buffer);
@@ -1373,7 +1402,7 @@ io.on('connection', (socket) => {
                         } catch (error) {
                             console.error(`Error deleting image ${imgName}:`, error);
                         }
-                    },60000); // 1 minute in milliseconds
+                    }, 60000); // 1 minute in milliseconds
                 }
                 /*********************************** */
 
@@ -1418,7 +1447,7 @@ io.on('connection', (socket) => {
         console.log('receive existschat data from client');
         try {
             let get_data = await messageController.getData(data);
-            console.log("getdata/server--response--",get_data)        //null
+            console.log("getdata/server--response--", get_data)        //null
             socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
         } catch (error) {
             console.error(error);
