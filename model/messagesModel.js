@@ -133,88 +133,27 @@
 //==========================================================================
 
 
-
-
-
-// const save = async (details) => {
-//     console.log("receive data from service", details);
-
-//     const lat = details.location.lat !== '' ? details.location.lat : null;
-//     const lng = details.location.long !== '' ? details.location.long : null;
-
-
-//     console.log("location/model");
-
-//     let query = ` INSERT INTO messages (chatId, msgType, fromUserId, toUserId, message, imgUrl, videoImgUrl, videoUrl, audioUrl, stickerId, stickerImgUrl, area, country, city,lat,lng, removeFromUserId, removeToUserId, seenAt, seenFromUserId, seenToUserId, u_agent,ip_addr,createAt) VALUES ('${details.chatId}','${details.msgType}','${details.fromUserId}','${details.toUserId}','${details.message}','${details.imgUrl}','${details.videoImgUrl}','${details.videoUrl}','${details.audioUrl}','${details.stickerId}','${details.stickerImgUrl}','${details.area}','${details.country}','${details.city}','${lat}','${lng}','${details.removeFromUserId}','${details.removeToUserId}','${details.seenAt}','${details.seenFromUserId}','${details.seenToUserId}','${details.u_agent}','${details.ip_addr}','${details.createAt}')`
-
-//     return new Promise(await function (resolve, reject) {
-//         connection.query(query, (error, result) => {
-//             if (error) {
-//                 console.error("Error executing query:", error);
-//                 reject("Error executing query");
-//             } else {
-//                 console.log("result---");
-//                 resolve(result);
-//             }
-//         });
-//     });
-// };
-
-
-
-
 'use strict'
 const { connection } = require('../database/mysqlConnection');
 
-const save = async (details) => {
-    console.log("Received data from service", details);
 
-    // Convert empty strings to null for numeric fields
-    const lat = details.location.lat !== '' ? details.location.lat : null;
-    const lng = details.location.long !== '' ? details.location.long : null;
-    // const lat = null
-    // const lng = null
+const save = async (details) => {
+    console.log("receive data from service", details);
+
+    // var lat = details.location.lat || null;
+    // var lng = details.location.long || null;
 
     console.log("location/model");
 
-    const query = `INSERT INTO messages 
-        (chatId, msgType, fromUserId, toUserId, message, imgUrl, videoImgUrl, videoUrl, audioUrl, stickerId, stickerImgUrl, area, country, city, lat, lng, removeFromUserId, removeToUserId, seenAt, seenFromUserId, seenToUserId, u_agent, ip_addr, createAt) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    let query = ` INSERT INTO messages (chatId, msgType, fromUserId, toUserId, message, imgUrl, videoImgUrl, videoUrl, audioUrl, stickerId, stickerImgUrl, area, country, city, removeFromUserId, removeToUserId, seenAt, seenFromUserId, seenToUserId, u_agent,ip_addr,createAt) VALUES ('${details.chatId}','${details.msgType}','${details.fromUserId}','${details.toUserId}','${details.message}','${details.imgUrl}','${details.videoImgUrl}','${details.videoUrl}','${details.audioUrl}','${details.stickerId}','${details.stickerImgUrl}','${details.area}','${details.country}','${details.city}','${details.removeFromUserId}','${details.removeToUserId}','${details.seenAt}','${details.seenFromUserId}','${details.seenToUserId}','${details.u_agent}','${details.ip_addr}','${details.createAt}')`
 
-    const queryValues = [
-        details.chatId,
-        details.msgType,
-        details.fromUserId,
-        details.toUserId,
-        details.message,
-        details.imgUrl,
-        details.videoImgUrl,
-        details.videoUrl,
-        details.audioUrl,
-        details.stickerId,
-        details.stickerImgUrl,
-        details.area,
-        details.country,
-        details.city,
-        lat,
-        lng,
-        details.removeFromUserId,
-        details.removeToUserId,
-        details.seenAt,
-        details.seenFromUserId,
-        details.seenToUserId,
-        details.u_agent,
-        details.ip_addr,
-        details.createAt
-    ];
-
-        return new Promise(await function(resolve,reject){
-            connection.query(query,queryValues,function(error,result){    
+    return new Promise(await function (resolve, reject) {
+        connection.query(query, (error, result) => {
             if (error) {
                 console.error("Error executing query:", error);
                 reject("Error executing query");
             } else {
-                console.log("Result:", result);
+                console.log("result---");
                 resolve(result);
             }
         });
@@ -224,7 +163,7 @@ const save = async (details) => {
 
 
 const getData = async (data) => {
-    console.log("getdata/model-==-");
+    console.log("getdata/model-==-", data);
 
     let query = `SELECT * FROM messages 
               WHERE (fromUserId = ${data.sender_id} AND toUserId = ${data.receiver_id})
@@ -257,7 +196,7 @@ const getData = async (data) => {
 
 
 const getDataWithRoom = async (data) => {
-    console.log("getdata/model-==-");
+    console.log("getdata/model-==-", data);
     let query = `SELECT * FROM messages
               WHERE (fromUserId = ${data.sender_id} AND toUserId = ${data.receiver_id} AND chatId = ${data.msg.chatId})
               OR (fromUserId = ${data.receiver_id} AND toUserId = ${data.sender_id} AND chatId = ${data.msg.chatId})
@@ -280,7 +219,7 @@ const getDataWithRoom = async (data) => {
 };
 
 const markMessagesAsSeen = async (data) => {       //update
-    console.log("data/mark==");
+    console.log("data/mark==", data);
     let query = `UPDATE messages SET seenAt = '1', seenFromUserId = '1',seenToUserId = '1' WHERE id = ${data} AND seenAt = '0'`;
         return new Promise(await function(resolve,reject){
             connection.query(query,function(error,result){
