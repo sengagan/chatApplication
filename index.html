@@ -703,7 +703,7 @@ function sendImage(imageURL) {
     };
 
     socket.emit('newchat', { sender_id, receiver_id, msg: msg.image, user: msg.user, room: room });
-
+    
     appendMessage(msg, 'outgoing');
     clearInputFields();
     scrollToBottom();

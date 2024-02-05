@@ -1331,10 +1331,10 @@ io.on('connection', (socket) => {
 
     socket.on('markMessagesAsSeen', async (data) => {
         try {
-            console.log("seen-----");      // jab user2 seen karega tb update hoga aur get api chalegi
+            console.log("seen-----", data);      // jab user2 seen karega tb update hoga aur get api chalegi
             await messageModel.markMessagesAsSeen(data);
             let response = await messageModel.getDataById(data.id)
-            console.log("response/seen/server");
+            console.log("response/seen/server", response);
             io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id, response });
         } catch (error) {
             console.error('Error marking messages as seen:', error);
@@ -1342,7 +1342,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('newchat', async (data) => {
-        console.log("Received newchat data from client:", data);
+        console.log("Received newchat data from client:",data);
+        // data.msg.stickerImgUrl = data.msg.data
         try {
             if (!data.msg.imageUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
                 console.log("inside");
@@ -1350,44 +1351,58 @@ io.on('connection', (socket) => {
                 var timestamp = new Date().getTime();
                 var imgName = timestamp + "-" + data.msg.name;
                 const filePath = __dirname + "/images/" + imgName + ".jpg";
-
                 let base64Data;
+
+
+                // if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                //     base64Data = data.msg.imageUrl.split(';base64,').pop();
+                // } else {
+                //     base64Data = data.msg.imageUrl;
+                // }
+
+                /*****trial** */
                 if (data.msg.imageUrl) {
+                    console.log("image...");
                     if (data.msg.data.includes('data:image/jpeg;base64,')) {
                         base64Data = data.msg.imageUrl.split(';base64,').pop();
                     } else {
                         base64Data = data.msg.imageUrl;
                     }
                 }
-                else if(data.msg.stickerImgUrl){
+                else if (data.msg.stickerImgUrl) {
+                    console.log("stikar...");
                     if (data.msg.data.includes('data:image/jpeg;base64,')) {
                         base64Data = data.msg.stickerImgUrl.split(';base64,').pop();
                     } else {
                         base64Data = data.msg.stickerImgUrl;
                     }
                 }
-                else if(data.msg.videoImgUrl){
+                else if (data.msg.videoImgUrl) {
+                    console.log("videoImgUrl...");
                     if (data.msg.data.includes('data:image/jpeg;base64,')) {
                         base64Data = data.msg.videoImgUrl.split(';base64,').pop();
                     } else {
                         base64Data = data.msg.videoImgUrl;
                     }
                 }
-                else if(data.msg.videoUrl){
+                else if (data.msg.videoUrl) {
+                    console.log("videoUrl...");
                     if (data.msg.data.includes('data:image/jpeg;base64,')) {
                         base64Data = data.msg.videoUrl.split(';base64,').pop();
                     } else {
                         base64Data = data.msg.videoUrl;
                     }
                 }
-                else if(data.msg.audioUrl){
+                else if (data.msg.audioUrl) {
+                    console.log("audioUrl...");
                     if (data.msg.data.includes('data:image/jpeg;base64,')) {
                         base64Data = data.msg.audioUrl.split(';base64,').pop();
                     } else {
                         base64Data = data.msg.audioUrl;
                     }
                 }
-            
+                /******* */
+
                 // console.log("base64Data",base64Data)
                 const buffer = Buffer.from(base64Data, 'base64');
                 await fs.writeFile(filePath, buffer);
@@ -1447,7 +1462,7 @@ io.on('connection', (socket) => {
         console.log('receive existschat data from client');
         try {
             let get_data = await messageController.getData(data);
-            console.log("getdata/server--response--", get_data)        //null
+            console.log("getdata/server----", get_data)        //null
             socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
         } catch (error) {
             console.error(error);
@@ -1471,9 +1486,9 @@ io.on('connection', (socket) => {
     });
 
     function updateNumberOfPeopleInRoom(room) {
-        console.log("room==");
+        console.log("room==", room);
         const roomMembers = io.sockets.adapter.rooms.get(room);
-        console.log("roomMembers-------");
+        console.log("roomMembers-------", roomMembers);
         const numberOfPeopleInRoom = roomMembers ? roomMembers.size : 0;
         console.log(`Number of people in room ${room}: ${numberOfPeopleInRoom}`);
         // Emit the updated number of people to all clients in the room

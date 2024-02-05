@@ -170,6 +170,8 @@ const save = async (details) => {
     // Convert empty strings to null for numeric fields
     const lat = details.location.lat !== '' ? details.location.lat : null;
     const lng = details.location.long !== '' ? details.location.long : null;
+    // const lat = null
+    // const lng = null
 
     console.log("location/model");
 
@@ -220,7 +222,7 @@ const save = async (details) => {
 
 
 const getData = async (data) => {
-    console.log("getdata/model-==-", data);
+    console.log("getdata/model-==-");
 
     let query = `SELECT * FROM messages 
               WHERE (fromUserId = ${data.sender_id} AND toUserId = ${data.receiver_id})
@@ -253,7 +255,7 @@ const getData = async (data) => {
 
 
 const getDataWithRoom = async (data) => {
-    console.log("getdata/model-==-", data);
+    console.log("getdata/model-==-");
     let query = `SELECT * FROM messages
               WHERE (fromUserId = ${data.sender_id} AND toUserId = ${data.receiver_id} AND chatId = ${data.msg.chatId})
               OR (fromUserId = ${data.receiver_id} AND toUserId = ${data.sender_id} AND chatId = ${data.msg.chatId})
@@ -276,7 +278,7 @@ const getDataWithRoom = async (data) => {
 };
 
 const markMessagesAsSeen = async (data) => {       //update
-    console.log("data/mark==", data);
+    console.log("data/mark==");
     let query = `UPDATE messages SET seenAt = '1', seenFromUserId = '1',seenToUserId = '1' WHERE id = ${data} AND seenAt = '0'`;
         return new Promise(await function(resolve,reject){
             connection.query(query,function(error,result){

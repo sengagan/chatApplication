@@ -665,6 +665,9 @@
 
 
 
+
+
+
 const fs = require("fs");
 const express = require('express');
 const multer = require("multer");
@@ -675,7 +678,6 @@ const { log } = require("console");
 const save = async (data) => {
     try {
         console.log("data receive from controller", data);
-        console.log("imageUrl/stickerUrl====",data.msg.imageUrl,data.msg.stickerUrl)
         // data = data.msg.data;
         let imageUrl = '';
         let stickerUrl = '';
@@ -689,11 +691,11 @@ const save = async (data) => {
         //     const  timestamp = new Date().getTime();
         //     const imgName = timestamp + "-" + data.msg.name;    
         //     const filePath = __dirname + "/images/" + imgName + ".jpg";
-        //     // console.log("......",timestamp,imgName,filePath);
+        //     console.log("......",timestamp,imgName,filePath);
         //     imageUrl = filePath;
         // }
 
-        if (data && data.msg.imageUrl && data.msg.imageUrl) {
+        if (data && data.msg.imageUrl) {
             console.log("imagUrl.,.,.,.,");
             imageUrl = data.msg.imageUrl
             const timestamp = new Date().getTime();
@@ -703,7 +705,7 @@ const save = async (data) => {
             imageUrl = filePath;
         }
 
-        if (data && data.msg.stickerUrl && data.msg.stickerUrl) {
+        if (data && data.msg.stickerImgUrl) {
             console.log("stickerUrl.,.,.,.,");
             imageUrl = data.msg.data
             const timestamp = new Date().getTime();
@@ -713,7 +715,7 @@ const save = async (data) => {
             stickerUrl = filePath;
         }
 
-        if (data && data.msg.videoImgUrl && data.msg.videoImgUrl) {
+        if (data && data.msg.videoImgUrl ) {
             console.log("videoImgUrl.,.,.,.,");
             imageUrl = data.msg.data
             const timestamp = new Date().getTime();
@@ -723,7 +725,7 @@ const save = async (data) => {
             videoImgUrl = filePath;
         }
 
-        if (data && data.msg.audioUrl && data.msg.audioUrl) {
+        if (data && data.msg.audioUrl) {
             console.log("audioUrl.,.,.,.,");
             imageUrl = data.msg.data
             const timestamp = new Date().getTime();
@@ -743,7 +745,7 @@ const save = async (data) => {
             videoUrl = filePath;
         }
 
-
+        console.log("ppppppppppppp",imageUrl,stickerUrl);
 
         let details = {
             chatId: data.msg.chatId || 5,
