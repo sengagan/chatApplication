@@ -347,7 +347,7 @@ const save = async (data) => {
         //     imageUrl = filePath;
         // }
 
-        if (data && data.msg.imageUrl) {
+        if (data && data.msg.imgUrl) {
             console.log("imagUrl.,.,.,.,");
             // imageUrl = data.msg.imageUrl
             const timestamp = new Date().getTime();

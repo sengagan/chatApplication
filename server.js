@@ -1181,12 +1181,12 @@ io.on('connection', (socket) => {
                 //     base64Data = data.msg.imageUrl;
                 // }
                 /************************* */
-                if(data.msg.imageUrl){
+                if(data.msg.imgUrl){
                     console.log("imageurliii");
                     if (data.msg.data.includes('data:image/jpeg;base64,')) {
-                        base64Data = data.msg.imageUrl.split(';base64,').pop();
+                        base64Data = data.msg.imgUrl.split(';base64,').pop();
                     } else {
-                        base64Data = data.msg.imageUrl;
+                        base64Data = data.msg.imgUrl;
                     }
                 }
                 if(data.msg.stickerImgUrl){
