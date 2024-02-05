@@ -358,45 +358,45 @@ const save = async (data) => {
             imageUrl = filePath;
         }
 
-        if (data && data.msg.stickerImgUrl) {
-            console.log("stickerUrl.,.,.,.,");
-            // imageUrl = data.msg.stickerImgUrl
-            const timestamp = new Date().getTime();
-            const imgName = timestamp;
-            const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
-            console.log("......", timestamp, imgName, filePath);
-            stickerUrl = filePath;
-        }
+        // if (data && data.msg.stickerImgUrl) {
+        //     console.log("stickerUrl.,.,.,.,");
+        //     // imageUrl = data.msg.stickerImgUrl
+        //     const timestamp = new Date().getTime();
+        //     const imgName = timestamp;
+        //     const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
+        //     console.log("......", timestamp, imgName, filePath);
+        //     stickerUrl = filePath;
+        // }
 
-        if (data && data.msg.videoImgUrl) {
-            console.log("videoImgUrl.,.,.,.,");
-            // imageUrl = data.msg.data
-            const timestamp = new Date().getTime();
-            const imgName = timestamp;
-            const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
-            console.log("......", timestamp, imgName, filePath);
-            videoImgUrl = filePath;
-        }
+        // if (data && data.msg.videoImgUrl) {
+        //     console.log("videoImgUrl.,.,.,.,");
+        //     // imageUrl = data.msg.data
+        //     const timestamp = new Date().getTime();
+        //     const imgName = timestamp;
+        //     const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
+        //     console.log("......", timestamp, imgName, filePath);
+        //     videoImgUrl = filePath;
+        // }
 
-        if (data && data.msg.audioUrl) {
-            console.log("audioUrl.,.,.,.,");
-            // imageUrl = data.msg.data
-            const timestamp = new Date().getTime();
-            const imgName = timestamp + "-" + data.msg.name;
-            const filePath =path.join(__dirname + "/images/" + imgName + ".jpg");
-            console.log("......", timestamp, imgName, filePath);
-            audioUrl = filePath;
-        }
+        // if (data && data.msg.audioUrl) {
+        //     console.log("audioUrl.,.,.,.,");
+        //     // imageUrl = data.msg.data
+        //     const timestamp = new Date().getTime();
+        //     const imgName = timestamp + "-" + data.msg.name;
+        //     const filePath =path.join(__dirname + "/images/" + imgName + ".jpg");
+        //     console.log("......", timestamp, imgName, filePath);
+        //     audioUrl = filePath;
+        // }
 
-        if (data && data.msg.videoUrl) {
-            console.log("videoUrl.,.,.,.,",);
-            // imageUrl = data.msg.data
-            const timestamp = new Date().getTime();
-            const imgName = timestamp + "-" + data.msg.name;
-            const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
-            console.log("......", timestamp, imgName, filePath);
-            videoUrl = filePath;
-        }
+        // if (data && data.msg.videoUrl) {
+        //     console.log("videoUrl.,.,.,.,",);
+        //     // imageUrl = data.msg.data
+        //     const timestamp = new Date().getTime();
+        //     const imgName = timestamp + "-" + data.msg.name;
+        //     const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
+        //     console.log("......", timestamp, imgName, filePath);
+        //     videoUrl = filePath;
+        // }
 
         let details = {
             chatId: data.msg.chatId || 5,
@@ -409,7 +409,7 @@ const save = async (data) => {
             videoUrl: videoUrl,
             audioUrl: audioUrl,
             stickerId: data.msg.stickerId || 0,
-            stickerImgUrl: stickerUrl,
+            stickerImgUrl: data.msg.stickerImgUrl,
             area: data.area || 0,
             country: data.country || 0,
             city: data.city || 0,
