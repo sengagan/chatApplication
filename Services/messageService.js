@@ -359,7 +359,7 @@ const save = async (data) => {
 
         if (data && data.msg.stickerUrl && data.msg.stickerUrl) {
             console.log("stickerUrl.,.,.,.,");
-            imageUrl = data.msg.data
+            imageUrl = data.msg.stickerUrl
             const timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;
             const filePath = __dirname + "/images/" + imgName;
@@ -369,7 +369,7 @@ const save = async (data) => {
 
         if (data && data.msg.videoImgUrl && data.msg.videoImgUrl) {
             console.log("videoImgUrl.,.,.,.,");
-            imageUrl = data.msg.data
+            imageUrl = data.msg.videoImgUrl
             const timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;
             const filePath = __dirname + "/images/" + imgName;
@@ -379,7 +379,7 @@ const save = async (data) => {
 
         if (data && data.msg.audioUrl && data.msg.audioUrl) {
             console.log("audioUrl.,.,.,.,");
-            imageUrl = data.msg.data
+            imageUrl = data.msg.audioUrl
             const timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;
             const filePath = __dirname + "/images/" + imgName;
@@ -389,7 +389,7 @@ const save = async (data) => {
 
         if (data && data.msg.videoUrl && data.msg.videoUrl) {
             console.log("videoUrl.,.,.,.,",);
-            imageUrl = data.msg.data
+            imageUrl = data.msg.videoUrl
             const timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;
             const filePath = __dirname + "/images/" + imgName;
