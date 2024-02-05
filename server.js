@@ -1168,7 +1168,7 @@ io.on('connection', (socket) => {
     socket.on('newchat', async (data) => {
         console.log("Received newchat data from client:",data);
         try {
-            if (!data.msg.imgUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
+            if (!data.msg.imgUrl == '' ) {
                 console.log("inside");
                 const fs = require("fs").promises;
                 var timestamp = new Date().getTime();
@@ -1183,11 +1183,11 @@ io.on('connection', (socket) => {
                 /************************* */
                 // if(data.msg.imgUrl){
                 //     console.log("imageurliii");
-                    if (data.msg.imgUrl.includes('data:image/jpeg;base64,')) {
+                    // if (data.msg.imgUrl.includes('data:image/jpeg;base64,')) {
                         base64Data = data.msg.imgUrl.split(';base64,').pop().toString();
-                    } else {
-                        base64Data = data.msg.imgUrl;
-                    }
+                    // } else {
+                    //     base64Data = data.msg.imgUrl;
+                    // }
                 // }
                 // if(data.msg.stickerImgUrl){
                 //     console.log("stikerurliii");
