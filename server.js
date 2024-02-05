@@ -1217,7 +1217,7 @@ io.on('connection', (socket) => {
                 // console.log("base64Data",base64Data)
                 const buffer = Buffer.from(base64Data, 'base64');
                let upload = await fs.writeFile(filePath, buffer);
-               console.log("uploadimage");
+               console.log("uploadimage",filePath);
                 /****************************** */
                 if (data.expiryImage == '1') {
                     console.log("data.expiryImage", data.expiryImage);

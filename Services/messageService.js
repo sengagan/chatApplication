@@ -454,7 +454,6 @@ const save = async (data) => {
         console.error('Error uploading file:', error);
         res.status(500).send('Error uploading file');
     }
-
 };
 
 const getData = async (data) => {
