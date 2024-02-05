@@ -1183,7 +1183,7 @@ io.on('connection', (socket) => {
                 /************************* */
                 if(data.msg.imgUrl){
                     console.log("imageurliii");
-                    if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                    if (data.msg.imgUrl.includes('data:image/jpeg;base64,')) {
                         base64Data = data.msg.imgUrl.split(';base64,').pop();
                     } else {
                         base64Data = data.msg.imgUrl;
@@ -1191,10 +1191,26 @@ io.on('connection', (socket) => {
                 }
                 if(data.msg.stickerImgUrl){
                     console.log("stikerurliii");
-                    if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                    if (data.msg.stickerImgUrl.includes('data:image/jpeg;base64,')) {
                         base64Data = data.msg.stickerImgUrl.split(';base64,').pop();
                     } else {
                         base64Data = data.msg.stickerImgUrl;
+                    }
+                }
+                if(data.msg.videoImgUrl){
+                    console.log("stikerurliii");
+                    if (data.msg.videoImgUrl.includes('data:image/jpeg;base64,')) {
+                        base64Data = data.msg.videoImgUrl.split(';base64,').pop();
+                    } else {
+                        base64Data = data.msg.videoImgUrl;
+                    }
+                }
+                if(data.msg.videoUrl){
+                    console.log("stikerurliii");
+                    if (data.msg.videoUrl.includes('data:image/jpeg;base64,')) {
+                        base64Data = data.msg.videoUrl.split(';base64,').pop();
+                    } else {
+                        base64Data = data.msg.videoUrl;
                     }
                 }
                 /************************* */
