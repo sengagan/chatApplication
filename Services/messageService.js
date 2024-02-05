@@ -409,7 +409,7 @@ const save = async (data) => {
             videoUrl: data.msg.videoUrl || null,
             audioUrl: data.msg.audioUrl || null,
             stickerId: data.msg.stickerId || 0,
-            stickerImgUrl: data.msg.stickerImgUrl,
+            stickerImgUrl: data.msg.stickerImgUrl || null,
             area: data.area || 0,
             country: data.country || 0,
             city: data.city || 0,

@@ -1184,7 +1184,7 @@ io.on('connection', (socket) => {
                 // if(data.msg.imgUrl){
                 //     console.log("imageurliii");
                     if (data.msg.imgUrl.includes('data:image/jpeg;base64,')) {
-                        base64Data = data.msg.imgUrl.split(';base64,').pop();
+                        base64Data = data.msg.imgUrl.split(';base64,').pop().toString();
                     } else {
                         base64Data = data.msg.imgUrl;
                     }
