@@ -332,10 +332,10 @@ const save = async (data) => {
         console.log("data receive from controller", data);
         // data = data.msg.data;
         let imageUrl = '';
-        let stickerUrl = '';
-        let videoImgUrl = '';
-        let audioUrl = '';
-        let videoUrl = '';
+        // let stickerUrl = '';
+        // let videoImgUrl = '';
+        // let audioUrl = '';
+        // let videoUrl = '';
 
         // if (data || data.imageUrl || data.imageUrl.name || data.msg.data) {
         //     console.log(".,.,.,.,",);
