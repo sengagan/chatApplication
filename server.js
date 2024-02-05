@@ -1166,7 +1166,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('newchat', async (data) => {
-        console.log("Received newchat data from client:");
+        console.log("Received newchat data from client:",data);
         try {
             if (!data.msg.imageUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
                 console.log("inside");
@@ -1175,14 +1175,33 @@ io.on('connection', (socket) => {
                 var imgName = timestamp + "-" + data.msg.name;
                 const filePath = __dirname + "/images/" + imgName + ".jpg";
                 let base64Data;
-                if (data.msg.data.includes('data:image/jpeg;base64,')) {
-                    base64Data = data.msg.imageUrl.split(';base64,').pop();
-                } else {
-                    base64Data = data.msg.imageUrl;
+                // if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                //     base64Data = data.msg.imageUrl.split(';base64,').pop();
+                // } else {
+                //     base64Data = data.msg.imageUrl;
+                // }
+                /************************* */
+                if(data.msg.imageUrl){
+                    console.log("imageurliii");
+                    if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                        base64Data = data.msg.imageUrl.split(';base64,').pop();
+                    } else {
+                        base64Data = data.msg.imageUrl;
+                    }
                 }
+                if(data.msg.stickerImgUrl){
+                    console.log("stikerurliii");
+                    if (data.msg.data.includes('data:image/jpeg;base64,')) {
+                        base64Data = data.msg.stickerImgUrl.split(';base64,').pop();
+                    } else {
+                        base64Data = data.msg.stickerImgUrl;
+                    }
+                }
+                /************************* */
                 // console.log("base64Data",base64Data)
                 const buffer = Buffer.from(base64Data, 'base64');
-                await fs.writeFile(filePath, buffer);
+               let upload = await fs.writeFile(filePath, buffer);
+               console.log("uploadimage");
                 /****************************** */
                 if (data.expiryImage == '1') {
                     console.log("data.expiryImage", data.expiryImage);
@@ -1199,7 +1218,7 @@ io.on('connection', (socket) => {
                 /*********************************** */
 
             }
-            console.log("uuuuyyyyuyuy--");
+            console.log("uuuuyyyyuyuy--",data);
             let response_server = await messageController.save(data);
             console.log("response_server===");
             let response = await messageModel.getDataWithRoom(data)

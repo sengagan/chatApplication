@@ -347,9 +347,9 @@ const save = async (data) => {
         //     imageUrl = filePath;
         // }
 
-        if (data && data.msg.imageUrl && data.msg.imageUrl) {
+        if (data && data.msg.imageUrl) {
             console.log("imagUrl.,.,.,.,");
-            imageUrl = data.msg.imageUrl
+            // imageUrl = data.msg.imageUrl
             const timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;
             const filePath = __dirname + "/images/" + imgName;
@@ -357,9 +357,9 @@ const save = async (data) => {
             imageUrl = filePath;
         }
 
-        if (data && data.msg.stickerUrl && data.msg.stickerUrl) {
+        if (data && data.msg.stickerImgUrl) {
             console.log("stickerUrl.,.,.,.,");
-            imageUrl = data.msg.data
+            // imageUrl = data.msg.stickerImgUrl
             const timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;
             const filePath = __dirname + "/images/" + imgName;
@@ -367,9 +367,9 @@ const save = async (data) => {
             stickerUrl = filePath;
         }
 
-        if (data && data.msg.videoImgUrl && data.msg.videoImgUrl) {
+        if (data && data.msg.videoImgUrl ) {
             console.log("videoImgUrl.,.,.,.,");
-            imageUrl = data.msg.data
+            // imageUrl = data.msg.data
             const timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;
             const filePath = __dirname + "/images/" + imgName;
@@ -377,9 +377,9 @@ const save = async (data) => {
             videoImgUrl = filePath;
         }
 
-        if (data && data.msg.audioUrl && data.msg.audioUrl) {
+        if (data && data.msg.audioUrl) {
             console.log("audioUrl.,.,.,.,");
-            imageUrl = data.msg.data
+            // imageUrl = data.msg.data
             const timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;
             const filePath = __dirname + "/images/" + imgName;
@@ -387,17 +387,15 @@ const save = async (data) => {
             audioUrl = filePath;
         }
 
-        if (data && data.msg.videoUrl && data.msg.videoUrl) {
+        if (data && data.msg.videoUrl) {
             console.log("videoUrl.,.,.,.,",);
-            imageUrl = data.msg.data
+            // imageUrl = data.msg.data
             const timestamp = new Date().getTime();
             const imgName = timestamp + "-" + data.msg.name;
             const filePath = __dirname + "/images/" + imgName;
             console.log("......", timestamp, imgName, filePath);
             videoUrl = filePath;
         }
-
-
 
         let details = {
             chatId: data.msg.chatId || 5,
@@ -431,7 +429,7 @@ const save = async (data) => {
             } 
         };
 
-        console.log("load---service---->");
+        console.log("load---service---->",details);
         let response = await messagesModel.save(details);
         console.log("resp-service---->", response);
         /** */
