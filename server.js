@@ -1168,7 +1168,7 @@ io.on('connection', (socket) => {
     socket.on('newchat', async (data) => {
         console.log("Received newchat data from client:",data);
         try {
-            if (!data.msg.imageUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
+            if (!data.msg.imgUrl == '' || !data.msg.videoImgUrl == '' || !data.msg.videoUrl == '' || !data.msg.audioUrl == '' || !data.msg.stickerImgUrl == '') {
                 console.log("inside");
                 const fs = require("fs").promises;
                 var timestamp = new Date().getTime();
