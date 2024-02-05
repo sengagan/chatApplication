@@ -320,354 +320,6 @@
 
 
 
-// const fs = require("fs");
-// const express = require('express');
-// const multer = require("multer");
-// const path = require("path");
-// const messagesModel = require('../model/messagesModel');
-// const { log } = require("console");
-
-// const save = async (data) => {
-//     try {
-//         console.log("data receive from controller", data);
-//         // data = data.msg.data;
-//         let imageUrl = '';
-//         let stickerUrl = '';
-//         let videoImgUrl = '';
-//         let audioUrl = '';
-//         let videoUrl = '';
-
-//         // if (data || data.imageUrl || data.imageUrl.name || data.msg.data) {
-//         //     console.log(".,.,.,.,",);
-//         //     imageUrl = data.msg.data
-//         //     const  timestamp = new Date().getTime();
-//         //     const imgName = timestamp + "-" + data.msg.name;    
-//         //     const filePath = __dirname + "/images/" + imgName + ".jpg";
-//         //     // console.log("......",timestamp,imgName,filePath);
-//         //     imageUrl = filePath;
-//         // }
-
-//         if (data && data.msg.imageUrl && data.msg.imageUrl) {
-//             console.log("imagUrl.,.,.,.,");
-//             imageUrl = data.msg.imageUrl
-//             const timestamp = new Date().getTime();
-//             const imgName = timestamp + "-" + data.msg.name;
-//             const filePath = __dirname + "/images/" + imgName;
-//             console.log("......", timestamp, imgName, filePath);
-//             imageUrl = filePath;
-//         }
-
-//         if (data && data.msg.stickerUrl && data.msg.stickerUrl) {
-//             console.log("stickerUrl.,.,.,.,");
-//             imageUrl = data.msg.data
-//             const timestamp = new Date().getTime();
-//             const imgName = timestamp + "-" + data.msg.name;
-//             const filePath = __dirname + "/images/" + imgName;
-//             console.log("......", timestamp, imgName, filePath);
-//             stickerUrl = filePath;
-//         }
-
-//         if (data && data.msg.videoImgUrl && data.msg.videoImgUrl) {
-//             console.log("videoImgUrl.,.,.,.,");
-//             imageUrl = data.msg.data
-//             const timestamp = new Date().getTime();
-//             const imgName = timestamp + "-" + data.msg.name;
-//             const filePath = __dirname + "/images/" + imgName;
-//             console.log("......", timestamp, imgName, filePath);
-//             videoImgUrl = filePath;
-//         }
-
-//         if (data && data.msg.audioUrl && data.msg.audioUrl) {
-//             console.log("audioUrl.,.,.,.,");
-//             imageUrl = data.msg.data
-//             const timestamp = new Date().getTime();
-//             const imgName = timestamp + "-" + data.msg.name;
-//             const filePath = __dirname + "/images/" + imgName;
-//             console.log("......", timestamp, imgName, filePath);
-//             audioUrl = filePath;
-//         }
-
-//         if (data && data.msg.videoUrl && data.msg.videoUrl) {
-//             console.log("videoUrl.,.,.,.,",);
-//             imageUrl = data.msg.data
-//             const timestamp = new Date().getTime();
-//             const imgName = timestamp + "-" + data.msg.name;
-//             const filePath = __dirname + "/images/" + imgName;
-//             console.log("......", timestamp, imgName, filePath);
-//             videoUrl = filePath;
-//         }
-
-
-
-//         let details = {
-//             chatId: data.msg.chatId || 5,
-//             msgType: data.msgType || 0,
-//             fromUserId: data.sender_id ,
-//             toUserId: data.receiver_id ,
-//             message: data.msg.message ,
-//             imgUrl: imageUrl,
-//             videoImgUrl: videoImgUrl,
-//             videoUrl: videoUrl,
-//             audioUrl: audioUrl,
-//             stickerId: data.msg.stickerId || 0,
-//             stickerImgUrl: stickerUrl,
-//             area: data.area || 0,
-//             country: data.country || 0,
-//             city: data.city || 0,
-//             // lat: data.lat || null,
-//             // lng: data.lng || null,
-//             createAt: data.timestamp || 1,
-//             removeAt: data.removeAt || 0,
-//             removeFromUserId: data.removeFromUserId || '0',
-//             removeToUserId: data.removeToUserId || '0',
-//             seenAt: data.seenAt || 0,
-//             seenFromUserId: data.seenFromUserId || '0',
-//             seenToUserId: data.seenToUserId || '0',
-//             u_agent: data.u_agent || '',
-//             ip_addr: data.ip_addr || '',
-//             location :{
-//                 lat : data.msg.location.lat || null  ,
-//                 long : data.msg.location.long || null  
-//             } 
-//         };
-
-//         console.log("load---service---->");
-//         let response = await messagesModel.save(details);
-//         console.log("resp-service---->", response);
-//         /** */
-//         if (data.expiryImage == 1) {
-//             const imageUrlPath = details.imgUrl;
-//             setTimeout(async () => {
-//                 try {
-//                     await messagesModel.deleteImgUrl(details);
-//                     console.log(`Image deleted successfully.`);
-//                 } catch (error) {
-//                     console.error(`Error deleting image :`, error);
-//                 }
-//             }, 60000);
-//         }
-//         /** */
-
-
-//         return response;
-
-//     } catch (error) {
-//         console.error('Error uploading file:', error);
-//         res.status(500).send('Error uploading file');
-//     }
-
-// };
-
-// const getData = async (data) => {
-//     console.log("getdata/service-gg--");
-//     let response = await messagesModel.getData(data);
-//     console.log("response---gg--");
-//     return response;
-// }
-
-// const savePhrases = async (details) => {
-//     let data = {
-//         text: details.text,
-//         id: details.id
-//     };
-//     console.log("data---->", data);
-//     let response = await messagesModel.savePhrases(data);
-//     console.log("resp-service---->", response);
-//     return response;
-// }
-
-// const getPhrasesById = async (data) => {
-//     // console.log("getdata/service-gg--");
-//     let response = await messagesModel.getPhrasesById(data);
-//     // console.log("response---gg--");
-//     return response;
-// }
-
-// /********************************************** */
-// const createGallery = async (details) => {
-//     console.log("createGalleryservices-->>>>");
-//     let data = {
-//         user_id: details.user_id,
-//         image: details.image
-//     };
-
-//     var timestamp = new Date().getTime();
-//     // var imgName = timestamp + "-" + data.msg.name ;
-//     const filePath = __dirname + "/../photo/" + timestamp + ".jpg";
-//     let base64Data;
-//     if (data.image.includes('data:image/jpeg;base64,')) {
-//         base64Data = data.image.split(';base64,').pop();
-//     } else {
-//         base64Data = data.image;
-//     }
-
-//     // var bs64 = base64.encode(isUtf8.encode());
-//     // Uint8List decodedImage = base64.decode(bs64);
-//     // Image.memory(decodedImage)
-//     const fs = require("fs").promises;
-//     const buffer = Buffer.from(base64Data, 'base64');
-//     await fs.writeFile(filePath, buffer);
-//     let response = await messagesModel.createGallery(data.user_id, filePath);
-//     return response;
-// }
-
-// const readGallery = async (user_id) => {
-//     console.log("readGallery services-->>>>");
-//     let response = await messagesModel.readGallery(user_id);
-//     console.log("response", response);
-//     return response;
-// }
-
-// // const deleteGallery = async (user_id) => {
-// //     console.log("deleteGallery services-->>>>")
-// //     let getData = await messagesModel.readGallery(user_id)
-// //     console.log("getData",getData);
-// //     let path =getData[0].imgUrl;
-// //     console.log("path",path);
-// //     await fs.unlink(path);
-// //     // let response = await messagesModel.deleteGallery(user_id);
-// //     // console.log("response", response);
-
-// //     return response;
-// // }
-
-
-// const util = require('util');
-// const { isUtf8 } = require("buffer");
-// const unlinkAsync = util.promisify(fs.unlink);
-
-// const deleteGallery = async (user_id) => {
-//     console.log("deleteGallery services-->>>>");
-//     try {
-//         let getData = await messagesModel.readGallery(user_id);
-//         console.log("getData", getData);
-//         if (getData && getData.length > 0) {
-//             let path = getData[0].imgUrl;
-//             console.log("path", path);
-//             await unlinkAsync(path);
-//             let response = await messagesModel.deleteGallery(user_id);
-//             console.log("response", response);
-//             return response;
-//         } else {
-//             console.log("No data found for user_id:", user_id);
-//             return null;
-//         }
-//     } catch (error) {
-//         console.error("Error in deleteGallery:", error);
-//         throw error;
-//     }
-// };
-
-// const updateGallery = async (details) => {
-//     console.log("updateGallery services-->>>>");
-//     // let response = await messagesModel.updateGallery(data);
-//     // console.log("response", response);
-//     // return response;
-//     let data = {
-//         user_id: details.user_id,
-//         image: details.image
-//     };
-//     let getData = await messagesModel.readGallery(data.user_id);
-//     let path;
-//     if (getData && getData.length > 0) {
-//         path = getData[0].imgUrl;
-//         // console.log("Deleting old image:", path);
-//         await unlinkAsync(path);
-//     } else {
-//         console.log("No data found for user_id:", data.user_id);
-//     }
-//     // console.log("oldpath",path);
-//     const fs = require('fs').promises;
-//     var timestamp = new Date().getTime();
-//     const filePath = __dirname + "/../photo/" + timestamp + ".jpg";
-//     let base64Data;
-//     if (data.image.includes('data:image/jpeg;base64,')) {
-//         base64Data = data.image.split(';base64,').pop();
-//     } else {
-//         base64Data = data.image;
-//     }
-//     const buffer = Buffer.from(base64Data, 'base64');
-//     // console.log("buffer/filepath",filePath,buffer);
-//     await fs.writeFile(filePath, buffer, "binary");
-
-//     let updateData = {
-//         user_id: data.user_id,
-//         oldImgUrl: path,
-//         newImgUrl: filePath
-//     }
-
-//     let response = await messagesModel.updateGallery(updateData);
-//     // console.log("updateGallery response", response);
-//     return response;
-// }
-
-// /**********************************************/
-
-// // const multipleImage = async (req, res) => {
-// //     let details = {
-// //         chatId: req.body.chatId,
-// //         fromUserId: req.body.fromUserId,
-// //         toUserId: req.body.toUserId,
-// //         imgUrl: req.body.imgUrl,
-// //         seenAt: req.body.seenAt || 0,
-// //         seenFromUserId: req.body.seenFromUserId || '0',
-// //         seenToUserId: req.body.seenToUserId || '0',
-// //     }
-// //     console.log("details/service");
-// //     let file = details.imgUrl;
-// //     console.log("updateGallery services-->>>>",file);
-// //     if (file.length ) {
-// //         console.log("file");
-// //         await messagesModel.multipleImage(file,details);
-// //     } else {
-// //         for (let i = 0; i < file.length; i++) {
-// //             console.log("filelength", file[i]);
-// //             await messagesModel.multipleImage(file[i],details);
-// //         }
-// //     }
-// //     return true
-// // }
-
-// const multipleImage = async (req, res) => {
-//     try {
-//         const details = {
-//             chatId: req.body.chatId,
-//             fromUserId: req.body.fromUserId,
-//             toUserId: req.body.toUserId,
-//             imgUrl: req.body.imgUrl,
-//             seenAt: req.body.seenAt || 0,
-//             seenFromUserId: req.body.seenFromUserId || '0',
-//             seenToUserId: req.body.seenToUserId || '0',
-//         };
-
-//         console.log("details/service", details);
-
-//         const files = Array.isArray(details.imgUrl) ? details.imgUrl : [details.imgUrl];
-//         console.log("updateGallery services-->>>>", files);
-
-//         const maxImagesToSave = 6;
-
-//         for (let i = 0; i < Math.min(files.length, maxImagesToSave); i++) {
-//             console.log("filelength", files[i]);
-//             await messagesModel.multipleImage(files[i], details);
-//         }
-
-//         return true
-//     } catch (error) {
-//         console.error("Error in multipleImage:", error);
-//         res.status(500).json({ success: false, error: "Internal Server Error" });
-//     }
-// };
-
-
-// module.exports = { save, getData, savePhrases, getPhrasesById, createGallery, readGallery, updateGallery, deleteGallery, multipleImage };
-
-
-
-
-
-
-
 const fs = require("fs");
 const express = require('express');
 const multer = require("multer");
@@ -691,11 +343,11 @@ const save = async (data) => {
         //     const  timestamp = new Date().getTime();
         //     const imgName = timestamp + "-" + data.msg.name;    
         //     const filePath = __dirname + "/images/" + imgName + ".jpg";
-        //     console.log("......",timestamp,imgName,filePath);
+        //     // console.log("......",timestamp,imgName,filePath);
         //     imageUrl = filePath;
         // }
 
-        if (data && data.msg.imageUrl) {
+        if (data && data.msg.imageUrl && data.msg.imageUrl) {
             console.log("imagUrl.,.,.,.,");
             imageUrl = data.msg.imageUrl
             const timestamp = new Date().getTime();
@@ -705,7 +357,7 @@ const save = async (data) => {
             imageUrl = filePath;
         }
 
-        if (data && data.msg.stickerImgUrl) {
+        if (data && data.msg.stickerUrl && data.msg.stickerUrl) {
             console.log("stickerUrl.,.,.,.,");
             imageUrl = data.msg.data
             const timestamp = new Date().getTime();
@@ -715,7 +367,7 @@ const save = async (data) => {
             stickerUrl = filePath;
         }
 
-        if (data && data.msg.videoImgUrl ) {
+        if (data && data.msg.videoImgUrl && data.msg.videoImgUrl) {
             console.log("videoImgUrl.,.,.,.,");
             imageUrl = data.msg.data
             const timestamp = new Date().getTime();
@@ -725,7 +377,7 @@ const save = async (data) => {
             videoImgUrl = filePath;
         }
 
-        if (data && data.msg.audioUrl) {
+        if (data && data.msg.audioUrl && data.msg.audioUrl) {
             console.log("audioUrl.,.,.,.,");
             imageUrl = data.msg.data
             const timestamp = new Date().getTime();
@@ -745,7 +397,7 @@ const save = async (data) => {
             videoUrl = filePath;
         }
 
-        console.log("ppppppppppppp",imageUrl,stickerUrl);
+
 
         let details = {
             chatId: data.msg.chatId || 5,
