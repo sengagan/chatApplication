@@ -1172,7 +1172,7 @@ io.on('connection', (socket) => {
                 console.log("inside");
                 const fs = require("fs").promises;
                 var timestamp = new Date().getTime();
-                var imgName = timestamp + "-" + data.msg.name;
+                var imgName = timestamp;
                 const filePath = __dirname + "/images/" + imgName + ".jpg";
                 let base64Data;
                 // if (data.msg.data.includes('data:image/jpeg;base64,')) {

@@ -350,10 +350,10 @@ const save = async (data) => {
         if (data && data.msg.imgUrl) {
             console.log("imagUrl.,.,.,.,");
             // imageUrl = data.msg.imageUrl
-            const timestamp = new Date().getTime();
             // const imgName = timestamp + "-" + data.msg.name;
-            const imgName = timestamp;
-            const filePath = __dirname + "/images/" + imgName;
+            var timestamp = new Date().getTime();
+            var imgName = timestamp;
+            const filePath = __dirname + "/images/" + imgName + ".jpg";
             console.log("......", timestamp, imgName, filePath);
             imageUrl = filePath;
         }
@@ -362,18 +362,18 @@ const save = async (data) => {
             console.log("stickerUrl.,.,.,.,");
             // imageUrl = data.msg.stickerImgUrl
             const timestamp = new Date().getTime();
-            const imgName = timestamp ;
-            const filePath = __dirname + "/images/" + imgName;
+            const imgName = timestamp;
+            const filePath = __dirname + "/images/" + imgName + ".jpg";
             console.log("......", timestamp, imgName, filePath);
             stickerUrl = filePath;
         }
 
-        if (data && data.msg.videoImgUrl ) {
+        if (data && data.msg.videoImgUrl) {
             console.log("videoImgUrl.,.,.,.,");
             // imageUrl = data.msg.data
             const timestamp = new Date().getTime();
-            const imgName = timestamp + "-" + data.msg.name;
-            const filePath = __dirname + "/images/" + imgName;
+            const imgName = timestamp;
+            const filePath = __dirname + "/images/" + imgName + ".jpg";
             console.log("......", timestamp, imgName, filePath);
             videoImgUrl = filePath;
         }
@@ -401,9 +401,9 @@ const save = async (data) => {
         let details = {
             chatId: data.msg.chatId || 5,
             msgType: data.msgType || 0,
-            fromUserId: data.sender_id ,
-            toUserId: data.receiver_id ,
-            message: data.msg.message ,
+            fromUserId: data.sender_id,
+            toUserId: data.receiver_id,
+            message: data.msg.message,
             imgUrl: imageUrl,
             videoImgUrl: videoImgUrl,
             videoUrl: videoUrl,
@@ -424,13 +424,13 @@ const save = async (data) => {
             seenToUserId: data.seenToUserId || '0',
             u_agent: data.u_agent || '',
             ip_addr: data.ip_addr || '',
-            location :{
-                lat : data.msg.location.lat || null  ,
-                long : data.msg.location.long || null  
-            } 
+            location: {
+                lat: data.msg.location.lat || null,
+                long: data.msg.location.long || null
+            }
         };
 
-        console.log("load---service---->",details);
+        console.log("load---service---->", details);
         let response = await messagesModel.save(details);
         console.log("resp-service---->", response);
         /** */
