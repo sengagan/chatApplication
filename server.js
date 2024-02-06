@@ -1167,52 +1167,140 @@ io.on('connection', (socket) => {
         }
     });
 
+    // socket.on('newchat', async (data) => {
+    //     console.log("Received newchat data from client:", data);
+    //     try {
+    //         let  uploadServer;
+    //         if (!data.msg.imgUrl == '' || !data.msg.data) {         
+    //             console.log("inside");
+    //             const fs = require("fs").promises;
+    //             var timestamp = new Date().getTime();
+    //             var imgName = timestamp;
+    //             const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
+              
+    //             /*********** aws upload image ** */ 
+    //             const querystring = require('querystring'); // For URL encoding the data
+    //             const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/upload.php';
+    //             const base64Data = data.msg.data.split(';base64,').pop();
+    //             uploadServer = await axios.post(phpScriptUrl, querystring.stringify({ image: base64Data
+    //             }), {
+    //                 headers: {
+    //                     "Content-Type": "application/x-www-form-urlencoded"
+    //                 }
+    //             })
+    //             console.log("inseddd",uploadServer);
+    //            /************* */
+    //             // if (data.expiryImage == '1') {
+    //             //     console.log("data.expiryImage", data.expiryImage);
+    //             //     setTimeout(async () => {
+    //             //         try {
+    //             //             // Delete the image file
+    //             //             await fs.unlink(filePath);
+    //             //             console.log(`Image ${imgName} deleted successfully.`);
+    //             //         } catch (error) {
+    //             //             console.error(`Error deleting image ${imgName}:`, error);
+    //             //         }
+    //             //     }, 300000); // 5 minute in milliseconds
+    //             // }
+    //             /*********************************** */
+    //             console.log("uploadServer",uploadServer)
+    //         }
+    //         console.log("uploadServer",uploadServer)
+
+    //         let details = {
+    //             imgUrl:uploadServer.data.url || null,
+    //             data,
+    //         }
+    //         console.log("details",details);
+    //         let response_server = await messageController.save(details);
+    //         console.log("response_server===",response_server);
+    //         let response = await messageModel.getDataWithRoom(data)
+    //         console.log("responSeenAt")
+    //         if (data.noofpeopleinroom > 1) {
+    //             let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
+    //             console.log("updateResponse==");
+    //         }
+    //         /******************* */
+    //         let updateOne = await messageModel.updateOne(response);       //jab userone ho
+    //         console.log("updateOne==", updateOne);                           // extra code
+    //         /******************* */
+    //         let getData = await messageModel.getDataById(response[0].id);
+    //         /** */
+    //         if (getData[0].seenFromUserId == 1 && getData[0].seenToUserId == 1) {
+    //             getData[0].seenAt = '1'
+    //         }
+    //         console.log("getdata[0].seenAt");
+    //         /** */
+    //         console.log("getData=====;;;");
+    //         let seenStatus = {
+    //             seenAt: getData[0].seenAt,
+    //             seenFromUserId: getData[0].seenFromUserId,
+    //             seenToUserId: getData[0].seenToUserId
+    //         }
+    //         // console.log("seenStatus");
+    //         // const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };                                                 
+    //         const msg = { ...data.msg, "chatId": data.msg.chatId, "seenStatus": seenStatus };
+    //         io.to(data.msg.chatId).emit('message', msg);
+    //         console.log('Response from server:');
+    //     } catch (error) {
+    //         console.error('Error in newchat:', error);
+    //     }
+    // });
+
     socket.on('newchat', async (data) => {
         console.log("Received newchat data from client:", data);
         try {
             let uploadServer;
-            if (!data.msg.imgUrl == '') {         
+            if (!data.msg.imgUrl) {
                 console.log("inside");
                 const fs = require("fs").promises;
+                const path = require("path"); // Add this line to import 'path'
                 var timestamp = new Date().getTime();
                 var imgName = timestamp;
-                const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
-              
-                /*********** aws upload image ** */ 
-                const querystring = require('querystring'); // For URL encoding the data
+                const filePath = path.join(__dirname, "images", `${imgName}.jpg`);
+    
+                /*********** aws upload image ** */
+                const axios = require("axios"); // Add this line to import 'axios'
+                const querystring = require('querystring');
                 const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/upload.php';
                 const base64Data = data.msg.imgUrl.split(';base64,').pop();
-                uploadServer = await axios.post(phpScriptUrl, querystring.stringify({
-                    image: base64Data
-                }), {
+                uploadServer = await axios.post(phpScriptUrl, querystring.stringify({ image: base64Data }), {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     }
                 })
-                
-               /************* */
-                if (data.expiryImage == '1') {
-                    console.log("data.expiryImage", data.expiryImage);
-                    setTimeout(async () => {
-                        try {
-                            // Delete the image file
-                            await fs.unlink(filePath);
-                            console.log(`Image ${imgName} deleted successfully.`);
-                        } catch (error) {
-                            console.error(`Error deleting image ${imgName}:`, error);
-                        }
-                    }, 300000); // 5 minute in milliseconds
-                }
+                console.log("inseddd", uploadServer);
+                /************* */
+    
+                // Uncomment the following block if you want to delete the image after a certain time
+                // if (data.expiryImage == '1') {
+                //     console.log("data.expiryImage", data.expiryImage);
+                //     setTimeout(async () => {
+                //         try {
+                //             // Delete the image file
+                //             await fs.unlink(filePath);
+                //             console.log(`Image ${imgName} deleted successfully.`);
+                //         } catch (error) {
+                //             console.error(`Error deleting image ${imgName}:`, error);
+                //         }
+                //     }, 300000); // 5 minutes in milliseconds
+                // }
                 /*********************************** */
+    
+                console.log("uploadServer", uploadServer)
             }
+            console.log("uploadServer", uploadServer)
+    
             let details = {
-                imgUrl:uploadServer.data.url,
+                imgUrl: uploadServer ? uploadServer.data.url : null,
                 data,
             }
+            console.log("details", details);
             let response_server = await messageController.save(details);
-            console.log("response_server===",response_server);
+            console.log("response_server===", response_server);
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt")
+    
             if (data.noofpeopleinroom > 1) {
                 let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
                 console.log("updateResponse==");
@@ -1243,6 +1331,7 @@ io.on('connection', (socket) => {
             console.error('Error in newchat:', error);
         }
     });
+    
 
     socket.on('existschat', async function (data) {
         console.log('receive existschat data from client');
