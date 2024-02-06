@@ -443,7 +443,7 @@ const save = async (data) => {
                 } catch (error) {
                     console.error(`Error deleting image :`, error);
                 }
-            }, 60000);
+            }, 300000);
         }
         /** */
         return response;
@@ -491,7 +491,7 @@ const createGallery = async (details) => {
     const filePath = __dirname + "/../photo/" + timestamp + ".jpg";
     let base64Data;
     if (data.image.includes('data:image/jpeg;base64,')) {
-        base64Data = data.image.split(';base64,').pop();
+        base64Data = data.image.split(';base64,').pop().toString();
     } else {
         base64Data = data.image;
     }
@@ -598,61 +598,27 @@ const updateGallery = async (details) => {
 
 /**********************************************/
 
-// const multipleImage = async (req, res) => {
-//     let details = {
-//         chatId: req.body.chatId,
-//         fromUserId: req.body.fromUserId,
-//         toUserId: req.body.toUserId,
-//         imgUrl: req.body.imgUrl,
-//         seenAt: req.body.seenAt || 0,
-//         seenFromUserId: req.body.seenFromUserId || '0',
-//         seenToUserId: req.body.seenToUserId || '0',
-//     }
-//     console.log("details/service");
-//     let file = details.imgUrl;
-//     console.log("updateGallery services-->>>>",file);
-//     if (file.length ) {
-//         console.log("file");
-//         await messagesModel.multipleImage(file,details);
-//     } else {
-//         for (let i = 0; i < file.length; i++) {
-//             console.log("filelength", file[i]);
-//             await messagesModel.multipleImage(file[i],details);
-//         }
-//     }
-//     return true
-// }
+const multipleImage = async (file, data) => {
+    console.log("data", data, file.file.length);
+    let response = false;  
 
-const multipleImage = async (req, res) => {
-    try {
-        const details = {
-            chatId: req.body.chatId,
-            fromUserId: req.body.fromUserId,
-            toUserId: req.body.toUserId,
-            imgUrl: req.body.imgUrl,
-            seenAt: req.body.seenAt || 0,
-            seenFromUserId: req.body.seenFromUserId || '0',
-            seenToUserId: req.body.seenToUserId || '0',
-        };
-
-        console.log("details/service", details);
-
-        const files = Array.isArray(details.imgUrl) ? details.imgUrl : [details.imgUrl];
-        console.log("updateGallery services-->>>>", files);
-
-        const maxImagesToSave = 6;
-
-        for (let i = 0; i < Math.min(files.length, maxImagesToSave); i++) {
-            console.log("filelength", files[i]);
-            await messagesModel.multipleImage(files[i], details);
+    if (file && file.file && file.file.name) {
+        console.log("one", file.file.name);
+        await messagesModel.multipleImage(file.file.name, data);
+        response = true;
+    } else {
+        if (file.file.length > 0 && file.file.length <= 6) {
+            for (let i = 0; i < file.file.length; i++) {
+                console.log("two", file.file[i].name);
+                await messagesModel.multipleImage(file.file[i].name, data);
+                response = true; 
+            }
         }
-
-        return true
-    } catch (error) {
-        console.error("Error in multipleImage:", error);
-        res.status(500).json({ success: false, error: "Internal Server Error" });
     }
-};
+    console.log("response", response);
+    return response;
+}
 
 
+//  {[{name:'Screenshot (30).png',imgUrl:'http://localhsot sdhfsdhf'},{name:'Screenshot (30).png',imgUrl:'http://localhsot sdhfsdhf'}]}
 module.exports = { save, getData, savePhrases, getPhrasesById, createGallery, readGallery, updateGallery, deleteGallery, multipleImage };

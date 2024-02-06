@@ -1126,7 +1126,8 @@ const messageModel = require("./model/messagesModel");
 const path = require('path');
 const { count } = require('console');
 const { object } = require('joi');
-
+const fileupload = require("express-fileupload");
+app.use(fileupload());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json())
@@ -1217,7 +1218,7 @@ io.on('connection', (socket) => {
                 // console.log("base64Data",base64Data)
                 const buffer = Buffer.from(base64Data, 'base64');
                let upload = await fs.writeFile(filePath, buffer);
-               console.log("uploadimage",filePath);
+               console.log("uploadimage",filePath,data.expiryImage);
                 /****************************** */
                 if (data.expiryImage == '1') {
                     console.log("data.expiryImage", data.expiryImage);
@@ -1229,7 +1230,7 @@ io.on('connection', (socket) => {
                         } catch (error) {
                             console.error(`Error deleting image ${imgName}:`, error);
                         }
-                    },60000); // 1 minute in milliseconds
+                    },300000); // 5 minute in milliseconds
                 }
                 /*********************************** */
             }

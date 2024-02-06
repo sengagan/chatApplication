@@ -375,7 +375,7 @@ const savePhrases = async(details)=>{
 
 const getPhrasesById = async(details)=>{
     console.log("details/savephrases=",details);
-    let query = `SELECT * FROM phrases WHERE user_id=${details.id} `
+    let query = `SELECT * FROM phrases WHERE user_id=${details} `
           return new Promise(await function(resolve,reject){
             connection.query(query,function(error,result){
             if (error) {
@@ -456,67 +456,21 @@ const updateGallery = async(data)=>{
 }
 // ==============================================================
 
-// const multipleImage = async(image,details)=>{
-//     console.log("image",image,details);
-//     let query = `INSERT INTO messages(chatId,fromUserId,toUserId,imgUrl,seenAt,seenFromUserId,seenToUserId) VALUES ('${details.chatId}','${details.fromUserId}','${details.toUserId}','${image}','${details.seenAt}','${details.seenFromUserId}','${details.seenToUserId}')`;
-//     return new Promise(await function(resolve,reject){
-//         connection.query(query,function(error,result){
-//         if (error) {
-//             console.error("Error executing query:", error);
-//             reject("Error executing query",error);
-//         } else {
-//             console.log("result-savePhrases-0-get--",result);
-//             resolve(result);
-//         }
-//     });
-// });
-// }
-
-const multipleImage = async (image, details) => {
-    try {
-        console.log("image", image, details);
-
-        // Convert the array of image URLs into a string, separated by commas
-        const imgUrls = Array.isArray(image) ? image.join(',') : image;
-        console.log("imgUrls", imgUrls);
-
-        const query = `INSERT INTO messages(chatId, fromUserId, toUserId, imgUrl, seenAt, seenFromUserId, seenToUserId) 
-                       VALUES (?, ?, ?, ?, ?, ?, ?)`;
-
-        const values = [
-            details.chatId,
-            details.fromUserId,
-            details.toUserId,
-            imgUrls,
-            details.seenAt,
-            details.seenFromUserId,
-            details.seenToUserId,
-        ];
-
-        const result = await executeQuery(query, values);
-
-        console.log("result-savePhrases-0-get--", result);
-        return result;
-    } catch (error) {
-        console.error("Error in multipleImage:", error);
-        throw error;
-    }
-};
-
-const executeQuery = (query, values) => {
-    return new Promise((resolve, reject) => {
-        connection.query(query, values, (error, result) => {
-            if (error) {
-                console.error("Error executing query:", error);
-                reject(error);
-            } else {
-                resolve(result);
-            }
-        });
+const multipleImage = async(image,details)=>{
+    console.log("image",image,details);
+    let query = `INSERT INTO messages(chatId,fromUserId,toUserId,imgUrl,seenAt,seenFromUserId,seenToUserId) VALUES ('${details.chatId}','${details.fromUserId}','${details.toUserId}','${image}','${details.seenAt}','${details.seenFromUserId}','${details.seenToUserId}')`;
+    return new Promise(await function(resolve,reject){
+        connection.query(query,function(error,result){
+        if (error) {
+            console.error("Error executing query:", error);
+            reject("Error executing query",error);
+        } else {
+            console.log("result-savePhrases-0-get--",result);
+            resolve(result);
+        }
     });
-};
-
-
+});
+}
 
 module.exports = { save, getData, markMessagesAsSeen, getDataById, getDataWithRoom, updateOne, deleteImgUrl , savePhrases , getPhrasesById,createGallery,readGallery ,deleteGallery , updateGallery , multipleImage };
 

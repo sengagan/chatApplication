@@ -82,7 +82,7 @@ const multipleImage = async(details)=>{
         chatId: joi.string(),
         fromUserId: joi.string(),
         toUserId: joi.string(), 
-        imgUrl:joi.string(),  
+        file:joi.any().allow(),  
         seenAt: joi.string(),
         seenFromUserId: joi.string(),
         seenToUserId: joi.string(),
