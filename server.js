@@ -1181,7 +1181,7 @@ io.on('connection', (socket) => {
                 const querystring = require('querystring'); // For URL encoding the data
                 const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/upload.php';
                 const base64Data = data.msg.imgUrl.split(';base64,').pop();
-                var uploadServer = await axios.post(phpScriptUrl, querystring.stringify({
+                uploadServer = await axios.post(phpScriptUrl, querystring.stringify({
                     image: base64Data
                 }), {
                     headers: {

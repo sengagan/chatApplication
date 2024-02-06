@@ -8,7 +8,7 @@ const save = async (imageUrl,data) => {
 
     return new Promise(async (resolve, reject) => {
         try {
-            let validate = await messageValidation.save(data.data);
+            let validate = await messageValidation.save(data);
             console.log('validate',validate);
             if (validate.status === 'ERROR') {
                 return reject({ status: 400, error: validate.message });
