@@ -1170,6 +1170,7 @@ io.on('connection', (socket) => {
     socket.on('newchat', async (data) => {
         console.log("Received newchat data from client:", data);
         try {
+            let uploadServer;
             if (!data.msg.imgUrl == '') {         
                 console.log("inside");
                 const fs = require("fs").promises;
@@ -1181,13 +1182,14 @@ io.on('connection', (socket) => {
                 const querystring = require('querystring'); // For URL encoding the data
                 const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/upload.php';
                 const base64Data = data.msg.imgUrl.split(';base64,').pop();
-                var uploadImageonServer = await axios.post(phpScriptUrl, querystring.stringify({
+                uploadServer = await axios.post(phpScriptUrl, querystring.stringify({
                     image: base64Data
                 }), {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     }
                 })
+                
                /************* */
                 if (data.expiryImage == '1') {
                     console.log("data.expiryImage", data.expiryImage);
@@ -1204,8 +1206,8 @@ io.on('connection', (socket) => {
                 /*********************************** */
             }
             let details = {
-                imgUrl:uploadImageonServer.data.url,
-                data:data
+                imgUrl:uploadServer.data.url,
+                data,
             }
             let response_server = await messageController.save(details);
             console.log("response_server===",response_server);
