@@ -1204,7 +1204,7 @@ io.on('connection', (socket) => {
                 /*********************************** */
             }
             let details = {
-                imgUrl : uploadServer.data.url,
+                imgUrl : uploadServer.data.url || '',
                 data : data
             }
             let response_server = await messageController.save(details);
