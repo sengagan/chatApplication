@@ -405,7 +405,7 @@ const save = async (imageUrl,data) => {
             fromUserId: data.sender_id,
             toUserId: data.receiver_id,
             message: data.msg.message,
-            imgUrl: data.imgUrl,
+            imgUrl: imageUrl,
             videoImgUrl: data.msg.videoImgUrl || null,
             videoUrl: data.msg.videoUrl || null,
             audioUrl: data.msg.audioUrl || null,
