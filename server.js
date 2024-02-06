@@ -1170,13 +1170,14 @@ io.on('connection', (socket) => {
     socket.on('newchat', async (data) => {
         console.log("Received newchat data from client:", data);
         try {
-            if (!data.msg.imgUrl == '') {         
+            if (!data.msg.imgUrl == '') {
                 console.log("inside");
                 const fs = require("fs").promises;
                 var timestamp = new Date().getTime();
                 var imgName = timestamp;
                 const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
-                
+
+                /*********** aws upload image  ** */
                 const querystring = require('querystring'); // For URL encoding the data
                 const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/upload.php';
                 const base64Data = data.msg.imgUrl.split(';base64,').pop();
@@ -1187,28 +1188,50 @@ io.on('connection', (socket) => {
                         "Content-Type": "application/x-www-form-urlencoded"
                     }
                 })
-               
-                if (data.expiryImage == '1') {
-                    console.log("data.expiryImage", data.expiryImage);
-                    setTimeout(async () => {
-                        try {
-                            // Delete the image file
-                            await fs.unlink(filePath);
-                            console.log(`Image ${imgName} deleted successfully.`);
-                        } catch (error) {
-                            console.error(`Error deleting image ${imgName}:`, error);
-                        }
-                    }, 300000); // 5 minute in milliseconds
-                }
+                /************* */
+                // if (data.expiryImage == '1') {
+                //     console.log("data.expiryImage", data.expiryImage);
+                //     setTimeout(async () => {
+                //         try {
+                //             // Delete the image file
+                //             await fs.unlink(filePath);
+                //             console.log(`Image ${imgName} deleted successfully.`);
+                //         } catch (error) {
+                //             console.error(`Error deleting image ${imgName}:`, error);
+                //         }
+                //     }, 300000); // 5 minute in milliseconds
+                // }
+
+
+            //  if (data.expiryImage == '1') {
+            //         console.log("data.expiryImage", data.expiryImage);
+                    // setTimeout(async () => {
+                        // try {
+                        //     const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/delete_image.php';
+                        //     var uploadServer = await  axios.post(phpScriptUrl, {
+                        //         imageName: 'example.jpg' // Replace with the actual image name get from database or anywhere and pass name only
+                        //     }).then((response) => {
+                        //         console.log('Response:', response.data);
+                        //     }).catch((error) => {
+                        //         console.error('Error:', error);
+                        //     });
+                        //     console.log("upload",uploadServer.data.name);
+                        // } catch (error) {
+                        //     console.error(`Error deleting image ${imgName}:`, error);
+                        // }
+                    // }, 300000); // 5 minute in milliseconds
+                // }
+
                 /*********************************** */
             }
             // console.log("uuuuyyyyuyuy--", data);
+            
             let details = {
-                imgUrl:uploadServer.data.url,
-                data:data
+                imgUrl: uploadServer.data.url,
+                data: data
             }
             let response_server = await messageController.save(details);
-            console.log("response_server===",response_server);
+            console.log("response_server===", response_server);
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt")
             if (data.noofpeopleinroom > 1) {
