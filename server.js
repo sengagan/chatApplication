@@ -1138,6 +1138,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+const axios = require("axios");
 const userRouter = require("./Routes/messageRouter");
 app.use("/route", userRouter);
 
@@ -1167,59 +1168,28 @@ io.on('connection', (socket) => {
     });
 
     socket.on('newchat', async (data) => {
-        console.log("Received newchat data from client:",data);
+        console.log("Received newchat data from client:", data);
         try {
-            if (!data.msg.imgUrl == '' ) {
+            if (!data.msg.imgUrl == '' || !data.msg.data == '') {         // 1
                 console.log("inside");
                 const fs = require("fs").promises;
                 var timestamp = new Date().getTime();
                 var imgName = timestamp;
                 const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
-                let base64Data;
-                // if (data.msg.data.includes('data:image/jpeg;base64,')) {
-                //     base64Data = data.msg.imageUrl.split(';base64,').pop();
-                // } else {
-                //     base64Data = data.msg.imageUrl;
-                // }
-                /************************* */
-                // if(data.msg.imgUrl){
-                //     console.log("imageurliii");
-                    // if (data.msg.imgUrl.includes('data:image/jpeg;base64,')) {
-                        base64Data = data.msg.imgUrl.split(';base64,').pop().toString();
-                    // } else {
-                    //     base64Data = data.msg.imgUrl;
-                    // }
-                // }
-                // if(data.msg.stickerImgUrl){
-                //     console.log("stikerurliii");
-                //     if (data.msg.stickerImgUrl.includes('data:image/jpeg;base64,')) {
-                //         base64Data = data.msg.stickerImgUrl.split(';base64,').pop();
-                //     } else {
-                //         base64Data = data.msg.stickerImgUrl;
-                //     }
-                // }
-                // if(data.msg.videoImgUrl){
-                //     console.log("videoImgUrlliii");
-                //     if (data.msg.videoImgUrl.includes('data:image/jpeg;base64,')) {
-                //         base64Data = data.msg.videoImgUrl.split(';base64,').pop();
-                //     } else {
-                //         base64Data = data.msg.videoImgUrl;
-                //     }
-                // }
-                // if(data.msg.videoUrl){
-                //     console.log("videoUrlliii");
-                //     if (data.msg.videoUrl.includes('data:image/jpeg;base64,')) {
-                //         base64Data = data.msg.videoUrl.split(';base64,').pop();
-                //     } else {
-                //         base64Data = data.msg.videoUrl;
-                //     }
-                // }
-                /************************* */
-                // console.log("base64Data",base64Data)
-                const buffer = Buffer.from(base64Data, 'base64');
-               let upload = await fs.writeFile(filePath, buffer);
-               console.log("uploadimage",filePath,data.expiryImage);
-                /****************************** */
+                
+                const querystring = require('querystring'); // For URL encoding the data
+                const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/upload.php';
+                const base64Data = data.msg.data.split(';base64,').pop();
+                var uploadServer = await axios.post(phpScriptUrl, querystring.stringify({
+                    image: base64Data
+                }), {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                })
+
+
+               
                 if (data.expiryImage == '1') {
                     console.log("data.expiryImage", data.expiryImage);
                     setTimeout(async () => {
@@ -1230,13 +1200,17 @@ io.on('connection', (socket) => {
                         } catch (error) {
                             console.error(`Error deleting image ${imgName}:`, error);
                         }
-                    },300000); // 5 minute in milliseconds
+                    }, 300000); // 5 minute in milliseconds
                 }
                 /*********************************** */
             }
-            console.log("uuuuyyyyuyuy--",data);
-            let response_server = await messageController.save(data);
-            console.log("response_server===");
+            // console.log("uuuuyyyyuyuy--", data);
+            let details = {
+                imgUrl:uploadServer.data.url,
+                data:data
+            }
+            let response_server = await messageController.save(details);
+            console.log("response_server===",response_server);
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt")
             if (data.noofpeopleinroom > 1) {
@@ -1260,7 +1234,7 @@ io.on('connection', (socket) => {
                 seenFromUserId: getData[0].seenFromUserId,
                 seenToUserId: getData[0].seenToUserId
             }
-            console.log("seenStatus");
+            // console.log("seenStatus");
             // const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };                                                 
             const msg = { ...data.msg, "chatId": data.msg.chatId, "seenStatus": seenStatus };
             io.to(data.msg.chatId).emit('message', msg);
@@ -1274,7 +1248,7 @@ io.on('connection', (socket) => {
         console.log('receive existschat data from client');
         try {
             let get_data = await messageController.getData(data);
-            console.log("getdata/server----",get_data)        //null
+            console.log("getdata/server----", get_data)        //null
             socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
         } catch (error) {
             console.error(error);

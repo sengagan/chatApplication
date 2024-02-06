@@ -3,7 +3,6 @@ const comman = require('../comman');
 
 const save = async (data) => {
     let schema = joi.object({
-       
         chatId: joi.string(),
         msgType: joi.string(),
         fromUserId: joi.string(),
@@ -29,7 +28,6 @@ const save = async (data) => {
         seenToUserId: joi.string(),
         u_agent: joi.string(),
         ip_addr: joi.string()
-
     })
     let response = await comman.comman(schema, data);
     return response;

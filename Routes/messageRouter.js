@@ -17,5 +17,4 @@ messageRouter.put('/update-gallery', messageController.updateGallery);
 //multiple image
 messageRouter.post('/multiple-image', messageController.multipleImage);
 
-
 module.exports = messageRouter;

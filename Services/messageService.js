@@ -331,7 +331,7 @@ const save = async (data) => {
     try {
         console.log("data receive from controller", data);
         // data = data.msg.data;
-        let imageUrl = '';
+        // let imageUrl = '';
         // let stickerUrl = '';
         // let videoImgUrl = '';
         // let audioUrl = '';
@@ -347,16 +347,16 @@ const save = async (data) => {
         //     imageUrl = filePath;
         // }
 
-        if (data && data.msg.imgUrl) {
-            console.log("imagUrl.,.,.,.,");
-            // imageUrl = data.msg.imageUrl
-            // const imgName = timestamp + "-" + data.msg.name;
-            var timestamp = new Date().getTime();
-            var imgName = timestamp;
-            const filePath = __dirname + "/images/" + imgName + ".jpg";
-            console.log("......", timestamp, imgName, filePath);
-            imageUrl = filePath;
-        }
+        // if (data && data.msg.imgUrl) {
+        //     console.log("imagUrl.,.,.,.,");
+        //     // imageUrl = data.msg.imageUrl
+        //     // const imgName = timestamp + "-" + data.msg.name;
+        //     var timestamp = new Date().getTime();
+        //     var imgName = timestamp;
+        //     const filePath = __dirname + "/images/" + imgName + ".jpg";
+        //     console.log("......", timestamp, imgName, filePath);
+        //     imageUrl = filePath;
+        // }
 
         // if (data && data.msg.stickerImgUrl) {
         //     console.log("stickerUrl.,.,.,.,");
@@ -399,34 +399,34 @@ const save = async (data) => {
         // }
 
         let details = {
-            chatId: data.msg.chatId || 5,
-            msgType: data.msgType || 0,
-            fromUserId: data.sender_id,
-            toUserId: data.receiver_id,
-            message: data.msg.message,
-            imgUrl: imageUrl,
-            videoImgUrl: data.msg.videoImgUrl || null,
-            videoUrl: data.msg.videoUrl || null,
-            audioUrl: data.msg.audioUrl || null,
-            stickerId: data.msg.stickerId || 0,
-            stickerImgUrl: data.msg.stickerImgUrl || null,
-            area: data.area || 0,
-            country: data.country || 0,
-            city: data.city || 0,
-            // lat: data.lat || null,
-            // lng: data.lng || null,
-            createAt: data.timestamp || 1,
-            removeAt: data.removeAt || 0,
-            removeFromUserId: data.removeFromUserId || '0',
-            removeToUserId: data.removeToUserId || '0',
-            seenAt: data.seenAt || 0,
-            seenFromUserId: data.seenFromUserId || '0',
-            seenToUserId: data.seenToUserId || '0',
-            u_agent: data.u_agent || '',
-            ip_addr: data.ip_addr || '',
+            chatId: data.data.msg.chatId || 5,
+            msgType: data.data.msgType || 0,
+            fromUserId: data.data.sender_id,
+            toUserId: data.data.receiver_id,
+            message: data.data.msg.message,
+            imgUrl: data.imgUrl,
+            videoImgUrl: data.data.msg.videoImgUrl || null,
+            videoUrl: data.data.msg.videoUrl || null,
+            audioUrl: data.data.msg.audioUrl || null,
+            stickerId: data.data.msg.stickerId || 0,
+            stickerImgUrl: data.data.msg.stickerImgUrl || null,
+            area: data.data.area || 0,
+            country: data.data.country || 0,
+            city: data.data.city || 0,
+            // lat: data.data.lat || null,
+            // lng: data.data.lng || null,
+            createAt: data.data.timestamp || 1,
+            removeAt: data.data.removeAt || 0,
+            removeFromUserId: data.data.removeFromUserId || '0',
+            removeToUserId: data.data.removeToUserId || '0',
+            seenAt: data.data.seenAt || 0,
+            seenFromUserId: data.data.seenFromUserId || '0',
+            seenToUserId: data.data.seenToUserId || '0',
+            u_agent: data.data.u_agent || '',
+            ip_addr: data.data.ip_addr || '',
             location: {
-                lat: data.msg.location.lat || null,
-                long: data.msg.location.long || null
+                lat: data.data.msg.location.lat || null,
+                long: data.data.msg.location.long || null
             }
         };
 
@@ -610,7 +610,7 @@ const multipleImage = async (file, data) => {
         if (file.file.length > 0 && file.file.length <= 6) {
             for (let i = 0; i < file.file.length; i++) {
                 console.log("two", file.file[i].name);
-                await messagesModel.multipleImage(file.file[i].name, data);
+               await messagesModel.multipleImage(file.file[i].name, data);
                 response = true; 
             }
         }

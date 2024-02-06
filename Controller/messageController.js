@@ -4,11 +4,11 @@ const messageValidation = require('../Validation/messageValidation');
 const messageServices = require('../Services/messageService');
 
 const save = async (data) => {
-    console.log("data receive from server:");
+    console.log("data receive from server:",data);
 
     return new Promise(async (resolve, reject) => {
         try {
-            let validate = await messageValidation.save(data);
+            let validate = await messageValidation.save(data.data);
             console.log('validate');
             if (validate.status === 'ERROR') {
                 return reject({ status: 400, error: validate.message });
