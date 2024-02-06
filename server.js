@@ -1207,7 +1207,7 @@ io.on('connection', (socket) => {
             //     imgUrl : uploadServer.data.url || '',
             //     data : data
             // }
-            let response_server = await messageController.save(uploadServer.data.url,data);
+            let response_server = await messageController.save({imageUrl:uploadServer.data.url,data});
             console.log("response_server===",response_server);
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt")
