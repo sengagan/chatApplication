@@ -1167,80 +1167,169 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('newchat', async (data) => {
-        console.log("Received newchat data from client:", data);
-        try {
-            if (!data.msg.imgUrl == '') {         
-                console.log("inside");
-                const fs = require("fs").promises;
-                var timestamp = new Date().getTime();
-                var imgName = timestamp;
-                const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
+    // socket.on('newchat', async (data) => {
+    //     console.log("Received newchat data from client:", data);
+    //     try {
+    //         if (!data.msg.imgUrl == '') {         
+    //             console.log("inside");
+    //             const fs = require("fs").promises;
+    //             var timestamp = new Date().getTime();
+    //             var imgName = timestamp;
+    //             const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
               
-                /*********** aws upload image ** */ 
-                const querystring = require('querystring'); // For URL encoding the data
-                const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/upload.php';
-                const base64Data = data.msg.imgUrl.split(';base64,').pop();
-                var uploadServer = await axios.post(phpScriptUrl, querystring.stringify({
-                    image: base64Data
-                }), {
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                })
-               /************* */
-                if (data.expiryImage == '1') {
-                    console.log("data.expiryImage", data.expiryImage);
-                    setTimeout(async () => {
-                        try {
-                            // Delete the image file
-                            await fs.unlink(filePath);
-                            console.log(`Image ${imgName} deleted successfully.`);
-                        } catch (error) {
-                            console.error(`Error deleting image ${imgName}:`, error);
-                        }
-                    }, 300000); // 5 minute in milliseconds
+    //             /*********** aws upload image ** */ 
+    //             const querystring = require('querystring'); // For URL encoding the data
+    //             const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/upload.php';
+    //             const base64Data = data.msg.imgUrl.split(';base64,').pop();
+    //             var uploadServer = await axios.post(phpScriptUrl, querystring.stringify({
+    //                 image: base64Data
+    //             }), {
+    //                 headers: {
+    //                     "Content-Type": "application/x-www-form-urlencoded"
+    //                 }
+    //             })
+    //            /************* */
+    //             if (data.expiryImage == '1') {
+    //                 console.log("data.expiryImage", data.expiryImage);
+    //                 setTimeout(async () => {
+    //                     try {
+    //                         // Delete the image file
+    //                         await fs.unlink(filePath);
+    //                         console.log(`Image ${imgName} deleted successfully.`);
+    //                     } catch (error) {
+    //                         console.error(`Error deleting image ${imgName}:`, error);
+    //                     }
+    //                 }, 300000); // 5 minute in milliseconds
+    //             }
+    //             /*********************************** */
+    //         }
+    //         let details = {
+    //             imgUrl:uploadServer.data.url,
+    //             data:data
+    //         }
+    //         let response_server = await messageController.save(details);
+    //         console.log("response_server===",response_server);
+    //         let response = await messageModel.getDataWithRoom(data)
+    //         console.log("responSeenAt")
+    //         if (data.noofpeopleinroom > 1) {
+    //             let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
+    //             console.log("updateResponse==");
+    //         }
+    //         /******************* */
+    //         let updateOne = await messageModel.updateOne(response);       //jab userone ho
+    //         console.log("updateOne==", updateOne);                           // extra code
+    //         /******************* */
+    //         let getData = await messageModel.getDataById(response[0].id);
+    //         /** */
+    //         if (getData[0].seenFromUserId == 1 && getData[0].seenToUserId == 1) {
+    //             getData[0].seenAt = '1'
+    //         }
+    //         console.log("getdata[0].seenAt");
+    //         /** */
+    //         console.log("getData=====;;;");
+    //         let seenStatus = {
+    //             seenAt: getData[0].seenAt,
+    //             seenFromUserId: getData[0].seenFromUserId,
+    //             seenToUserId: getData[0].seenToUserId
+    //         }
+    //         // console.log("seenStatus");
+    //         // const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };                                                 
+    //         const msg = { ...data.msg, "chatId": data.msg.chatId, "seenStatus": seenStatus };
+    //         io.to(data.msg.chatId).emit('message', msg);
+    //         console.log('Response from server:');
+    //     } catch (error) {
+    //         console.error('Error in newchat:', error);
+    //     }
+    // });
+
+    const path = require('path');
+const axios = require('axios');
+
+socket.on('newchat', async (data) => {
+    console.log("Received newchat data from the client:", data);
+    try {
+        let uploadServer; // Declare uploadServer variable outside the if block
+
+        if (data.msg.imgUrl !== '') {
+            console.log("inside");
+            const fs = require("fs").promises;
+            var timestamp = new Date().getTime();
+            var imgName = timestamp;
+            const filePath = path.join(__dirname + "/images/" + imgName + ".jpg");
+
+            /*********** aws upload image ** */
+            const querystring = require('querystring'); // For URL encoding the data
+            const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/upload.php';
+            const base64Data = data.msg.imgUrl.split(';base64,').pop();
+            uploadServer = await axios.post(phpScriptUrl, querystring.stringify({
+                image: base64Data
+            }), {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
                 }
-                /*********************************** */
+            })
+            /************* */
+
+            if (data.expiryImage == '1') {
+                console.log("data.expiryImage", data.expiryImage);
+                setTimeout(async () => {
+                    try {
+                        // Delete the image file
+                        await fs.unlink(filePath);
+                        console.log(`Image ${imgName} deleted successfully.`);
+                    } catch (error) {
+                        console.error(`Error deleting image ${imgName}:`, error);
+                    }
+                }, 300000); // 5 minutes in milliseconds
             }
-            let details = {
-                imgUrl:uploadServer.data.url,
-                data:data
-            }
-            let response_server = await messageController.save(details);
-            console.log("response_server===",response_server);
-            let response = await messageModel.getDataWithRoom(data)
-            console.log("responSeenAt")
-            if (data.noofpeopleinroom > 1) {
-                let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
-                console.log("updateResponse==");
-            }
-            /******************* */
-            let updateOne = await messageModel.updateOne(response);       //jab userone ho
-            console.log("updateOne==", updateOne);                           // extra code
-            /******************* */
-            let getData = await messageModel.getDataById(response[0].id);
-            /** */
-            if (getData[0].seenFromUserId == 1 && getData[0].seenToUserId == 1) {
-                getData[0].seenAt = '1'
-            }
-            console.log("getdata[0].seenAt");
-            /** */
-            console.log("getData=====;;;");
-            let seenStatus = {
-                seenAt: getData[0].seenAt,
-                seenFromUserId: getData[0].seenFromUserId,
-                seenToUserId: getData[0].seenToUserId
-            }
-            // console.log("seenStatus");
-            // const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };                                                 
-            const msg = { ...data.msg, "chatId": data.msg.chatId, "seenStatus": seenStatus };
-            io.to(data.msg.chatId).emit('message', msg);
-            console.log('Response from server:');
-        } catch (error) {
-            console.error('Error in newchat:', error);
+            /*********************************** */
         }
-    });
+
+        let details = {
+            imgUrl: uploadServer ? uploadServer.data.url : '',
+            data: data
+        }
+
+        let response_server = await messageController.save(details);
+        console.log("response_server===", response_server);
+
+        let response = await messageModel.getDataWithRoom(data)
+        console.log("responSeenAt")
+
+        if (data.noofpeopleinroom > 1) {
+            let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
+            console.log("updateResponse==");
+        }
+
+        /******************* */
+        let updateOne = await messageModel.updateOne(response);       //jab userone ho
+        console.log("updateOne==", updateOne);                           // extra code
+        /******************* */
+
+        let getData = await messageModel.getDataById(response[0].id);
+        /** */
+        if (getData[0].seenFromUserId == 1 && getData[0].seenToUserId == 1) {
+            getData[0].seenAt = '1'
+        }
+        console.log("getdata[0].seenAt");
+        /** */
+        console.log("getData=====;;;");
+        let seenStatus = {
+            seenAt: getData[0].seenAt,
+            seenFromUserId: getData[0].seenFromUserId,
+            seenToUserId: getData[0].seenToUserId
+        }
+        // console.log("seenStatus");
+        // const msg = { ...data.msg,"chatId":data.msg.chatId,"tableResponse":getData };                                                 
+        const msg = { ...data.msg, "chatId": data.msg.chatId, "seenStatus": seenStatus };
+        io.to(data.msg.chatId).emit('message', msg);
+        console.log('Response from the server:');
+    } catch (error) {
+        console.error('Error in newchat:', error);
+    }
+});
+
+
 
     socket.on('existschat', async function (data) {
         console.log('receive existschat data from client');
