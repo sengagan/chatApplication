@@ -222,7 +222,7 @@ const save = async (details) => {
 
 
 const getData = async (data) => {
-    console.log("getdata/model-==-");
+    console.log("getdata/model-==-",data);
 
     let query = `SELECT * FROM messages 
               WHERE (fromUserId = ${data.sender_id} AND toUserId = ${data.receiver_id})
