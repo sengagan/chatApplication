@@ -1347,7 +1347,8 @@ io.on('connection', (socket) => {
     socket.on('markMessagesAsSeen', async (data) => {
         try {
             console.log("seen-----", data);      // jab user2 seen karega tb update hoga aur get api chalegi
-            await messageModel.markMessagesAsSeen(data);
+           let responseMarkMessageAsSeen= await messageModel.markMessagesAsSeen(data);
+           console.log("responseMarkMessageAsSeen",responseMarkMessageAsSeen);
             let response = await messageModel.getDataById(data.id)
             console.log("response/seen/server", response);
             io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id, response });
@@ -1425,10 +1426,10 @@ io.on('connection', (socket) => {
             let response_server = await messageController.save(details);
             console.log("response_server===", response_server);
             let response = await messageModel.getDataWithRoom(data)
-            console.log("responSeenAt")
+            console.log("responSeenAt==",response)
             if (data.noofpeopleinroom > 1) {
                 let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
-                console.log("updateResponse==");
+                console.log("updateResponse==",updateResponse);
             }
             /******************* */
             let updateOne = await messageModel.updateOne(response);       //jab userone ho
@@ -1461,7 +1462,7 @@ io.on('connection', (socket) => {
         console.log('receive existschat data from client');
         try {
             let get_data = await messageController.getData(data);
-            console.log("getdata/server----", get_data)        //null
+            console.log("getdata/server----")        //null
             socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
         } catch (error) {
             console.error(error);
