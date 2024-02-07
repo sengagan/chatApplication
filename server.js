@@ -1410,12 +1410,11 @@ io.on('connection', (socket) => {
                         const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/delete_image.php';
                        var deleteServerImage = await axios.post(phpScriptUrl, {
                             imageName: uploadServer.data.imageName // Replace with the actual image name get from database or anywhere and pass name only
-                        }).then((response) => {
-                            console.log('Response:', response.data);
-                        }).catch((error) => {
-                            console.error('Error:', error);
                         });
+                        
                         console.log("deleteServerImage",deleteServerImage);
+                        console.log("deleteServerImage",deleteServerImage.data);
+
                     }, 60000)
                 }
                 // if (data.expiryImage == 1) {
