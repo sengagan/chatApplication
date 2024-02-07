@@ -27,7 +27,7 @@ const getData = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let response = await messageServices.getData(data);
-            console.log('response --/controoler--gg-');
+            console.log('response --/controoler--gg-',response);
             resolve(response);
         } catch (error) {
             reject({ status: 500, error: 'Internal Server Error' });
