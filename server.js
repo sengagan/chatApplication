@@ -1431,8 +1431,8 @@ io.on('connection', (socket) => {
                 console.log("updateResponse==");
             }
             /******************* */
-            let updateOne = await messageModel.updateOne(response);       //jab userone ho
-            console.log("updateOne==", updateOne);                           // extra code
+        //  1   // let updateOne = await messageModel.updateOne(response);       //jab userone ho
+            // console.log("updateOne==", updateOne);                           // extra code
             /******************* */
             let getData = await messageModel.getDataById(response[0].id);
             /** */
