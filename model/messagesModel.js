@@ -342,7 +342,7 @@ const deleteImgUrl = async (data) => {
         WHERE chatId = ? AND fromUserId = ? AND toUserId = ? AND imgUrl = ? AND imgUrl < NOW() - INTERVAL 1 MINUTE;
     `;
     console.log("-=-=-=-", data.chatId, data.fromUserId, data.toUserId, data.imgUrl);
-    console.log("getdata/model-->>2>>>");
+    console.log("getdata/model-->>2>>>");                   
     return new Promise((resolve, reject) => {
         connection.query(query, [data.chatId, data.fromUserId, data.toUserId, data.imgUrl], (error, result) => {
             if (error) {

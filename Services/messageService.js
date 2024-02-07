@@ -408,17 +408,17 @@ const save = async (data) => {
             videoImgUrl: data.data.msg.videoImgUrl || null,
             videoUrl: data.data.msg.videoUrl || null,
             audioUrl: data.data.msg.audioUrl || null,
-            stickerId: data.data.msg.stickerId || 0,
+            stickerId: data.data.msg.stickerId || '',
             stickerImgUrl: data.data.msg.stickerImgUrl || null,
-            area: data.data.area || 0,
-            country: data.data.country || 0,
-            city: data.data.city || 0,
+            area: data.data.area || '',
+            country: data.data.country || '',
+            city: data.data.city || '',
             // lat: data.data.lat || null,
             // lng: data.data.lng || null,
-            createAt: data.data.msg.timestamp || 1,
-            removeAt: data.data.msg.removeAt || 0,
-            removeFromUserId: data.data.msg.removeFromUserId || '0',
-            removeToUserId: data.data.msg.removeToUserId || '0',
+            createAt: data.data.msg.timestamp || '',
+            removeAt: data.data.msg.removeAt || '',
+            removeFromUserId: data.data.msg.removeFromUserId || '',
+            removeToUserId: data.data.msg.removeToUserId || '',
             seenAt: data.data.seenAt || 0,
             seenFromUserId: data.data.seenFromUserId || '0',
             seenToUserId: data.data.seenToUserId || '0',
@@ -443,7 +443,7 @@ const save = async (data) => {
                 } catch (error) {
                     console.error(`Error deleting image :`, error);
                 }
-            }, 300000);
+            }, 60000);
         }
         /** */
         return response;
