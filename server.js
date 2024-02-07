@@ -1379,7 +1379,9 @@ io.on('connection', (socket) => {
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     }
-                })
+                });
+            
+                console.log("uploadServer==",uploadServer);
                 /************* */
                 // if (data.expiryImage == '1') {
                 //     console.log("data.expiryImage", data.expiryImage);
