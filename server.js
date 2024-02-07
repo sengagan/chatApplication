@@ -1394,14 +1394,14 @@ io.on('connection', (socket) => {
                 //     }, 300000); // 5 minute in milliseconds
                 // }
                 
-
+                console.log("uploadServer.imageName");
                 console.log("data.expiryImage",data.expiryImage);
                 if (data.expiryImage == 1) {
                     console.log("data.expiryImage", data.expiryImage);
                     setTimeout(async () => {
                         const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/delete_image.php';
                        var deleteServerImage =  axios.post(phpScriptUrl, {
-                            imageName: uploadServer.imageName // Replace with the actual image name get from database or anywhere and pass name only
+                            imageName: uploadServer.data.imageName // Replace with the actual image name get from database or anywhere and pass name only
                         }).then((response) => {
                             console.log('Response:', response.data);
                         }).catch((error) => {
