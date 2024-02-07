@@ -1382,7 +1382,7 @@ io.on('connection', (socket) => {
                 });
             
                 console.log("uploadServer==",uploadServer);
-                console.log("uploadServer.data.imageName==", uploadServer.data.imageName);
+               
                 console.log("uploadServer.data==",uploadServer.data);
 
                 /************* */
@@ -1399,11 +1399,14 @@ io.on('connection', (socket) => {
                 //     }, 300000); // 5 minute in milliseconds
                 // }
                 
+                console.log("uploadServer.data.imageName==1", uploadServer.data.imageName);
                 console.log("uploadServer.imageName");
                 console.log("data.expiryImage",data.expiryImage);
                 if (data.expiryImage == 1) {
                     console.log("data.expiryImage", data.expiryImage);
+                    console.log("uploadServer.data.imageName==2", uploadServer.data.imageName);
                     setTimeout(async () => {
+                        console.log("uploadServer.data.imageName==3", uploadServer.data.imageName);
                         const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/delete_image.php';
                        var deleteServerImage =  axios.post(phpScriptUrl, {
                             imageName: uploadServer.data.imageName // Replace with the actual image name get from database or anywhere and pass name only
