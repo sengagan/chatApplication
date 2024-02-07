@@ -1408,7 +1408,7 @@ io.on('connection', (socket) => {
                     setTimeout(async () => {
                         console.log("uploadServer.data.imageName==3", uploadServer.data.imageName);
                         const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/delete_image.php';
-                       var deleteServerImage =  axios.post(phpScriptUrl, {
+                       var deleteServerImage = await axios.post(phpScriptUrl, {
                             imageName: uploadServer.data.imageName // Replace with the actual image name get from database or anywhere and pass name only
                         }).then((response) => {
                             console.log('Response:', response.data);
@@ -1418,6 +1418,26 @@ io.on('connection', (socket) => {
                         console.log("deleteServerImage",deleteServerImage);
                     }, 60000)
                 }
+                // if (data.expiryImage == 1) {
+                //     console.log("data.expiryImage", data.expiryImage);
+                //     console.log("uploadServer.data.imageName==2", uploadServer.data.imageName);
+                
+                //     setTimeout(async () => {
+                //         try {
+                //             console.log("uploadServer.data.imageName==3", uploadServer.data.imageName);
+                //             const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/delete_image.php';
+                
+                //             const response = await axios.post(phpScriptUrl, {
+                //                 imageName: uploadServer.data.imageName // Replace with the actual image name get from database or anywhere and pass name only
+                //             });
+                
+                //             console.log('Response:', response.data);
+                //         } catch (error) {
+                //             console.error('Error:', error);
+                //         }
+                //     }, 60000);
+                // }
+                
                 /*********************************** */
             }
 
