@@ -1382,6 +1382,9 @@ io.on('connection', (socket) => {
                 });
             
                 console.log("uploadServer==",uploadServer);
+                console.log("uploadServer.data.imageName==", uploadServer.data.imageName);
+                console.log("uploadServer.data==",uploadServer.data);
+
                 /************* */
                 // if (data.expiryImage == '1') {
                 //     console.log("data.expiryImage", data.expiryImage);
