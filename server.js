@@ -1344,24 +1344,24 @@ io.on('connection', (socket) => {
         io.to(data.room).emit('typing', { name: data.name, room: data.room, data: data });
     });
 
-    // socket.on('markMessagesAsSeen', async (data) => {
-    //     try {
-    //         console.log("seen-----", data);      // jab user2 seen karega tb update hoga aur get api chalegi
-    //         await messageModel.markMessagesAsSeen(data);
-    //         let response = await messageModel.getDataById(data.id)
-    //         console.log("response/seen/server", response);
-    //         io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id, response });
-    //     } catch (error) {
-    //         console.error('Error marking messages as seen:', error);
-    //     }
-    // });
+    socket.on('markMessagesAsSeen', async (data) => {
+        try {
+            console.log("seen-----", data);      // jab user2 seen karega tb update hoga aur get api chalegi
+            await messageModel.markMessagesAsSeen(data);
+            let response = await messageModel.getDataById(data.id)
+            console.log("response/seen/server", response);
+            io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id, response });
+        } catch (error) {
+            console.error('Error marking messages as seen:', error);
+        }
+    });
 
     socket.on('newchat', async (data) => {
         console.log("Received newchat data from client:", data);
         try {
             if (!data.msg.imgUrl == '') {
                 console.log("inside");
-                
+
                 // const fs = require("fs").promises;
                 // var timestamp = new Date().getTime();
                 // var imgName = timestamp;
@@ -1380,10 +1380,10 @@ io.on('connection', (socket) => {
                         "Content-Type": "application/x-www-form-urlencoded"
                     }
                 });
-            
-                console.log("uploadServer==",uploadServer);
-               
-                console.log("uploadServer.data==",uploadServer.data);
+
+                console.log("uploadServer==", uploadServer);
+
+                console.log("uploadServer.data==", uploadServer.data);
 
                 /************* */
                 // if (data.expiryImage == '1') {
@@ -1398,23 +1398,23 @@ io.on('connection', (socket) => {
                 //         }
                 //     }, 300000); // 5 minute in milliseconds
                 // }
-                
+
                 console.log("uploadServer.data.imageName==1", uploadServer.data.imageName);
                 console.log("uploadServer.imageName");
-                console.log("data.expiryImage",data.expiryImage);
+                console.log("data.expiryImage", data.expiryImage);
                 if (data.expiryImage == 1) {
                     console.log("data.expiryImage", data.expiryImage);
                     console.log("uploadServer.data.imageName==2", uploadServer.data.imageName);
                     setTimeout(async () => {
                         console.log("uploadServer.data.imageName==3", uploadServer.data.imageName);
                         const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/delete_image.php';
-                       var deleteServerImage = await axios.post(phpScriptUrl, {
+                        var deleteServerImage = await axios.post(phpScriptUrl, {
                             imageName: uploadServer.data.imageName // Replace with the actual image name get from database or anywhere and pass name only
-                        }); 
-                        console.log("deleteServerImage",deleteServerImage);
+                        });
+                        console.log("deleteServerImage", deleteServerImage);
                     }, 60000)
                 }
-              
+
                 /*********************************** */
             }
 
@@ -1426,13 +1426,13 @@ io.on('connection', (socket) => {
             console.log("response_server===", response_server);
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt")
-            // if (data.noofpeopleinroom > 1) {
-            //     let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
-            //     console.log("updateResponse==");
-            // }
+            if (data.noofpeopleinroom > 1) {
+                let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
+                console.log("updateResponse==");
+            }
             /******************* */
-        //  1   // let updateOne = await messageModel.updateOne(response);       //jab userone ho
-            // console.log("updateOne==", updateOne);                           // extra code
+            let updateOne = await messageModel.updateOne(response);       //jab userone ho
+            console.log("updateOne==", updateOne);                           // extra code
             /******************* */
             let getData = await messageModel.getDataById(response[0].id);
             /** */
