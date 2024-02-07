@@ -318,7 +318,7 @@
 
 // ===========================  final end correct code 1/2/24 =================================================================== -->
 
-
+//final 7 /2/24
 
 const fs = require("fs");
 const express = require('express');
@@ -618,7 +618,6 @@ const multipleImage = async (file, data) => {
     console.log("response", response);
     return response;
 }
-
 
 //  {[{name:'Screenshot (30).png',imgUrl:'http://localhsot sdhfsdhf'},{name:'Screenshot (30).png',imgUrl:'http://localhsot sdhfsdhf'}]}
 module.exports = { save, getData, savePhrases, getPhrasesById, createGallery, readGallery, updateGallery, deleteGallery, multipleImage };
