@@ -1344,17 +1344,17 @@ io.on('connection', (socket) => {
         io.to(data.room).emit('typing', { name: data.name, room: data.room, data: data });
     });
 
-    socket.on('markMessagesAsSeen', async (data) => {
-        try {
-            console.log("seen-----", data);      // jab user2 seen karega tb update hoga aur get api chalegi
-            await messageModel.markMessagesAsSeen(data);
-            let response = await messageModel.getDataById(data.id)
-            console.log("response/seen/server", response);
-            io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id, response });
-        } catch (error) {
-            console.error('Error marking messages as seen:', error);
-        }
-    });
+    // socket.on('markMessagesAsSeen', async (data) => {
+    //     try {
+    //         console.log("seen-----", data);      // jab user2 seen karega tb update hoga aur get api chalegi
+    //         await messageModel.markMessagesAsSeen(data);
+    //         let response = await messageModel.getDataById(data.id)
+    //         console.log("response/seen/server", response);
+    //         io.to(data.room).emit('messagesSeen', { room: data.room, sender_id: data.sender_id, receiver_id: data.receiver_id, response });
+    //     } catch (error) {
+    //         console.error('Error marking messages as seen:', error);
+    //     }
+    // });
 
     socket.on('newchat', async (data) => {
         console.log("Received newchat data from client:", data);
@@ -1426,10 +1426,10 @@ io.on('connection', (socket) => {
             console.log("response_server===", response_server);
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt")
-            if (data.noofpeopleinroom > 1) {
-                let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
-                console.log("updateResponse==");
-            }
+            // if (data.noofpeopleinroom > 1) {
+            //     let updateResponse = await messageModel.markMessagesAsSeen(response[0].id);
+            //     console.log("updateResponse==");
+            // }
             /******************* */
         //  1   // let updateOne = await messageModel.updateOne(response);       //jab userone ho
             // console.log("updateOne==", updateOne);                           // extra code
@@ -1457,16 +1457,16 @@ io.on('connection', (socket) => {
         }
     });
 
-    // socket.on('existschat', async function (data) {
-    //     console.log('receive existschat data from client');
-    //     try {
-    //         let get_data = await messageController.getData(data);
-    //         console.log("getdata/server----", get_data)        //null
-    //         socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // });
+    socket.on('existschat', async function (data) {
+        console.log('receive existschat data from client');
+        try {
+            let get_data = await messageController.getData(data);
+            console.log("getdata/server----", get_data)        //null
+            socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
+        } catch (error) {
+            console.error(error);
+        }
+    });
 
     const fs = require("fs").promises;
     const path = require("path");
