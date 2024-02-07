@@ -1457,16 +1457,16 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('existschat', async function (data) {
-        console.log('receive existschat data from client');
-        try {
-            let get_data = await messageController.getData(data);
-            console.log("getdata/server----", get_data)        //null
-            socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
-        } catch (error) {
-            console.error(error);
-        }
-    });
+    // socket.on('existschat', async function (data) {
+    //     console.log('receive existschat data from client');
+    //     try {
+    //         let get_data = await messageController.getData(data);
+    //         console.log("getdata/server----", get_data)        //null
+    //         socket.emit('load-chat', { chat: "chat", loadedData: get_data, data: data });
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // });
 
     const fs = require("fs").promises;
     const path = require("path");
