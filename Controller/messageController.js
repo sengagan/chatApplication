@@ -3,17 +3,17 @@ const url = require("url");
 const messageValidation = require('../Validation/messageValidation');
 const messageServices = require('../Services/messageService');
 
-const save = async (imageUrl,data) => {
-    console.log("data receive from server:",imageUrl,data);
+const save = async (data) => {
+    console.log("data receive from server:",data);
 
     return new Promise(async (resolve, reject) => {
         try {
-            let validate = await messageValidation.save(data);
-            console.log('validate',validate);
+            let validate = await messageValidation.save(data.data);
+            console.log('validate');
             if (validate.status === 'ERROR') {
                 return reject({ status: 400, error: validate.message });
             }
-            let response = await messageServices.save(imageUrl,data);
+            let response = await messageServices.save(data);
             console.log('response controller:');
             resolve(response);
         } catch (error) {

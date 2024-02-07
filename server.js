@@ -1170,7 +1170,6 @@ io.on('connection', (socket) => {
     socket.on('newchat', async (data) => {
         console.log("Received newchat data from client:", data);
         try {
-            var uploadServer;
             if (!data.msg.imgUrl == '') {         
                 console.log("inside");
                 const fs = require("fs").promises;
@@ -1182,7 +1181,7 @@ io.on('connection', (socket) => {
                 const querystring = require('querystring'); // For URL encoding the data
                 const phpScriptUrl = 'https://apitechiefreight.deepakprojects.com/upload.php';
                 const base64Data = data.msg.imgUrl.split(';base64,').pop();
-                uploadServer = await axios.post(phpScriptUrl, querystring.stringify({
+                var uploadServer = await axios.post(phpScriptUrl, querystring.stringify({
                     image: base64Data
                 }), {
                     headers: {
@@ -1204,11 +1203,12 @@ io.on('connection', (socket) => {
                 }
                 /*********************************** */
             }
-            // let details = {
-            //     imgUrl : uploadServer.data.url || '',
-            //     data : data
-            // }
-            let response_server = await messageController.save({imageUrl:uploadServer.data.url,data});
+        
+            let details = {
+                imgUrl: uploadServer ? uploadServer.data.url : '',
+                data:data
+            }
+            let response_server = await messageController.save(details);
             console.log("response_server===",response_server);
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt")

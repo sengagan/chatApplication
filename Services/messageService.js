@@ -327,10 +327,9 @@ const path = require("path");
 const messagesModel = require('../model/messagesModel');
 const { log } = require("console");
 
-const save = async (imageUrl,data) => {
+const save = async (data) => {
     try {
-        console.log("data receive from controller",imageUrl, data);
-       
+        console.log("data receive from controller", data);
         // data = data.msg.data;
         // let imageUrl = '';
         // let stickerUrl = '';
@@ -400,39 +399,38 @@ const save = async (imageUrl,data) => {
         // }
 
         let details = {
-            chatId: data.msg.chatId || 5,
-            msgType: data.msgType || 0,
-            fromUserId: data.sender_id,
-            toUserId: data.receiver_id,
-            message: data.msg.message,
-            imgUrl: imageUrl,
-            videoImgUrl: data.msg.videoImgUrl || null,
-            videoUrl: data.msg.videoUrl || null,
-            audioUrl: data.msg.audioUrl || null,
-            stickerId: data.msg.stickerId || 0,
-            stickerImgUrl: data.msg.stickerImgUrl || null,
-            area: data.area || 0,
-            country: data.country || 0,
-            city: data.city || 0,
+            chatId: data.data.msg.chatId || 5,
+            msgType: data.data.msgType || 0,
+            fromUserId: data.data.sender_id,
+            toUserId: data.data.receiver_id,
+            message: data.data.msg.message,
+            imgUrl: data.imgUrl,
+            videoImgUrl: data.data.msg.videoImgUrl || null,
+            videoUrl: data.data.msg.videoUrl || null,
+            audioUrl: data.data.msg.audioUrl || null,
+            stickerId: data.data.msg.stickerId || 0,
+            stickerImgUrl: data.data.msg.stickerImgUrl || null,
+            area: data.data.area || 0,
+            country: data.data.country || 0,
+            city: data.data.city || 0,
             // lat: data.data.lat || null,
             // lng: data.data.lng || null,
-            createAt: data.timestamp || 1,
-            removeAt: data.removeAt || 0,
-            removeFromUserId: data.removeFromUserId || '0',
-            removeToUserId: data.removeToUserId || '0',
-            seenAt: data.seenAt || 0,
-            seenFromUserId: data.seenFromUserId || '0',
-            seenToUserId: data.seenToUserId || '0',
-            u_agent: data.u_agent || '',
-            ip_addr: data.ip_addr || '',
+            createAt: data.data.timestamp || 1,
+            removeAt: data.data.removeAt || 0,
+            removeFromUserId: data.data.removeFromUserId || '0',
+            removeToUserId: data.data.removeToUserId || '0',
+            seenAt: data.data.seenAt || 0,
+            seenFromUserId: data.data.seenFromUserId || '0',
+            seenToUserId: data.data.seenToUserId || '0',
+            u_agent: data.data.u_agent || '',
+            ip_addr: data.data.ip_addr || '',
             location: {
-                lat: data.msg.location.lat || null,
-                long: data.msg.location.long || null
+                lat: data.data.msg.location.lat || null,
+                long: data.data.msg.location.long || null
             }
         };
 
         console.log("load---service---->", details);
-        
         let response = await messagesModel.save(details);
         console.log("resp-service---->", response);
         /** */
