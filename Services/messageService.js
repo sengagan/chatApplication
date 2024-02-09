@@ -485,13 +485,14 @@ const createGallery = async (details) => {
         user_id: details.user_id,
         image: details.image
     };
-
+    const fs = require("fs").promises;
     var timestamp = new Date().getTime();
     // var imgName = timestamp + "-" + data.msg.name ;
     const filePath = __dirname + "/../photo/" + timestamp + ".jpg";
     let base64Data;
     if (data.image.includes('data:image/jpeg;base64,')) {
-        base64Data = data.image.split(';base64,').pop().toString();
+        log("data.image",data.image);
+        base64Data = data.image.split(';base64,').pop().tostring()
     } else {
         base64Data = data.image;
     }
@@ -499,7 +500,7 @@ const createGallery = async (details) => {
     // var bs64 = base64.encode(isUtf8.encode());
     // Uint8List decodedImage = base64.decode(bs64);
     // Image.memory(decodedImage)
-    const fs = require("fs").promises;
+     
     const buffer = Buffer.from(base64Data, 'base64');
     await fs.writeFile(filePath, buffer);
     let response = await messagesModel.createGallery(data.user_id, filePath);

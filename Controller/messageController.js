@@ -133,7 +133,7 @@ const multipleImage = async (req, res) => {
     let file = req.files;
     console.log("multipleImage from server:", data, file);
         let validate = await messageValidation.multipleImage(file, data);
-        // console.log('validate', validate);
+        console.log('validate', validate);
         if (validate.status === 'ERROR') {
             return res.status(400).json({ "error": validate.message });
         }
