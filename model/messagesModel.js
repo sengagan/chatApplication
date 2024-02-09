@@ -270,7 +270,7 @@ const getDataWithRoom = async (data) => {
                 console.error("Error executing query:", error);
                 reject("Error executing query");
             } else {
-                console.log("result-model-0-get--");
+                console.log("result-model-0-get--",result);
                 resolve(result);
             }
         });
