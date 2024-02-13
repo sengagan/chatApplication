@@ -65,9 +65,13 @@ io.on('connection', (socket) => {
             let response = await messageModel.getDataWithRoom(data)
             console.log("responSeenAt==",response)
 
-           
+        //    if(!response == ''){
+
             let getData = await messageModel.getDataById(response[0].id);
             /** */
+            // if (getData[0].seenFromUserId == 1 && getData[0].seenToUserId == 1) {
+            //     getData[0].seenAt = '1'
+            // }
            
             console.log("getdata[0].seenAt");
             /** */
@@ -82,6 +86,7 @@ io.on('connection', (socket) => {
             const msg = { ...data.msg, "chatId": data.msg.chatId, "seenStatus": seenStatus };
             io.to(data.msg.chatId).emit('message', msg);
             console.log('Response from server:');
+        // }
         } catch (error) {
             console.error('Error in newchat:', error);
         }
