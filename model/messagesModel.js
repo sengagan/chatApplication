@@ -308,7 +308,23 @@ const multipleImage = async(image,details)=>{
 });
 }
 
-module.exports = { save, getData, markMessagesAsSeen, getDataById, getDataWithRoom, updateOne, deleteImgUrl , savePhrases , getPhrasesById,createGallery,readGallery ,deleteGallery , updateGallery , multipleImage };
+const updateLngLat = async(data)=>{
+    let query = `UPDATE users SET lng='${data.lng}' , lat='${data.lat}'  WHERE user_id='${data.user_id}'`;
+    
+    return new Promise(await function(resolve,reject){
+        connection.query(query,function(error,result){
+        if (error) {
+            console.error("Error uDatalnglat query:", error);
+            reject("Error executing query",error);
+        } else {
+            console.log("result-uDatalnglat-0-get--",result);
+            resolve(result);
+        }
+    });
+});
+}
+
+module.exports = { save, getData, markMessagesAsSeen, getDataById, getDataWithRoom, updateOne, deleteImgUrl , savePhrases , getPhrasesById,createGallery,readGallery ,deleteGallery , updateGallery , multipleImage , updateLngLat };
 
 
 

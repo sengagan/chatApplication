@@ -93,6 +93,15 @@ io.on('connection', (socket) => {
     });
 
     
+    /********************** updatelnglat *********************** */
+    socket.on("updatelnglat",async(uData)=>{
+        console.log("uData==",uData);
+       let updateResponse =  await  messageModel.updateLngLat(uData)
+       console.log("updateResponselnglat",updateResponse);
+       io.to(room).emit('updatelnglat', { updateResponse });
+    })
+
+    /********************************************* */
 
     const fs = require("fs").promises;
     const path = require("path");
