@@ -98,7 +98,7 @@ io.on('connection', (socket) => {
         console.log("uData==",uData);
        let updateResponse =  await  messageModel.updateLngLat(uData)
        console.log("updateResponselnglat",updateResponse);
-       io.to(room).emit('updatelnglat', { updateResponse });
+      
     })
 
     /********************************************* */
